@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up</title>
+  <link rel="stylesheet" href="signup.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inika:wght@400;700&family=Inria+Sans:wght@300;400;500;700&display=swap');
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="kiri">
+
+      <div class="logo">
+        <img src="../assets/logo.png" alt="Logo">
+      </div>
+      <h1>Admin Sign up</h1>
+      <p class="subtitle">Daftarkan akun admin baru</p>
+
+      <form class="signup-form" action="signin.html" method="post">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="admin@example.com" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Buat password" required>
+
+        <label for="confirm">Konfirmasi Password</label>
+        <input id="confirm" name="confirm" type="password" placeholder="Ulangi password" required>
+
+        <button class="primary-button" type="submit">Daftar sebagai Admin</button>
+      </form>
+
+      <div class="button-group">
+      </div>
+
+      <div class="signup-cta">
+        <p>Sudah punya akun? <a href="signin.html">Sign in di sini</a></p>
+        <p style="margin-top:8px;"><a href="../landingpage/landingpage.html">← Kembali ke halaman utama</a></p>
+      </div>
+    </div>
+
+    <div class="kanan">
+        <img src="../assets/background.png" alt="Background Image">
+    </div>
+
+  </div>
+</body>
+<script src="user_auth.js"></script>
+</html>

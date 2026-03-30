@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Admin</title>
+
+<!-- Sidebar & layout -->
+<link rel="stylesheet" href="dashboard.css">
+<!-- Konten dashboard -->
+<link rel="stylesheet" href="dashboard_admin.css">
+</head>
+<body>
+
+<!-- Logout button di top-right -->
+<div class="user-info">
+  <span id="adminEmail"></span>
+  <button id="logoutBtn" class="logout-btn">Logout</button>
+</div>
+
+<div class="dashboard">
+
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="../assets/logo.png">
+      <h1>Permata Biru Nusantara</h1>
+    </div>
+    
+    <ul class="nav-menu">
+      <li><a href="../dashboardadmin/dashboard.html" class="nav-link active">Dashboard</a></li>
+      <li><a href="../dashboardartikel/dashboard_artikel.html" class="nav-link">Artikel</a></li>
+      <li><a href="../dashboardpengaturan/dashboard_pengaturan.html" class="nav-link">Pengaturan</a></li>
+    </ul>
+  </aside>
+  
+  <main class="main-content">
+    <h1 class="page-title">Dashboard Admin</h1>
+    
+    <!-- QUICK STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h2>45</h2>
+        <p>Total Artikel</p>
+      </div>
+      <div class="stat-card">
+        <h2>124.748</h2>
+        <p>Total Views</p>
+      </div>
+      <div class="stat-card">
+        <h2>13.375</h2>
+        <p>Total Pengguna</p>
+      </div>
+      <div class="stat-card">
+        <h2>32</h2>
+        <p>Artikel Dipublikasi</p>
+      </div>
+    </div>
+    
+    <!-- ARTIKEL TERBARU -->
+    <div class="card">
+      <h3>Artikel Terbaru</h3>
+      
+      <div class="article-item">
+        <div class="article-info">
+          <h4>Konservasi Terumbu Karang</h4>
+          <p class="meta">Dipublikasikan 2 hari lalu • Konservasi</p>
+        </div>
+      </div>
+      
+      <div class="article-item">
+        <div class="article-info">
+          <h4>Kenapa Penyu Belimbing Disebut Belimbing? Ini alasannya!</h4>
+          <p class="meta">Dipublikasikan 4 hari lalu • Biota</p>
+        </div>
+      </div>
+      
+      <div class="article-item">
+        <div class="article-info">
+          <h4>Teluk Tomoni, Permata Laut Dijantung Sulawesi</h4>
+          <p class="meta">Dipublikasikan 1 minggu lalu • wisata</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ARTIKEL POPULER -->
+    <div class="card">
+      <h3>Artikel Paling Banyak Dilihat</h3>
+      
+      <div class="article-item">
+        <div class="article-info">
+          <h4>Migrasi Ikan Tuna</h4>
+          <p class="meta">20.300 views • Admin</p>
+        </div>
+      </div>
+      
+      <div class="article-item">
+        <div class="article-info">
+          <h4>Ancaman Sampah Laut</h4>
+          <p class="meta">15.220 views • Rani</p>
+        </div>
+      </div>
+      
+      <div class="article-item">
+        <div class="article-info">
+          <h4>Budi Daya Rumput Laut</h4>
+          <p class="meta">12.100 views • Adi</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../loginpage/auth.js"></script>
+<script>
+// Proteksi dashboard - check jika user adalah admin
+document.addEventListener('DOMContentLoaded', () => {
+  if (!isAdminLoggedIn()) {
+    // Jika tidak ada session admin, redirect ke login
+    alert('Anda harus login sebagai admin untuk mengakses dashboard ini.');
+    window.location.href = '../loginpage/signin.html';
+  } else {
+    // Tampilkan email admin di header
+    const session = getAdminSession();
+    document.getElementById('adminEmail').textContent = `Admin: ${session.email}`;
+  }
+  
+  // Setup logout button
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    if (confirm('Apakah Anda yakin ingin logout?')) {
+      logoutAdmin();
+    }
+  });
+});
+</script>
+</body>
+</html>

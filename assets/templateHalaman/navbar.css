@@ -1,0 +1,70 @@
+@import url('../variables.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-primary);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-secondary);
+  color: var(--text-default);
+  background: var(--bg-default);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: var(--header-height);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+header .logo img {
+  width: 40px;
+  height: 40px;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .logo h1 {
+  font-size: 18px;
+}
+
+nav a {
+  margin-left: 25px;
+  text-decoration: none;
+  color: var(--link-color);
+  font-weight: 500;
+  position: relative;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -4px;
+  background: var(--link-hover);
+  transition: 0.3s;
+}
+
+nav a:hover::after {
+  width: 100%;
+}

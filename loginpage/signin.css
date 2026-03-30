@@ -1,0 +1,221 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inika', 'Inria Sans', sans-serif;
+  background: linear-gradient(135deg, #1e5a7d 0%, #0d3c5c 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.container .kiri a {
+  text-decoration: none;
+}
+
+.kiri {
+  flex: 1;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 28px;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.button-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-form label {
+  font-size: 13px;
+  color: #444;
+  font-weight: 500;
+}
+
+.login-form input {
+  padding: 12px 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.login-form input:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.1);
+}
+
+.primary-button {
+  margin-top: 10px;
+  padding: 12px 18px;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.primary-button:hover {
+  background: #0b5ed7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.2);
+}
+
+.primary-button:active {
+  transform: translateY(0);
+}
+
+.login-error {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 8px;
+  display: none;
+}
+
+.login-error.show {
+  display: block;
+}
+
+.social-button {
+  width: 100%;
+  padding: 14px 24px;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  background: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  color: #1a1a1a;
+}
+
+.social-button:hover {
+  border-color: #c0c0c0;
+  background: #d0d0d0d9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.social-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: cover;
+}
+
+.kanan {
+  overflow: hidden;
+  /* Make the right panel flexible so adding buttons doesn't break layout */
+  flex: 0 0 45%;
+  min-width: 260px;
+  max-width: 500px;
+}
+
+.kanan img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Keep buttons tidy and prevent overflow */
+.button-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.social-button {
+  width: 100%;
+  padding: 14px 24px;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  background: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  color: #1a1a1a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .kanan {
+    display: none;
+  }
+  .kiri {
+    padding: 40px 30px;
+  }
+  h1 {
+    font-size: 24px;
+  }
+}
+
+.signup-cta {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #5f6368;
+}

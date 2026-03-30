@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  color: #111;
+  background-color: #fff;
+  scroll-behavior: smooth;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom-left-radius: 20px; 
+  border-bottom-right-radius: 20px;
+}
+
+.hero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.85));
+  z-index: -1;
+}
+
+.hero-content {
+  max-width: 750px;
+  padding: 0 40px;
+  text-align: center;
+  color: #fff;
+}
+
+.hero-content h1 {
+  font-size: 3.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 15px;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+}
+
+/* ARTICLE LAYOUT */
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    padding: 40px 60px;
+    align-items: start;
+    text-align: justify;
+    text-indent: 20px;
+}
+
+.article p {
+    line-height: 1.7;
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+.side-image img {
+    width: 100%;
+    height: 600px;       /* panjang gambar seperti desain */
+    object-fit: cover;   /* biar tidak melebar */
+    border-radius: 12px;
+    position: sticky;
+    top: 120px;          /* berhenti setelah header */
+    margin-top: 20px;
+}
+
+/* SLIDER SECTION */
+.slider {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 10px;
+    scrollbar-width: none; /* Firefox */
+}
+
+.slider::-webkit-scrollbar {
+    display: none;         /* Chrome/Safari */
+}
+
+.card {
+    flex: 0 0 280px;       /* Lebar card tetap */
+    scroll-snap-align: start;
+}
+
+/* OTHERS SECTION */
+.others {
+    padding: 40px 60px;
+}
+
+.others h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 28%;
+    background: white;
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-body h3 {
+    font-size: 15px;
+    margin: 0 0 10px;
+}
+
+.card-body p {
+    font-size: 12px;
+    margin: 0 0 10px;
+}
+
+.card-body a {
+    font-size: 13px;
+    text-decoration: none;
+    color: #0066c0;
+    font-weight: 600;
+}
+.card-body a:hover {
+    text-decoration: underline;
+}
+
+

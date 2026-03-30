@@ -1,0 +1,65 @@
+/* ========================================
+   VARIABEL GLOBAL CSS - UNTUK SEMUA HALAMAN
+   ======================================== */
+
+:root {
+  /* -------------------- Font -------------------- */
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: Arial, sans-serif;
+
+  /* -------------------- Warna Dasar -------------------- */
+  --bg-default: #ffffff;
+  --text-default: #111111;
+  --text-muted: #666666;
+
+  /* -------------------- Header -------------------- */
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-border: #dddddd;
+  --header-height: 70px;
+
+  /* -------------------- Link & Nav -------------------- */
+  --link-color: #000000;
+  --link-hover: #007bff;
+
+  /* -------------------- Kartu (Card) -------------------- */
+  --card-bg: #ffffff;
+  --card-radius: 12px;
+  --card-shadow: 0 3px 8px rgba(0,0,0,0.1);
+
+  /* -------------------- Tombol (Button) -------------------- */
+  --btn-border: #0084d6;
+  --btn-text: #0084d6;
+  --btn-bg-hover: #0084d6;
+  --btn-text-hover: #ffffff;
+
+  /* -------------------- Hero Banner -------------------- */
+  --hero-overlay: rgba(0, 0, 0, 0.45);
+  --hero-height: 550px;
+
+  /* -------------------- Footer -------------------- */
+  --footer-bg: #005fa3;
+  --footer-text: #ffffff;
+
+  /* -------------------- Responsif Breakpoint -------------------- */
+  --breakpoint-tablet: 768px;
+  --breakpoint-mobile: 480px;
+  --breakpoint-extra-small: 360px;
+
+  /* -------------------- Spacing -------------------- */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 25px;
+  --spacing-2xl: 50px;
+
+  /* -------------------- Shadow -------------------- */
+  --shadow-light: 0 3px 8px rgba(0,0,0,0.1);
+  --shadow-medium: 0 8px 15px rgba(0,0,0,0.15);
+  --shadow-heavy: 0 12px 40px rgba(13, 110, 253, 0.15);
+
+  /* -------------------- Transition -------------------- */
+  --transition-fast: 0.2s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.4s;
+}

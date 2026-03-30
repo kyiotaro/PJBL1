@@ -1,0 +1,80 @@
+@import url('../variables.css');
+
+footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    padding: var(--spacing-2xl);
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+}
+
+.footer-container h3 {
+  font-size: 20px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.footer-container p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.highlight {
+  color: var(--footer-text);
+  font-weight: bold;
+}
+
+.links {
+  align-content: left;
+}
+
+.links a {
+  color: var(--footer-text);
+  text-decoration: underline;
+  margin-right: 8px;
+}
+
+.about {
+  text-align: left;
+  width: 50%;
+  margin-bottom: var(--spacing-sm);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.85);
+  padding-bottom: var(--spacing-sm);
+}
+
+hr {
+  border: none;
+  height: 2px;
+  background-color: var(--header-border);
+  margin: var(--spacing-lg) 0;
+}
+
+.contact {
+  align-content: right;
+  justify-items: left;
+  display: grid;
+  margin-right: var(--spacing-lg);
+  border-left: 2px solid var(--header-border);
+  border-spacing: var(--spacing-lg);
+  padding-left: var(--spacing-lg);
+}
+
+.contact p {
+  margin-bottom: var(--spacing-sm);
+}
+
+.sosmed a {
+  color: var(--footer-text);
+  margin-right: var(--spacing-md);
+  text-decoration: underline;
+  font-size: 14px;
+  transition: color var(--transition-normal);
+}
+
+.sosmed a:hover {
+  color: #ffe600;
+}

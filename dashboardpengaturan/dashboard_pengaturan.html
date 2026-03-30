@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Sistem</title>
+    <link rel="stylesheet" href="../dashboardadmin/dashboard.css">
+    <link rel="stylesheet" href="dashboard_pengaturan.css"> 
+</head>
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="../assets/logo.png" alt="Logo">
+            <h1>Permata Biru Nusantara</h1>
+        </div>
+
+        <ul class="nav-menu">
+            <li><a href="../dashboardadmin/dashboard.html" class="nav-link">Dashboard</a></li>
+            <li><a href="../dashboardartikel/dashboard_artikel.html" class="nav-link">Artikel</a></li>
+            <li><a href="../dashboardpengaturan/dashboard_pengaturan.html" class="nav-link active">Pengaturan</a></li>
+        </ul>
+    </aside>
+
+    <main class="content">
+        <h2>Pengaturan Sistem</h2>
+        <p>Atur preferensi sistem sesuai kebutuhan Anda.</p>
+        
+        <section class="settings-section">
+            <h3>Backup & Restore</h3>
+            <p class="muted">Fitur ini masih tampilan saja. Backup asli butuh JavaScript atau server.</p>
+        
+            <div class="backup-container">
+        
+                <div class="backup-actions">
+                    <button class="btn-primary">Backup Sekarang</button>
+        
+                    <label class="btn-outline file-label">
+                        Restore dari File
+                        <input type="file" accept=".json,.zip" />
+                    </label>
+                </div>
+        
+                <h4>Riwayat Backup</h4>
+                <table class="backup-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Jenis</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><button class="btn-small" disabled>Download</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="settings-section">
+            <h3>Profil Admin</h3>
+            <form class="settings-form">
+                <label>Nama Lengkap</label>
+                <input type="text" placeholder="Masukkan nama Anda">
+
+                <label>Email</label>
+                <input type="email" placeholder="Masukkan email Anda">
+
+                <button type="submit">Simpan Perubahan</button>
+            </form>
+        </section>
+
+        <section class="settings-section">
+            <h3>Tampilan</h3>
+            <form class="settings-form">
+                <label>Mode Tema</label>
+                <select>
+                    <option>Terang</option>
+                    <option>Gelap</option>
+                </select>
+
+                <button type="submit">Terapkan</button>
+            </form>
+        </section>
+       
+    </main>
+</div>
+
+</body>
+</html>
