@@ -16,7 +16,7 @@ function isAdminLoggedIn() {
 // Logout admin
 function logoutAdmin() {
   sessionStorage.removeItem('adminSession');
-  window.location.href = '../landingpage/landingpage.html';
+  window.location.href = '../landingpage/landingpage.php';
 }
 
 // Get info admin

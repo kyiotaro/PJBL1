@@ -1,6 +1,6 @@
 <header class="site-header">
   <div class="logo">
-    <a href="../landingpage/landingpage.php"><img src="../assets/logo.png" alt="Logo"></a>
+    <a href="../landingpage/landingpage.php"><img src="../assets/Foto/logo.png" alt="Logo"></a>
     <h1>Permata Biru Nusantara</h1>
   </div>
 

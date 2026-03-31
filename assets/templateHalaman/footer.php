@@ -10,7 +10,7 @@
       <hr>
       <div class="links">
         <a href="../tentangpage/tentang.php">About</a> |
-        <a href="../loginpage/signin.php">Sign in</a> |
+        <a href="../loginpage/signin.html">Sign in</a> |
         <a href="#">FAQ</a> |
         <a href="#">Support</a>
       </div>
@@ -20,10 +20,10 @@
       <p><strong>Email:</strong> permatabirudev@gmail.com</p>
       <p><strong>IKUTI KAMI:</strong></p>
       <div class="sosmed">
-        <a href="#"><img src="../assets/Youtube.svg"></a>
-        <a href="#"><img src="../assets/Instagram.svg"></a>
-        <a href="#"><img src="../assets/Facebook.svg"></a>
-        <a href="#"><img src="../assets/Twitter.svg"></a>
+        <a href="#"><img src="../assets/Foto/Youtube.svg" alt="YouTube"></a>
+        <a href="#"><img src="../assets/Foto/Instagram.svg" alt="Instagram"></a>
+        <a href="#"><img src="../assets/Foto/Facebook.svg" alt="Facebook"></a>
+        <a href="#"><img src="../assets/Foto/Twitter.svg" alt="Twitter"></a>
       </div>
     </div>
   </div>

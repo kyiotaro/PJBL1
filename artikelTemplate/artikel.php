@@ -17,7 +17,7 @@
   <section class="hero">
     <div class="hero-content">
       <h1>Eksplorasi Teluk Tomoni<br>Keindahan yang Tersembunyi</h1>
-      <img src="../assets/kima.png" alt="Gambar Hero" class="hero-img">
+      <img src="../assets/Foto/kima.png" alt="Gambar Hero" class="hero-img">
   </section>
 
   <!-- KONTEN ARTIKEL -->
@@ -55,7 +55,7 @@
     </article>
 
     <aside class="side-image">
-      <img src="../assets/kima.png" alt="Diving">
+      <img src="../assets/Foto/kima.png" alt="Diving">
     </aside>
   </main>
 
@@ -66,7 +66,7 @@
     <div class="slider">
       <div class="cards">
         <div class="card">
-          <img src="../assets/penyubelimbing.png" alt="">
+          <img src="../assets/Foto/penyubelimbing.png" alt="">
           <div class="card-body">
             <h3>Kenapa Penyu Belimbing Disebut Belimbing? ini Alasannya</h3>
             <p>16.11.2025</p>
@@ -75,7 +75,7 @@
         </div>
 
         <div class="card">
-          <img src="../assets/terumbu-karang.png" alt="">
+          <img src="../assets/Foto/terumbu-karang.png" alt="">
           <div class="card-body">
             <h3>Terumbu Karang di Indonesia: Permata Laut Dunia</h3>
             <p>05.05.2025</p>
@@ -84,7 +84,7 @@
         </div>
 
         <div class="card">
-          <img src="../assets/kima.png" alt="">
+          <img src="../assets/Foto/kima.png" alt="">
           <div class="card-body">
             <h3>Kima Raksasa: Permata Laut yang Terancam</h3>
             <p>16.02.2025</p>
@@ -93,7 +93,7 @@
         </div>
 
         <div class="card">
-          <img src="../assets/snorkeling-dengan-penyu.png" alt="">
+          <img src="../assets/Foto/snorkeling-dengan-penyu.png" alt="">
           <div class="card-body">
             <h3>Snorkeling Bersama Penyu di Laut Derawan</h3>
             <p>16.11.2025</p>
@@ -102,7 +102,7 @@
         </div>
 
         <div class="card">
-          <img src="../assets/gunung.png" alt="">
+          <img src="../assets/Foto/gunung.png" alt="">
           <div class="card-body">
             <h3>Keajaiban Gunung Berapi Bawah Laut di Indonesia</h3>
             <p>20.06.2025</p>
