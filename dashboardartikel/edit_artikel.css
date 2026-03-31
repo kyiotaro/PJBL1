@@ -1,6 +1,5 @@
 /* =========================
-   KHUSUS HALAMAN TAMBAH ARTIKEL
-   DISAMAKAN DENGAN HALAMAN EDIT
+   KHUSUS HALAMAN EDIT ARTIKEL
    ========================= */
 
 .content {
@@ -72,7 +71,7 @@ select {
 }
 
 .file-upload-field input[type="file"] {
-  display: none !important;
+  display: none;
 }
 
 .file-upload-label {

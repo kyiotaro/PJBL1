@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Permata Biru Nusantara</title>
   <link rel="stylesheet" href="../artikel.css">
+  <link rel="stylesheet" href="../assets/templateHalaman/navbar.css">
+  <link rel="stylesheet" href="../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../assets/templateHalaman/card.css">
 </head>
 
 <body>
