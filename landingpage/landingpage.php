@@ -14,7 +14,7 @@
 <body>
   <?php include '../assets/templateHalaman/navbar.php'; ?>
 
-  <section class="hero" style="background-image: url('../assets/Foto/background.png')">
+  <section class="hero" style="background-image: url('../assets/Foto/ui/background.png')">
     <div class="overlay">
       <h2>Permata Biru Nusantara</h2>
       <p>

@@ -1,122 +1,131 @@
+<?php
+include '../koneksi.php';
+require_once '../assets/helpers/foto_helper.php';
+
+$defaultArticle = [
+  'id' => 0,
+  'judul' => 'Eksplorasi Teluk Tomoni: Keindahan yang Tersembunyi',
+  'kategori' => 'wisata',
+  'tanggal' => date('Y-m-d'),
+  'gambar' => 'kima.png',
+  'isi' => '<p>Di balik birunya laut tropis Indonesia, ada satu biota yang sering bikin penyelam terpesona: kima raksasa (Tridacna gigas). Hewan ini bukan sekadar kerang biasa. Ia adalah salah satu moluska terbesar di dunia, dengan ukuran bisa mencapai lebih dari satu meter dan berat ratusan kilogram.</p><p>Kima raksasa punya keistimewaan unik. Warna tubuhnya sering terlihat berkilau kehijauan, kebiruan, atau bahkan keemasan. Hubungan simbiosis dengan alga mikroskopis membuatnya mampu memanfaatkan cahaya matahari untuk bertahan hidup dalam waktu yang sangat lama.</p><p>Keberadaan kima raksasa di perairan Indonesia punya fungsi penting bagi ekosistem terumbu karang. Menjaganya berarti menjaga kesehatan laut sekaligus merawat warisan alam Indonesia untuk generasi mendatang.</p>'
+];
+
+$articleId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$article = null;
+
+if ($articleId > 0) {
+  $stmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori, tanggal, gambar, isi FROM Artikel WHERE id = ? LIMIT 1");
+  mysqli_stmt_bind_param($stmt, 'i', $articleId);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+  $article = mysqli_fetch_assoc($result);
+  mysqli_stmt_close($stmt);
+}
+
+if (!$article) {
+  $latestQuery = mysqli_query($koneksi, "SELECT id, judul, kategori, tanggal, gambar, isi FROM Artikel ORDER BY tanggal DESC, id DESC LIMIT 1");
+  if ($latestQuery && mysqli_num_rows($latestQuery) > 0) {
+    $article = mysqli_fetch_assoc($latestQuery);
+  }
+}
+
+if (!$article) {
+  $article = $defaultArticle;
+}
+
+$article['gambar'] = !empty($article['gambar']) ? $article['gambar'] : $defaultArticle['gambar'];
+$articleImagePath = resolveFotoWebPath($article['gambar']);
+$articleContent = trim($article['isi'] ?? '');
+
+if ($articleContent === '') {
+  $articleContent = $defaultArticle['isi'];
+} elseif ($articleContent === strip_tags($articleContent)) {
+  $articleContent = '<p>' . nl2br(htmlspecialchars($articleContent)) . '</p>';
+}
+
+$relatedArticles = [];
+$currentArticleId = (int) ($article['id'] ?? 0);
+
+if ($currentArticleId > 0) {
+  $relatedStmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori, tanggal, gambar FROM Artikel WHERE id != ? ORDER BY tanggal DESC, id DESC LIMIT 4");
+  mysqli_stmt_bind_param($relatedStmt, 'i', $currentArticleId);
+  mysqli_stmt_execute($relatedStmt);
+  $relatedResult = mysqli_stmt_get_result($relatedStmt);
+
+  while ($relatedRow = mysqli_fetch_assoc($relatedResult)) {
+    $relatedArticles[] = $relatedRow;
+  }
+
+  mysqli_stmt_close($relatedStmt);
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Permata Biru Nusantara</title>
-  <link rel="stylesheet" href="../artikel.css">
+  <title><?= htmlspecialchars($article['judul']); ?> | Permata Biru Nusantara</title>
+  <link rel="stylesheet" href="artikel.css?v=2">
+  <link rel="stylesheet" href="../assets/variables.css">
   <link rel="stylesheet" href="../assets/templateHalaman/navbar.css">
   <link rel="stylesheet" href="../assets/templateHalaman/footer.css">
   <link rel="stylesheet" href="../assets/templateHalaman/card.css">
 </head>
-
 <body>
-  <!-- Include navbar -->
   <?php include '../assets/templateHalaman/navbar.php'; ?>
 
-
-  <!-- JUDUL + HERO -->
   <section class="hero">
+    <img src="<?= htmlspecialchars($articleImagePath); ?>" alt="<?= htmlspecialchars($article['judul']); ?>" class="hero-img">
     <div class="hero-content">
-      <h1>Eksplorasi Teluk Tomoni<br>Keindahan yang Tersembunyi</h1>
-      <img src="../assets/Foto/kima.png" alt="Gambar Hero" class="hero-img">
+      <h1><?= htmlspecialchars($article['judul']); ?></h1>
+      <p>Jelajahi cerita, pengetahuan, dan pesona bahari Indonesia dalam satu halaman yang lebih nyaman dibaca.</p>
+    </div>
   </section>
 
-  <!-- KONTEN ARTIKEL -->
   <main class="content-wrapper">
+    <article class="article-card-detail">
+      <div class="article-head">
+        <h2>Tentang Artikel Ini</h2>
+        <p>Informasi dirangkum untuk memperluas wawasan tentang kekayaan laut Indonesia.</p>
+      </div>
 
-    <article class="article">
-      <p> Di balik birunya laut tropis Indonesia, ada satu biota yang sering bikin penyelam terpesona: kima raksasa
-        (Tridacna gigas). Hewan ini bukan sekadar kerang biasa. Ia adalah salah satu moluska terbesar di dunia, dengan
-        ukuran bisa mencapai lebih dari satu meter dan berat ratusan kilogram. Jadi jangan kaget kalau melihatnya seolah
-        jadi "meja batu" hidup di dasar laut.
-      </p>
-
-      <p> Kima raksasa punya keistimewaan unik. Warna tubuhnya sering terlihat berkilau kehijauan, kebiruan, atau bahkan
-        keemasan. Itu bukan cat, melainkan hasil kerjasama dengan alga mikroskopis yang hidup di dalam jaringan
-        mantelnya. Hubungan simbiosis ini membuat kima bisa "berjemur" untuk mendapatkan energi dari sinar matahari,
-        mirip tanaman yang melakukan fotosintesis. Dengan cara ini, ia bisa bertahan hidup puluhan bahkan ratusan tahun.
-      </p>
-
-      <p> Keberadaan kima raksasa di perairan Indonesia punya fungsi penting. Mereka membantu menjaga ekosistem terumbu
-        karang dengan menyaring air laut, menyediakan tempat berlindung bagi ikan-ikan kecil, dan tentu saja menambah
-        keindahan alam bawah laut. Sayangnya, kima raksasa juga sering jadi target perburuan. Cangkangnya yang besar
-        dijadikan hiasan, sementara dagingnya diburu untuk konsumsi. Akibatnya, populasinya di banyak daerah menurun
-        drastis.
-      </p>
-
-      <p> Saat ini, kima raksasa masuk dalam daftar hewan dilindungi. Beberapa kawasan konservasi laut sudah mulai
-        melakukan upaya budidaya dan pelepasan kembali ke alam. Cara ini diharapkan bisa menjaga keberlangsungan spesies
-        yang ikonik ini, sekaligus memastikan generasi mendatang masih bisa melihat keindahan kima raksasa di habitat
-        aslinya.
-      </p>
-
-      <p> Kima raksasa adalah bukti betapa laut menyimpan makhluk-makhluk luar biasa yang kadang terlihat seperti
-        dongeng. Menjaganya berarti menjaga kesehatan laut sekaligus menjaga bagian dari warisan alam Indonesia.
-      </p>
+      <div class="article article-body">
+        <?= $articleContent; ?>
+      </div>
     </article>
 
-    <aside class="side-image">
-      <img src="../assets/Foto/kima.png" alt="Diving">
+    <aside class="side-panel">
+      <div class="side-card">
+        <img src="<?= htmlspecialchars($articleImagePath); ?>" alt="<?= htmlspecialchars($article['judul']); ?>">
+        <div class="side-card-body">
+          <h3><?= htmlspecialchars($article['judul']); ?></h3>
+          <p>Kategori: <strong><?= htmlspecialchars(ucfirst($article['kategori'])); ?></strong></p>
+          <p>Diterbitkan: <strong><?= date('d M Y', strtotime($article['tanggal'])); ?></strong></p>
+        </div>
+      </div>
     </aside>
   </main>
 
-  <!-- ARTIKEL LAINNYA -->
   <section class="others">
-    <h2>Artikel lainnya</h2>
+    <div class="section-heading">
+      <h2>Artikel lainnya</h2>
+      <p>Temukan cerita laut Indonesia lainnya dengan tampilan kartu yang lebih rapi dan konsisten.</p>
+    </div>
 
-    <div class="slider">
-      <div class="cards">
-        <div class="card">
-          <img src="../assets/Foto/penyubelimbing.png" alt="">
-          <div class="card-body">
-            <h3>Kenapa Penyu Belimbing Disebut Belimbing? ini Alasannya</h3>
-            <p>16.11.2025</p>
-            <a href="../artikelTemplate/artikel.php">Baca selengkapnya →</a>
-          </div>
+    <div class="related-grid">
+      <?php if (!empty($relatedArticles)) : ?>
+        <?php foreach ($relatedArticles as $artikel) : ?>
+          <?php include '../assets/templateHalaman/card.php'; ?>
+        <?php endforeach; ?>
+      <?php else : ?>
+        <div class="empty-related">
+          <p>Belum ada artikel lain yang tersedia saat ini.</p>
         </div>
-
-        <div class="card">
-          <img src="../assets/Foto/terumbu-karang.png" alt="">
-          <div class="card-body">
-            <h3>Terumbu Karang di Indonesia: Permata Laut Dunia</h3>
-            <p>05.05.2025</p>
-            <a href="../artikelTemplate/artikel.php">Baca selengkapnya →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="../assets/Foto/kima.png" alt="">
-          <div class="card-body">
-            <h3>Kima Raksasa: Permata Laut yang Terancam</h3>
-            <p>16.02.2025</p>
-            <a href="../artikelTemplate/artikel.php">Baca selengkapnya →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="../assets/Foto/snorkeling-dengan-penyu.png" alt="">
-          <div class="card-body">
-            <h3>Snorkeling Bersama Penyu di Laut Derawan</h3>
-            <p>16.11.2025</p>
-            <a href="#">Baca selengkapnya →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="../assets/Foto/gunung.png" alt="">
-          <div class="card-body">
-            <h3>Keajaiban Gunung Berapi Bawah Laut di Indonesia</h3>
-            <p>20.06.2025</p>
-            <a href="../artikelTemplate/artikel.php">Baca selengkapnya →</a>
-          </div>
-        </div>
-      </div>
+      <?php endif; ?>
+    </div>
   </section>
 
-  <!-- Include footer -->
   <?php include '../assets/templateHalaman/footer.php'; ?>
 </body>
-
 </html>

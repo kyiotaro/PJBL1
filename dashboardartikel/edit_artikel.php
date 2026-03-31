@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($_FILES['gambar']['error'] !== UPLOAD_ERR_OK) {
                 $error = 'Upload gambar baru gagal.';
             } else {
-                $uploadDir = '../assets/Foto/';
+                $uploadDir = '../assets/Foto/artikel/' . $kategori . '/';
 
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
@@ -53,8 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!in_array($extension, $allowedExtensions, true)) {
                     $error = 'Format gambar harus JPG, JPEG, PNG, GIF, atau WEBP.';
                 } else {
-                    $gambar = uniqid('artikel_', true) . '.' . $extension;
-                    $uploadPath = $uploadDir . $gambar;
+                    $baseFileName = $slug !== '' ? $slug : 'artikel-' . $id;
+                    $gambar = $baseFileName . '-' . date('YmdHis') . '.' . $extension;
+                    $gambar = 'artikel/' . $kategori . '/' . $gambar;
+                    $uploadPath = '../assets/Foto/' . $gambar;
 
                     if (!move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadPath)) {
                         $error = 'Gagal menyimpan gambar baru.';
@@ -109,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="dashboard">
     <div class="sidebar">
         <div class="logo">
-            <img src="../assets/Foto/logo.png" alt="Logo">
+            <img src="../assets/Foto/brand/logo.png" alt="Logo">
             <h1>Permata Biru Nusantara</h1>
         </div>
         <ul class="nav-menu">

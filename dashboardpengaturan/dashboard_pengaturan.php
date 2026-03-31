@@ -58,7 +58,7 @@
 <div class="dashboard">
     <aside class="sidebar">
         <div class="logo">
-            <img src="../assets/Foto/logo.png" alt="Logo">
+            <img src="../assets/Foto/brand/logo.png" alt="Logo">
             <h1>Permata Biru Nusantara</h1>
         </div>
 
