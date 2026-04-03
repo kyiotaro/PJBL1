@@ -17,6 +17,7 @@ body {
   position: relative;
   width: 100%;
   min-height: 78vh;
+  padding-top: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
