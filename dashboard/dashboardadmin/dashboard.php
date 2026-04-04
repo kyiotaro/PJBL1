@@ -1,5 +1,5 @@
 <?php
-include '../koneksi.php';
+include '../../koneksi.php';
 
 $totalArtikel = 0;
 $totalKategori = 0;
@@ -143,7 +143,7 @@ if ($categoryBreakdownQuery) {
   </main>
 </div>
 
-<script src="../loginpage/auth.js"></script>
+<script src="../../halamanWeb/loginpage/auth.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   if (!protectAdminPage()) {

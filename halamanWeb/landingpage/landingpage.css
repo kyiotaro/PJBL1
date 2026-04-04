@@ -1,4 +1,4 @@
-@import url('../assets/variables.css');
+@import url('../../assets/variables.css');
 
 * {
   margin: 0;
@@ -45,104 +45,7 @@ body {
   font-weight: bold;
 }
 
-.search {
-  margin-top: 20px;
-}
 
-.search input {
-  width: 400px;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 20px;
-  border: none;
-  outline: none;
-  transition: all 0.3s ease;
-  max-width: 90vw;
-}
-
-.search input:focus {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(13, 110, 253, 0.3);
-}
-
-/* Header search wrapper and suggestions */
-.search-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-.search-container {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 32px;
-  box-shadow: 0 8px 25px rgba(13, 110, 253, 0.08);
-  border: 1.5px solid rgba(13, 110, 253, 0.15);
-  transition: all var(--transition-normal) cubic-bezier(0.2, 0.9, 0.2, 1);
-}
-
-.search-container:hover {
-  box-shadow: 0 12px 40px rgba(13, 110, 253, 0.15);
-  border-color: rgba(13, 110, 253, 0.25);
-  transform: translateY(-2px);
-}
-
-.search-container:focus-within {
-  box-shadow: var(--shadow-heavy);
-  border-color: #0d6efd;
-  background: linear-gradient(135deg, rgba(255,255,255,0.99) 0%, rgba(255,255,255,0.98) 100%);
-}
-
-.search-container img {
-  width: 20px;
-  height: 20px;
-  opacity: 0.6;
-  transition: opacity var(--transition-normal) ease;
-}
-
-.search-container:hover img,
-.search-container:focus-within img {
-  opacity: 0.9;
-}
-
-#searchInput {
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 14px;
-  color: var(--text-default);
-  min-width: 200px;
-  transition: all var(--transition-normal) ease;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-}
-
-#searchInput::placeholder {
-  color: #999;
-  font-weight: 400;
-}
-
-#searchInput:focus {
-  min-width: 280px;
-}
-
-.suggestion-box {
-  position: absolute;
-  top: calc(100% + 12px);
-  left: -10px;
-  right: -10px;
-  background: var(--bg-default);
-  border-radius: 14px;
-  box-shadow: var(--shadow-heavy);
-  max-height: 320px;
-  overflow: auto;
-  z-index: 30;
-  border: 1.5px solid rgba(13, 110, 253, 0.1);
-  display: none;
-  animation: slideDown var(--transition-fast) cubic-bezier(0.2, 0.9, 0.2, 1);
-}
 
 @keyframes slideDown {
   from {

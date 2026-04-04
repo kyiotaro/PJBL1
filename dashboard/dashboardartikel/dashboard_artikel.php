@@ -1,5 +1,5 @@
 <?php
-include '../koneksi.php';
+include '../../koneksi.php';
 
 if (isset($_GET['hapus'])) {
     $id = (int) ($_GET['hapus'] ?? 0);
@@ -106,7 +106,7 @@ if ($query) {
     </div>
 </div>
 
-<script src="../loginpage/auth.js"></script>
+<script src="../../halamanWeb/loginpage/auth.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     if (!protectAdminPage()) {

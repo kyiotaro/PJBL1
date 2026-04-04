@@ -1,4 +1,4 @@
-<?php include '../koneksi.php'; ?>
+<?php include '../../koneksi.php'; ?>
 
 <!DOCTYPE html>
 <html lang="id">
@@ -8,15 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Permata Biru Nusantara - Portal Laut Indonesia</title>
   <link rel="stylesheet" href="landingpage.css">
-  <link rel="stylesheet" href="../assets/templateHalaman/navbar.css">
-  <link rel="stylesheet" href="../assets/templateHalaman/footer.css">
-  <link rel="stylesheet" href="../assets/templateHalaman/card.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/card.css">
 </head>
 
 <body>
-  <?php include '../assets/templateHalaman/navbar.php'; ?>
+  <?php include '../../assets/templateHalaman/navbar.php'; ?>
 
-  <section class="hero" style="background-image: url('../assets/Foto/ui/background.png')">
+  <section class="hero" style="background-image: url('../../assets/Foto/ui/background.png')">
     <div class="overlay">
       <h2>Permata Biru Nusantara</h2>
       <p>
@@ -43,7 +43,7 @@
         <?php
         $query = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3");
         while ($artikel = mysqli_fetch_assoc($query)) {
-          include '../assets/templateHalaman/card.php';
+          include '../../assets/templateHalaman/card.php';
         }
         ?>
       </div>
@@ -56,7 +56,7 @@
         <?php
         $query2 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3 OFFSET 3");
         while ($artikel = mysqli_fetch_assoc($query2)) {
-          include '../assets/templateHalaman/card.php';
+          include '../../assets/templateHalaman/card.php';
         }
         ?>
       </div>
@@ -69,14 +69,14 @@
         <?php
         $query3 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 6 OFFSET 6");
         while ($artikel = mysqli_fetch_assoc($query3)) {
-          include '../assets/templateHalaman/card.php';
+          include '../../assets/templateHalaman/card.php';
         }
         ?>
       </div>
     </section>
   </main>
 
-  <?php include '../assets/templateHalaman/footer.php'; ?>
+  <?php include '../../assets/templateHalaman/footer.php'; ?>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {

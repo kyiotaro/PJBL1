@@ -1,6 +1,6 @@
 <?php
-include '../koneksi.php';
-require_once '../assets/helpers/foto_helper.php';
+include '../../koneksi.php';
+require_once '../../assets/helpers/foto_helper.php';
 
 $defaultArticle = [
   'id' => 0,
@@ -67,13 +67,13 @@ if ($currentArticleId > 0) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= htmlspecialchars($article['judul']); ?> | Permata Biru Nusantara</title>
   <link rel="stylesheet" href="artikel.css?v=2">
-  <link rel="stylesheet" href="../assets/variables.css">
-  <link rel="stylesheet" href="../assets/templateHalaman/navbar.css">
-  <link rel="stylesheet" href="../assets/templateHalaman/footer.css">
-  <link rel="stylesheet" href="../assets/templateHalaman/card.css">
+  <link rel="stylesheet" href="../../assets/variables.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/card.css">
 </head>
 <body>
-  <?php include '../assets/templateHalaman/navbar.php'; ?>
+  <?php include '../../assets/templateHalaman/navbar.php'; ?>
 
   <section class="hero">
     <img src="<?= htmlspecialchars($articleImagePath); ?>" alt="<?= htmlspecialchars($article['judul']); ?>" class="hero-img">
@@ -116,7 +116,7 @@ if ($currentArticleId > 0) {
     <div class="related-grid">
       <?php if (!empty($relatedArticles)) : ?>
         <?php foreach ($relatedArticles as $artikel) : ?>
-          <?php include '../assets/templateHalaman/card.php'; ?>
+          <?php include '../../assets/templateHalaman/card.php'; ?>
         <?php endforeach; ?>
       <?php else : ?>
         <div class="empty-related">
@@ -126,6 +126,6 @@ if ($currentArticleId > 0) {
     </div>
   </section>
 
-  <?php include '../assets/templateHalaman/footer.php'; ?>
+  <?php include '../../assets/templateHalaman/footer.php'; ?>
 </body>
 </html>

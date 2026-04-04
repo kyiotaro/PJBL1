@@ -1,5 +1,5 @@
 <?php
-include '../koneksi.php';
+include '../../koneksi.php';
 
 $error = '';
 
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // ── Upload gambar manual ────────────────────────────────────
         } else {
-            $uploadDir = '../assets/Foto/artikel/' . $kategori . '/';
+            $uploadDir = '../../assets/Foto/artikel/' . $kategori . '/';
 
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
@@ -323,4 +323,5 @@ function pilihGambar(url, credit, imgEl) {
 </script>
 
 </body>
+</html>y>
 </html>

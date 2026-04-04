@@ -1,5 +1,5 @@
 <?php
-include '../koneksi.php';
+include '../../koneksi.php';
 
 $id = (int) ($_GET['id'] ?? 0);
 if ($id <= 0) {
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="dashboard">
     <div class="sidebar">
         <div class="logo">
-            <img src="../assets/Foto/brand/logo.png" alt="Logo">
+            <img src="../../assets/Foto/brand/logo.png" alt="Logo">
             <h1>Permata Biru Nusantara</h1>
         </div>
         <ul class="nav-menu">
@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<script src="../loginpage/auth.js"></script>
+<script src="../../halamanWeb/loginpage/auth.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     if (!protectAdminPage()) {

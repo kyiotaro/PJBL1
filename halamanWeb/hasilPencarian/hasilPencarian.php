@@ -1,0 +1,44 @@
+<?php 
+include '../../koneksi.php';
+$search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GET['query']) : ''; 
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hasil Pencarian: <?= htmlspecialchars($search_input) ?></title>
+  <link rel="stylesheet" href="hasilPencarian.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/card.css">
+</head>
+
+<body>
+  <?php include '../../assets/templateHalaman/navbar.php'; ?>
+
+  <main>
+    <div class="grid">
+      <?php
+      if ($search_input !== '') {
+        $query = mysqli_query($koneksi, "SELECT * FROM Artikel WHERE judul LIKE '%$search_input%' OR isi LIKE '%$search_input%'");
+        if (mysqli_num_rows($query) > 0) {
+          while ($artikel = mysqli_fetch_assoc($query)) {
+            include '../../assets/templateHalaman/card.php';
+          }
+        } else {
+          echo "<p>Tidak ada hasil yang ditemukan untuk \"$search_input\".</p>";
+        }
+      } else {
+        echo "<p>Masukkan kata kunci untuk mencari artikel.</p>";
+      }
+      ?>
+    </div>
+  </main>
+
+  <?php include '../../assets/templateHalaman/footer.php'; ?>
+</body>
+
+</html>

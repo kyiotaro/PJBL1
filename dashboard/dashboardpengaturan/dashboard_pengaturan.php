@@ -137,7 +137,7 @@
     </main>
 </div>
 
-<script src="../loginpage/auth.js"></script>
+<script src="../../halamanWeb/loginpage/auth.js"></script>
 <script>
 const SETTINGS_KEY = 'adminDashboardSettings';
 

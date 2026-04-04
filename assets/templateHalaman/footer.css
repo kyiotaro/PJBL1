@@ -34,7 +34,7 @@ footer {
 
 .links a {
   color: var(--footer-text);
-  text-decoration: underline;
+  text-decoration: none;
   margin-right: 8px;
 }
 

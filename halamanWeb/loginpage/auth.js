@@ -70,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       setAdminSession(email);
-      window.location.href = '../dashboardadmin/dashboard.php';
+      window.location.href = '../../dashboard/dashboardadmin/dashboard.php';
     });
   }
 });
+
