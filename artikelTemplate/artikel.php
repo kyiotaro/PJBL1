@@ -110,7 +110,7 @@ if ($currentArticleId > 0) {
   <section class="others">
     <div class="section-heading">
       <h2>Artikel lainnya</h2>
-      <p>Temukan cerita laut Indonesia yang menakjubkan.</p>
+      <p>Temukan cerita laut Indonesia lainnya dengan tampilan kartu yang lebih rapi dan konsisten.</p>
     </div>
 
     <div class="related-grid">
