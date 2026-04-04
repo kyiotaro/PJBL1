@@ -46,6 +46,60 @@ header .logo h1 {
   font-size: 18px;
 }
 
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--bg-default);
+  border: 1px solid var(--header-border);
+  border-radius: var(--card-radius);
+  padding: 0 var(--spacing-md);
+  flex: 1;
+  max-width: 400px;
+  margin: 0 var(--spacing-lg);
+  transition: var(--transition-fast);
+}
+
+.search-bar:focus-within {
+  border-color: var(--link-hover);
+  box-shadow: var(--shadow-light);
+}
+
+.search-bar input {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: var(--spacing-sm);
+  width: 100%;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--text-default);
+}
+
+.search-bar input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-bar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs);
+}
+
+.search-bar button img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.6;
+  transition: var(--transition-fast);
+}
+
+.search-bar button:hover img {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 nav a {
   margin-left: 25px;
   text-decoration: none;
