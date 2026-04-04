@@ -4,11 +4,11 @@ include '../koneksi.php';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $judul = trim($_POST['judul'] ?? '');
+    $judul    = trim($_POST['judul']    ?? '');
     $kategori = trim($_POST['kategori'] ?? '');
-    $tanggal = $_POST['tanggal'] ?? '';
-    $isi = trim($_POST['isi'] ?? '');
-    $slug = trim(strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', $judul)), '-');
+    $tanggal  = $_POST['tanggal']       ?? '';
+    $isi      = trim($_POST['isi']      ?? '');
+    $slug     = trim(strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', $judul)), '-');
 
     if ($slug === '') {
         $slug = 'artikel-' . time();
@@ -16,50 +16,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($judul === '' || $kategori === '' || $tanggal === '' || $isi === '') {
         $error = 'Semua field wajib diisi.';
-    } elseif (!isset($_FILES['gambar']) || $_FILES['gambar']['error'] !== UPLOAD_ERR_OK) {
-        $error = 'Gambar artikel wajib diunggah.';
+
+    } elseif (empty($_POST['gambar_url']) && (!isset($_FILES['gambar']) || $_FILES['gambar']['error'] !== UPLOAD_ERR_OK)) {
+        $error = 'Pilih gambar dari Pexels atau upload gambar manual.';
+
     } else {
-        $uploadDir = '../assets/Foto/artikel/' . $kategori . '/';
 
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
+        // ── Gambar dari Pexels ──────────────────────────────────────
+        if (!empty($_POST['gambar_url'])) {
+            $gambarPath = trim($_POST['gambar_url']);
 
-        $originalName = basename($_FILES['gambar']['name']);
-        $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $stmt = mysqli_prepare(
+                $koneksi,
+                "INSERT INTO Artikel (judul, kategori, tanggal, gambar, isi, slug) VALUES (?, ?, ?, ?, ?, ?)"
+            );
+            mysqli_stmt_bind_param($stmt, 'ssssss', $judul, $kategori, $tanggal, $gambarPath, $isi, $slug);
 
-        if (!in_array($extension, $allowedExtensions, true)) {
-            $error = 'Format gambar harus JPG, JPEG, PNG, GIF, atau WEBP.';
-        } else {
-            $baseFileName = $slug !== '' ? $slug : 'artikel-' . time();
-            $gambar = $baseFileName . '-' . date('YmdHis') . '.' . $extension;
-            $gambarPath = 'artikel/' . $kategori . '/' . $gambar;
-            $uploadPath = $uploadDir . $gambar;
-
-            if (move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadPath)) {
-                $stmt = mysqli_prepare(
-                    $koneksi,
-                    "INSERT INTO Artikel (judul, kategori, tanggal, gambar, isi, slug) VALUES (?, ?, ?, ?, ?, ?)"
-                );
-                mysqli_stmt_bind_param($stmt, 'ssssss', $judul, $kategori, $tanggal, $gambarPath, $isi, $slug);
-
-                if (mysqli_stmt_execute($stmt)) {
-                    mysqli_stmt_close($stmt);
-                    header('Location: dashboard_artikel.php?status=created');
-                    exit;
-                }
-
+            if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_close($stmt);
-                $error = 'Artikel gagal disimpan ke database.';
+                header('Location: dashboard_artikel.php?status=created');
+                exit;
+            }
+
+            mysqli_stmt_close($stmt);
+            $error = 'Artikel gagal disimpan ke database.';
+
+        // ── Upload gambar manual ────────────────────────────────────
+        } else {
+            $uploadDir = '../assets/Foto/artikel/' . $kategori . '/';
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $originalName = basename($_FILES['gambar']['name']);
+            $extension    = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+            if (!in_array($extension, $allowedExtensions, true)) {
+                $error = 'Format gambar harus JPG, JPEG, PNG, GIF, atau WEBP.';
             } else {
-                $error = 'Gagal upload gambar artikel.';
+                $baseFileName = $slug !== '' ? $slug : 'artikel-' . time();
+                $gambar       = $baseFileName . '-' . date('YmdHis') . '.' . $extension;
+                $gambarPath   = 'artikel/' . $kategori . '/' . $gambar;
+                $uploadPath   = $uploadDir . $gambar;
+
+                if (move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadPath)) {
+                    $stmt = mysqli_prepare(
+                        $koneksi,
+                        "INSERT INTO Artikel (judul, kategori, tanggal, gambar, isi, slug) VALUES (?, ?, ?, ?, ?, ?)"
+                    );
+                    mysqli_stmt_bind_param($stmt, 'ssssss', $judul, $kategori, $tanggal, $gambarPath, $isi, $slug);
+
+                    if (mysqli_stmt_execute($stmt)) {
+                        mysqli_stmt_close($stmt);
+                        header('Location: dashboard_artikel.php?status=created');
+                        exit;
+                    }
+
+                    mysqli_stmt_close($stmt);
+                    $error = 'Artikel gagal disimpan ke database.';
+                } else {
+                    $error = 'Gagal upload gambar artikel.';
+                }
             }
         }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -68,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Tambah Artikel</title>
     <link rel="stylesheet" href="../dashboardadmin/dashboard.css">
     <link rel="stylesheet" href="tambah_artikel.css?v=2">
+    <link rel="stylesheet" href="tambah_artikel_ai.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
@@ -94,36 +119,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="content">
         <h1>Tambah Artikel</h1>
 
-        <?php if ($error !== '') : ?>
+        <?php if ($error !== ''): ?>
             <p style="color: #dc2626; margin-bottom: 16px;"><?= htmlspecialchars($error); ?></p>
         <?php endif; ?>
 
+        <!-- AI GENERATE BOX -->
+        <div class="ai-box">
+            <h3>✨ Generate Artikel dengan AI</h3>
+            <div class="ai-row">
+                <input type="text" id="topikInput"
+                    placeholder="Contoh: Lumba-lumba spinner di Laut Banda">
+                <select id="kategoriAI">
+                    <option value="biota">Biota</option>
+                    <option value="wisata">Wisata</option>
+                    <option value="konservasi">Konservasi</option>
+                    <option value="geologi">Geologi</option>
+                </select>
+            </div>
+            <button class="btn-generate" id="generateBtn" type="button" onclick="generateArtikel()">
+                ✨ Generate Artikel
+            </button>
+            <p id="statusMsg"></p>
+        </div>
+
+        <!-- PILIHAN GAMBAR PEXELS -->
+        <div id="sectionGambar">
+            <label>Pilih Gambar Artikel</label>
+            <div id="pilihanGambar"></div>
+            <p class="gambar-terpilih" id="labelGambarDipilih"></p>
+        </div>
+
         <form class="form-box" id="articleForm" action="" method="POST" enctype="multipart/form-data">
             <label for="judul">Judul Artikel</label>
-            <input type="text" id="judul" name="judul" placeholder="Masukkan judul..." value="<?= htmlspecialchars($_POST['judul'] ?? ''); ?>" required>
+            <input type="text" id="judul" name="judul" placeholder="Masukkan judul..."
+                value="<?= htmlspecialchars($_POST['judul'] ?? ''); ?>" required>
 
             <label for="kategori">Kategori</label>
             <select id="kategori" name="kategori" required>
                 <option value="">Pilih kategori artikel</option>
-                <option value="biota" <?= (($_POST['kategori'] ?? '') === 'biota') ? 'selected' : ''; ?>>Biota</option>
-                <option value="wisata" <?= (($_POST['kategori'] ?? '') === 'wisata') ? 'selected' : ''; ?>>Wisata</option>
+                <option value="biota"      <?= (($_POST['kategori'] ?? '') === 'biota')      ? 'selected' : ''; ?>>Biota</option>
+                <option value="wisata"     <?= (($_POST['kategori'] ?? '') === 'wisata')     ? 'selected' : ''; ?>>Wisata</option>
                 <option value="konservasi" <?= (($_POST['kategori'] ?? '') === 'konservasi') ? 'selected' : ''; ?>>Konservasi</option>
-                <option value="geologi" <?= (($_POST['kategori'] ?? '') === 'geologi') ? 'selected' : ''; ?>>Geologi</option>
+                <option value="geologi"    <?= (($_POST['kategori'] ?? '') === 'geologi')    ? 'selected' : ''; ?>>Geologi</option>
             </select>
 
             <label for="tanggal">Tanggal</label>
-            <input type="date" id="tanggal" name="tanggal" value="<?= htmlspecialchars($_POST['tanggal'] ?? ''); ?>" required>
+            <input type="date" id="tanggal" name="tanggal"
+                value="<?= htmlspecialchars($_POST['tanggal'] ?? ''); ?>" required>
 
-            <label for="gambar">Gambar</label>
+            <label for="gambar">Gambar (opsional jika pilih dari Pexels)</label>
             <div class="file-upload-field">
                 <label for="gambar" class="file-upload-label">Pilih Gambar</label>
                 <span id="fileName" class="file-upload-name">Belum ada file dipilih</span>
-                <input type="file" id="gambar" name="gambar" accept="image/*" required>
+                <input type="file" id="gambar" name="gambar" accept="image/*">
             </div>
 
             <label>Isi Artikel</label>
             <div id="editor" style="height: 300px; margin-bottom: 16px; border-radius: 8px;"></div>
             <input type="hidden" name="isi" id="isi" value="<?= htmlspecialchars($_POST['isi'] ?? ''); ?>">
+
+            <input type="hidden" name="gambar_url"    id="fieldGambarUrl">
+            <input type="hidden" name="gambar_credit" id="fieldGambarCredit">
 
             <button type="submit" class="submit-btn">Simpan Artikel</button>
         </form>
@@ -133,31 +189,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="../loginpage/auth.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    if (!protectAdminPage()) {
-        return;
-    }
-
+    if (!protectAdminPage()) return;
     setupAdminUI();
 
-    const quill = new Quill('#editor', {
+    window.quillInstance = new Quill('#editor', {
         theme: 'snow',
         placeholder: 'Tulis isi artikel di sini...'
     });
 
-    const isiInput = document.getElementById('isi');
+    const isiInput  = document.getElementById('isi');
     const fileInput = document.getElementById('gambar');
-    const fileName = document.getElementById('fileName');
-
-    if (isiInput.value) {
-        quill.root.innerHTML = isiInput.value;
-    }
+    const fileName  = document.getElementById('fileName');
 
     fileInput.addEventListener('change', () => {
-        fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'Belum ada file dipilih';
+        fileName.textContent = fileInput.files.length > 0
+            ? fileInput.files[0].name
+            : 'Belum ada file dipilih';
     });
 
     document.getElementById('articleForm').addEventListener('submit', (event) => {
-        const plainText = quill.getText().trim();
+        const plainText = window.quillInstance.getText().trim();
 
         if (!plainText) {
             event.preventDefault();
@@ -165,9 +216,110 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        isiInput.value = quill.root.innerHTML;
+        isiInput.value = window.quillInstance.root.innerHTML;
     });
 });
+
+async function generateArtikel() {
+    const topik    = document.getElementById('topikInput').value.trim();
+    const kategori = document.getElementById('kategoriAI').value;
+    const btn      = document.getElementById('generateBtn');
+    const status   = document.getElementById('statusMsg');
+
+    if (!topik) {
+        status.textContent = '⚠️ Masukkan topik dulu!';
+        status.style.color = '#d97706';
+        return;
+    }
+
+    btn.disabled    = true;
+    btn.textContent = '⏳ Generating...';
+    status.style.color = '#0369A1';
+    status.textContent = 'Sedang menulis artikel, tunggu ~15 detik...';
+
+    try {
+        const fd = new FormData();
+        fd.append('topik', topik);
+        fd.append('kategori', kategori);
+
+        const res  = await fetch('generate_artikel.php', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        document.getElementById('judul').value   = data.judul   || '';
+        document.getElementById('tanggal').value = data.tanggal || '';
+
+        const selKategori = document.getElementById('kategori');
+        if (data.kategori) selKategori.value = data.kategori;
+
+        if (window.quillInstance && data.isi) {
+            window.quillInstance.root.innerHTML =
+                data.isi.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+        }
+
+        let slugInput = document.getElementById('slugField');
+        if (!slugInput) {
+            slugInput = document.createElement('input');
+            slugInput.type = 'hidden';
+            slugInput.name = 'slug';
+            slugInput.id   = 'slugField';
+            document.getElementById('articleForm').appendChild(slugInput);
+        }
+        slugInput.value = data.slug || '';
+
+        status.textContent = '✅ Artikel berhasil di-generate! Mencari gambar...';
+        status.style.color = '#059669';
+
+        if (data.keyword_gambar) await cariGambar(data.keyword_gambar);
+
+    } catch (err) {
+        status.textContent = '❌ Error: ' + err.message;
+        status.style.color = '#dc2626';
+    } finally {
+        btn.disabled    = false;
+        btn.textContent = '✨ Generate Artikel';
+    }
+}
+
+async function cariGambar(keyword) {
+    const status = document.getElementById('statusMsg');
+    try {
+        const fd = new FormData();
+        fd.append('keyword', keyword);
+
+        const res  = await fetch('cari_gambar.php', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        const container = document.getElementById('pilihanGambar');
+        container.innerHTML = '';
+
+        data.photos.forEach(foto => {
+            const div = document.createElement('div');
+            div.className = 'foto-pilihan';
+            div.innerHTML = `
+                <img src="${foto.url_kecil}" alt="${foto.alt}"
+                     onclick="pilihGambar('${foto.url}', '${foto.credit}', this)">
+                <small>📷 ${foto.credit}</small>
+            `;
+            container.appendChild(div);
+        });
+
+        document.getElementById('sectionGambar').style.display = 'block';
+        status.textContent = '✅ Selesai! Pilih foto lalu klik Simpan Artikel.';
+
+    } catch (err) {
+        status.textContent = '✅ Artikel siap! (Gambar gagal dimuat: ' + err.message + ')';
+    }
+}
+
+function pilihGambar(url, credit, imgEl) {
+    document.querySelectorAll('.foto-pilihan img').forEach(el => el.classList.remove('dipilih'));
+    imgEl.classList.add('dipilih');
+    document.getElementById('fieldGambarUrl').value    = url;
+    document.getElementById('fieldGambarCredit').value = credit;
+    document.getElementById('labelGambarDipilih').textContent = '✓ Foto dipilih — by ' + credit;
+}
 </script>
 
 </body>

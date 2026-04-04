@@ -6,6 +6,10 @@ if (!function_exists('resolveFotoWebPath')) {
         $baseFsPath = __DIR__ . '/../Foto/';
         $baseWebPath = '/PJBL-main/assets/Foto/';
 
+        if (!empty($filename) && (str_starts_with($filename, 'http://') || str_starts_with($filename, 'https://'))) {
+            return $filename;
+        }
+
         $cleanFilename = trim((string) $filename);
         $cleanFilename = str_replace('\\', '/', $cleanFilename);
         $cleanFilename = ltrim($cleanFilename, '/');
