@@ -16,6 +16,8 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
   margin-bottom: 10px;
+  min-height: 220px;
+
 }
 
 .card2:hover {
@@ -26,13 +28,13 @@
 /* ── Thumbnail kiri ── */
 .card2-image {
   flex-shrink: 0;
-  width: var(--card2-img-width, 360px);
+  width: var(--card2-img-width, 520px);
+  height: 280px;
   position: relative;
   border-radius: var(--card2-img-radius, 10px);
   overflow: hidden;
   align-self: stretch;
   background: #e2e8f0;
-  min-height: 120px;
 }
 
 .card2-image img {

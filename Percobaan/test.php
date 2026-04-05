@@ -20,12 +20,10 @@ while ($row = mysqli_fetch_assoc($query)) {
   <link rel="stylesheet" href="../assets/templateHalaman/cardVariant/card2/card2.css">
   <style>
     .card2-list {
-      padding: 50px;
+      padding: 15px 50px;
       display: flex;
       flex-direction: column;
       gap: 20px;
-      max-width: 1000px;
-      margin: 0 auto;
     }
   </style>
 </head>

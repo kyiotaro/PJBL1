@@ -64,7 +64,7 @@
   --transition-slow: 0.4s;
 
   /* -------------------- Kartu Varian 2 (card2) -------------------- */
-  --card2-img-width: 320px;
+  --card2-img-width: 520px;
   --card2-img-ratio: 56.25%; /* 16:9 */
   --card2-img-radius: 10px;
   --card2-gap: var(--spacing-md);
