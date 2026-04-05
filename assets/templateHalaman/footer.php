@@ -20,10 +20,10 @@
       <p><strong>Email:</strong> permatabirudev@gmail.com</p>
       <p><strong>IKUTI KAMI:</strong></p>
       <div class="sosmed">
-        <a href="#"><img src="../../assets/Foto/social/Youtube.svg" alt="YouTube"></a>
-        <a href="#"><img src="../../assets/Foto/social/Instagram.svg" alt="Instagram"></a>
-        <a href="#"><img src="../../assets/Foto/social/Facebook.svg" alt="Facebook"></a>
-        <a href="#"><img src="../../assets/Foto/social/Twitter.svg" alt="Twitter"></a>
+        <a href="#"><img src="/PJBL-main/assets/Foto/social/YouTube.svg" alt="YouTube"></a>
+        <a href="#"><img src="/PJBL-main/assets/Foto/social/Instagram.svg" alt="Instagram"></a>
+        <a href="#"><img src="/PJBL-main/assets/Foto/social/Facebook.svg" alt="Facebook"></a>
+        <a href="#"><img src="/PJBL-main/assets/Foto/social/Twitter.svg" alt="Twitter"></a>
       </div>
     </div>
   </div>

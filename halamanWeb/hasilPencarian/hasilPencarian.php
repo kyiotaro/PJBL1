@@ -13,20 +13,20 @@ $search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GE
   <link rel="stylesheet" href="hasilPencarian.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/card.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card2/card2.css">
 </head>
 
 <body>
   <?php include '../../assets/templateHalaman/navbar.php'; ?>
 
   <main>
-    <div class="grid">
+    <div class="card2-list">
       <?php
       if ($search_input !== '') {
         $query = mysqli_query($koneksi, "SELECT * FROM Artikel WHERE judul LIKE '%$search_input%' OR isi LIKE '%$search_input%'");
         if (mysqli_num_rows($query) > 0) {
           while ($artikel = mysqli_fetch_assoc($query)) {
-            include '../../assets/templateHalaman/card.php';
+            include '../../assets/templateHalaman/cardVariant/card2/card2.php';
           }
         } else {
           echo "<p>Tidak ada hasil yang ditemukan untuk \"$search_input\".</p>";

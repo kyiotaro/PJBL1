@@ -14,9 +14,17 @@ body {
   background: var(--bg-default);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-  gap: var(--spacing-xl);
-  padding: 0 var(--spacing-2xl) 30px;
+main .card2-list {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .card2-list {
+    padding: 20px;
+  }
 }

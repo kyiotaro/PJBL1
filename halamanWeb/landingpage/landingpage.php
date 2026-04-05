@@ -40,7 +40,7 @@
       <h3>Terpopuler</h3>
       <div class="grid">
         <?php
-        $query = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3");
+        $query = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 6");
         while ($artikel = mysqli_fetch_assoc($query)) {
           include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }
@@ -53,20 +53,20 @@
       <h3>Artikel Terbaru</h3>
       <div class="grid">
         <?php
-        $query2 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3 OFFSET 3");
+        $query2 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 6 OFFSET 6");
         while ($artikel = mysqli_fetch_assoc($query2)) {
           include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }
         ?>
       </div>
+    </section>
 
-      <div class="tombol-tengah">
-        <button class="lihat-lebih">Tampilkan lebih banyak ▼</button>
-      </div>
-
-      <div class="grid tambahan">
+    <!-- ARTIKEL LAINNYA -->
+    <section class="artikel-lainnya">
+      <h3>Artikel Lainnya</h3>
+      <div class="grid">
         <?php
-        $query3 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3 OFFSET 6");
+        $query3 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 12 OFFSET 12");
         while ($artikel = mysqli_fetch_assoc($query3)) {
           include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }
@@ -82,26 +82,6 @@
       const filterButtons = document.querySelectorAll('.filter-btn');
       const articles = document.querySelectorAll('article');
       const sectionHeaders = document.querySelectorAll('main section h3');
-      const showMoreBtn = document.querySelector('.lihat-lebih');
-      const extraGrid = document.querySelector('.grid.tambahan');
-
-      // Initial state: hide extra grid if it exists                                                       
-      if (extraGrid) {
-        extraGrid.style.display = 'none';
-      }
-
-      // "Tampilkan lebih banyak" functionality                                                            
-      if (showMoreBtn && extraGrid) {
-        showMoreBtn.addEventListener('click', () => {
-          if (extraGrid.style.display === 'none') {
-            extraGrid.style.display = 'grid';
-            showMoreBtn.innerHTML = 'Sembunyikan ▲';
-          } else {
-            extraGrid.style.display = 'none';
-            showMoreBtn.innerHTML = 'Tampilkan lebih banyak ▼';
-          }
-        });
-      }
 
       // Filter functionality                                                                              
       filterButtons.forEach(button => {
@@ -116,14 +96,9 @@
             // Show everything and reset headers                                                           
             articles.forEach(article => article.style.display = 'block');
             sectionHeaders.forEach(h3 => h3.style.display = 'block');
-            if (showMoreBtn) showMoreBtn.parentElement.style.display = 'block';
-            if (extraGrid) extraGrid.style.display = 'none';
-            if (showMoreBtn) showMoreBtn.innerHTML = 'Tampilkan lebih banyak ▼';
           } else {
-            // Hide headers and "show more" when filtering                                                 
+            // Hide headers when filtering                                                 
             sectionHeaders.forEach(h3 => h3.style.display = 'none');
-            if (showMoreBtn) showMoreBtn.parentElement.style.display = 'none';
-            if (extraGrid) extraGrid.style.display = 'grid'; // show all grid containers to see matching articles                                                                                                    
 
             // Filter articles based on data-category                                                      
             articles.forEach(article => {

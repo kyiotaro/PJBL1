@@ -1,78 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-@import url('../../../assets/variables.css');
-
-/* =============================================
-   CARD2 — YouTube-style horizontal card
-   Menggunakan CSS variables dari variables.css
-   ============================================= */
-
-/* ── Variabel tambahan khusus card2 ── */
-:root {
-  --card2-img-width: 280px;
-  --card2-img-ratio: 56.25%; /* 16:9 */
-  --card2-img-radius: 10px;
-  --card2-gap: var(--spacing-md);
-  --card2-padding: var(--spacing-md);
-  --card2-category-bg: #e0f2fe;
-  --card2-category-color: #0369A1;
-  --card2-category-radius: 20px;
-  --card2-title-size: 15px;
-  --card2-title-lines: 2;         /* jumlah baris maksimum judul */
-  --card2-meta-size: 12px;
-  --card2-hover-lift: -3px;
-  --card2-border: 1px solid #e8f0f7;
-  --card2-bg: var(--card-bg);
-  --card2-shadow: var(--card-shadow);
-  --card2-shadow-hover: var(--shadow-medium);
-  --card2-transition: var(--transition-normal);
-}
-
-/* ── Wrapper list ── */
-.card2-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  padding: 0;
-  list-style: none;
-}
+@import url('../../../variables.css');
 
 /* ── Card utama ── */
 .card2 {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: var(--card2-gap);
-  background: var(--card2-bg);
-  border-radius: var(--card-radius);
-  border: var(--card2-border);
-  box-shadow: var(--card2-shadow);
-  padding: var(--card2-padding);
+  gap: var(--card2-gap, 15px);
+  background: var(--card2-bg, #fff);
+  border-radius: var(--card-radius, 12px);
+  border: var(--card2-border, 1px solid #e8f0f7);
+  box-shadow: var(--card2-shadow, 0 3px 8px rgba(0,0,0,0.1));
   text-decoration: none;
   color: inherit;
-  cursor: pointer;
-  transition:
-    transform var(--card2-transition) ease,
-    box-shadow var(--card2-transition) ease,
-    border-color var(--card2-transition) ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
-  position: relative;
+  margin-bottom: 10px;
 }
 
 .card2:hover {
-  transform: translateY(var(--card2-hover-lift));
-  box-shadow: var(--card2-shadow-hover);
-  border-color: #bae6fd;
+  transform: translateY(-3px);
+  box-shadow: var(--card2-shadow-hover, 0 8px 15px rgba(0,0,0,0.15));
 }
 
 /* ── Thumbnail kiri ── */
 .card2-image {
   flex-shrink: 0;
-  width: var(--card2-img-width);
+  width: var(--card2-img-width, 360px);
   position: relative;
-  border-radius: var(--card2-img-radius);
+  border-radius: var(--card2-img-radius, 10px);
   overflow: hidden;
-  aspect-ratio: 16 / 9;
+  align-self: stretch;
   background: #e2e8f0;
+  min-height: 120px;
 }
 
 .card2-image img {
@@ -80,144 +40,94 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform var(--transition-slow) ease;
-}
-
-.card2:hover .card2-image img {
-  transform: scale(1.04);
-}
-
-/* Badge kategori di atas gambar */
-.card2-badge {
   position: absolute;
-  bottom: var(--spacing-xs);
-  left: var(--spacing-xs);
-  background: var(--card2-category-bg);
-  color: var(--card2-category-color);
-  font-size: 10px;
-  font-weight: 600;
-  font-family: var(--font-primary);
-  padding: 3px 9px;
-  border-radius: var(--card2-category-radius);
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  pointer-events: none;
 }
+
 
 /* ── Konten kanan ── */
 .card2-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
-  min-width: 0; /* agar ellipsis bisa bekerja */
-  padding-top: 2px;
+  gap: 10px;
+  min-width: 0;
+  margin: var(--spacing-lg);
 }
 
-/* Judul */
 .card2-content h2 {
-  font-family: var(--font-primary);
-  font-size: var(--card2-title-size);
+  font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-default);
-  line-height: 1.45;
-  margin: 0 0 4px 0;
-
-  /* Clamp multi-baris */
-  display: -webkit-box;
-  -webkit-line-clamp: var(--card2-title-lines);
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.card2:hover .card2-content h2 {
-  color: var(--link-hover);
-}
-
-/* Deskripsi singkat */
-.card2-content p {
-  font-family: var(--font-primary);
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.6;
+  color: #111;
   margin: 0;
-
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Meta row: tanggal & kategori teks */
+.card2-description {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .card2-meta {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  flex-wrap: wrap;
+  gap: 15px;
   margin-top: auto;
-  padding-top: var(--spacing-xs);
 }
 
-.card2-meta .card2-date {
-  font-size: var(--card2-meta-size);
-  color: var(--text-muted);
-  font-family: var(--font-primary);
+.card2-date {
+  font-size: 0.8rem;
+  color: #888;
 }
 
-.card2-meta .card2-category {
-  font-size: var(--card2-meta-size);
+.card2-category-text {
+  font-size: 0.8rem;
+  color: #0369a1;
   font-weight: 600;
-  color: var(--card2-category-color);
-  font-family: var(--font-primary);
-  background: var(--card2-category-bg);
-  padding: 2px 8px;
-  border-radius: var(--card2-category-radius);
-  text-transform: capitalize;
 }
 
 /* Tombol baca */
 .card2-button {
-  display: inline-block;
   align-self: flex-start;
-  margin-top: var(--spacing-sm);
+  margin-top: 5px;
   padding: 6px 14px;
-  border: 2px solid var(--btn-border);
-  color: var(--btn-text);
+  border: 1px solid #0084d6;
+  color: #0084d6;
   font-size: 12px;
   font-weight: 600;
-  font-family: var(--font-primary);
   text-decoration: none;
   border-radius: 8px;
-  transition:
-    background var(--transition-fast) ease,
-    color var(--transition-fast) ease;
+  transition: background 0.2s, color 0.2s;
 }
 
 .card2-button:hover {
-  background: var(--btn-bg-hover);
-  color: var(--btn-text-hover);
+  background: #0084d6;
+  color: #fff;
 }
 
 /* ── Responsive ── */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .card2 {
     flex-direction: column;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm);
+    max-width: 100%;
   }
 
   .card2-image {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    max-height: 220px; /* Batasi tinggi gambar di mobile agar tidak raksasa */
   }
 
-  .card2-badge {
-    font-size: 9px;
-  }
-}
-
-@media (max-width: 400px) {
-  .card2-content h2 {
-    font-size: 14px;
+  .card2-content {
+    padding-left: 0;
+    padding-top: 15px;
   }
 }

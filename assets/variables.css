@@ -62,4 +62,23 @@
   --transition-fast: 0.2s;
   --transition-normal: 0.3s;
   --transition-slow: 0.4s;
+
+  /* -------------------- Kartu Varian 2 (card2) -------------------- */
+  --card2-img-width: 320px;
+  --card2-img-ratio: 56.25%; /* 16:9 */
+  --card2-img-radius: 10px;
+  --card2-gap: var(--spacing-md);
+  --card2-padding: var(--spacing-md);
+  --card2-category-bg: #e0f2fe;
+  --card2-category-color: #0369A1;
+  --card2-category-radius: 20px;
+  --card2-title-size: 15px;
+  --card2-title-lines: 2;
+  --card2-meta-size: 12px;
+  --card2-hover-lift: -3px;
+  --card2-border: 1px solid #e8f0f7;
+  --card2-bg: var(--card-bg);
+  --card2-shadow: var(--card-shadow);
+  --card2-shadow-hover: var(--shadow-medium);
+  --card2-transition: var(--transition-normal);
 }
