@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="landingpage.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/card.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card1/card1.css">
 </head>
 
 <body>
@@ -42,7 +42,7 @@
         <?php
         $query = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3");
         while ($artikel = mysqli_fetch_assoc($query)) {
-          include '../../assets/templateHalaman/card.php';
+          include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }
         ?>
       </div>
@@ -55,7 +55,7 @@
         <?php
         $query2 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3 OFFSET 3");
         while ($artikel = mysqli_fetch_assoc($query2)) {
-          include '../../assets/templateHalaman/card.php';
+          include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }
         ?>
       </div>
@@ -68,7 +68,7 @@
         <?php
         $query3 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3 OFFSET 6");
         while ($artikel = mysqli_fetch_assoc($query3)) {
-          include '../../assets/templateHalaman/card.php';
+          include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }
         ?>
       </div>

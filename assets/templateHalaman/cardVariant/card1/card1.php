@@ -6,5 +6,5 @@ $cardImagePath = resolveFotoWebPath($artikel['gambar'] ?? '');
   <img src="<?php echo htmlspecialchars($cardImagePath); ?>" alt="<?php echo $artikel['judul']; ?>">
   <h4><?php echo $artikel['judul']; ?></h4>
   <p class="date"><?php echo date('d.m.Y', strtotime($artikel['tanggal'])); ?></p>
-  <a href="../../artikelTemplate/artikel.php?id=<?php echo $artikel['id']; ?>">Baca selengkapnya →</a>
+  <a href="../artikelTemplate/artikel.php?id=<?php echo $artikel['id']; ?>">Baca selengkapnya →</a>
 </article>

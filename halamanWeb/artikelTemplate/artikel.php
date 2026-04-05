@@ -71,7 +71,7 @@ if ($currentArticleId > 0) {
   <link rel="stylesheet" href="../../assets/variables.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/card.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card1/card1.css">
 </head>
 
 <body>
@@ -120,7 +120,7 @@ if ($currentArticleId > 0) {
     <div class="related-grid">
       <?php if (!empty($relatedArticles)): ?>
         <?php foreach ($relatedArticles as $artikel): ?>
-          <?php include '../../assets/templateHalaman/card.php'; ?>
+          <?php include '../../assets/templateHalaman/cardVariant/card1/card1.php'; ?>
         <?php endforeach; ?>
       <?php else: ?>
         <div class="empty-related">
