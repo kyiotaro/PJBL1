@@ -36,7 +36,6 @@
       <button class="filter-btn" data-filter="geologi">Geologi</button>
     </div>
 
-    <!-- TERPOPULER (3 artikel pertama) -->
     <section class="terpopuler" id="terpopuler">
       <h3>Terpopuler</h3>
       <div class="grid">
@@ -67,7 +66,7 @@
 
       <div class="grid tambahan">
         <?php
-        $query3 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 6 OFFSET 6");
+        $query3 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 3 OFFSET 6");
         while ($artikel = mysqli_fetch_assoc($query3)) {
           include '../../assets/templateHalaman/card.php';
         }

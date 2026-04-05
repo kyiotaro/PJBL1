@@ -6,9 +6,12 @@
   <title>Document</title>
   <link rel="stylesheet" href="../assets/templateHalaman/navbar.css">
   <link rel="stylesheet" href="../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../assets/templateHalaman/cardVariant/card2/card2.css">
 </head>
 <body>
   <?php include '../assets/templateHalaman/navbar.php'; ?>
+
+  <?php include '../assets/templateHalaman/cardVariant/card2/card2.php'; ?>
 
   <?php include '../assets/templateHalaman/footer.php'; ?>
 </body>

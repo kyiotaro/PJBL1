@@ -48,7 +48,7 @@ $relatedArticles = [];
 $currentArticleId = (int) ($article['id'] ?? 0);
 
 if ($currentArticleId > 0) {
-  $relatedStmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori, tanggal, gambar FROM Artikel WHERE id != ? ORDER BY tanggal DESC, id DESC LIMIT 4");
+  $relatedStmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori, tanggal, gambar FROM Artikel WHERE id != ? ORDER BY tanggal DESC, id DESC LIMIT 3");
   mysqli_stmt_bind_param($relatedStmt, 'i', $currentArticleId);
   mysqli_stmt_execute($relatedStmt);
   $relatedResult = mysqli_stmt_get_result($relatedStmt);
@@ -62,6 +62,7 @@ if ($currentArticleId > 0) {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,11 +73,13 @@ if ($currentArticleId > 0) {
   <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/card.css">
 </head>
+
 <body>
   <?php include '../../assets/templateHalaman/navbar.php'; ?>
 
   <section class="hero">
-    <img src="<?= htmlspecialchars($articleImagePath); ?>" alt="<?= htmlspecialchars($article['judul']); ?>" class="hero-img">
+    <img src="<?= htmlspecialchars($articleImagePath); ?>" alt="<?= htmlspecialchars($article['judul']); ?>"
+      class="hero-img">
     <div class="hero-content">
       <h1><?= htmlspecialchars($article['judul']); ?></h1>
       <p>Jelajahi cerita, pengetahuan, dan pesona bahari Indonesia dalam satu halaman yang lebih nyaman dibaca.</p>
@@ -105,20 +108,21 @@ if ($currentArticleId > 0) {
         </div>
       </div>
     </aside>
-  </main>
 
+  </main>
+  
   <section class="others">
     <div class="section-heading">
       <h2>Artikel lainnya</h2>
-      <p>Temukan cerita laut Indonesia lainnya dengan tampilan kartu yang lebih rapi dan konsisten.</p>
+      <p>Temukan cerita laut Indonesia lainnya.</p>
     </div>
 
     <div class="related-grid">
-      <?php if (!empty($relatedArticles)) : ?>
-        <?php foreach ($relatedArticles as $artikel) : ?>
+      <?php if (!empty($relatedArticles)): ?>
+        <?php foreach ($relatedArticles as $artikel): ?>
           <?php include '../../assets/templateHalaman/card.php'; ?>
         <?php endforeach; ?>
-      <?php else : ?>
+      <?php else: ?>
         <div class="empty-related">
           <p>Belum ada artikel lain yang tersedia saat ini.</p>
         </div>
@@ -126,6 +130,8 @@ if ($currentArticleId > 0) {
     </div>
   </section>
 
+
   <?php include '../../assets/templateHalaman/footer.php'; ?>
 </body>
+
 </html>
