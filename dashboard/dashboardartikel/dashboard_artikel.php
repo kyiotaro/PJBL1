@@ -27,7 +27,12 @@ if ($status === 'created') {
 }
 
 $articles = [];
-$query = mysqli_query($koneksi, "SELECT id, judul, kategori, tanggal FROM Artikel ORDER BY tanggal DESC, id DESC");
+$query = mysqli_query($koneksi, "
+    SELECT a.id, a.judul, a.tanggal, k.nama AS kategori
+    FROM artikel a
+    LEFT JOIN kategori k ON k.id = a.kategori_id
+    ORDER BY a.tanggal DESC, a.id DESC
+");
 if ($query) {
     while ($row = mysqli_fetch_assoc($query)) {
         $articles[] = $row;
@@ -53,13 +58,13 @@ if ($query) {
 <div class="dashboard">
     <div class="sidebar">
         <div class="logo">
-            <img src="../assets/Foto/brand/logo.png" alt="Logo">
+            <img src="/PJBL-main/assets/Foto/brand/logo.png" alt="Logo">
             <h1>Permata Biru Nusantara</h1>
         </div>
         <ul class="nav-menu">
-            <li><a class="nav-link" href="../dashboardadmin/dashboard.php">Dashboard</a></li>
-            <li><a class="nav-link active" href="../dashboardartikel/dashboard_artikel.php">Artikel</a></li>
-            <li><a class="nav-link" href="../dashboardpengaturan/dashboard_pengaturan.php">Pengaturan</a></li>
+            <li><a class="nav-link" href="/PJBL-main/dashboard/dashboardadmin/dashboard.php">Dashboard</a></li>
+            <li><a class="nav-link active" href="/PJBL-main/dashboard/dashboardartikel/dashboard_artikel.php">Artikel</a></li>
+            <li><a class="nav-link" href="/PJBL-main/dashboard/dashboardpengaturan/dashboard_pengaturan.php">Pengaturan</a></li>
         </ul>
     </div>
 
@@ -106,7 +111,7 @@ if ($query) {
     </div>
 </div>
 
-<script src="../../halamanWeb/loginpage/auth.js"></script>
+<script src="/PJBL-main/halamanWeb/loginpage/auth.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     if (!protectAdminPage()) {

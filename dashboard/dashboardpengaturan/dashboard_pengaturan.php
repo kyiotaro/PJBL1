@@ -58,14 +58,14 @@
 <div class="dashboard">
     <aside class="sidebar">
         <div class="logo">
-            <img src="../assets/Foto/brand/logo.png" alt="Logo">
+            <img src="/PJBL-main/assets/Foto/brand/logo.png" alt="Logo">
             <h1>Permata Biru Nusantara</h1>
         </div>
 
         <ul class="nav-menu">
-            <li><a href="../dashboardadmin/dashboard.php" class="nav-link">Dashboard</a></li>
-            <li><a href="../dashboardartikel/dashboard_artikel.php" class="nav-link">Artikel</a></li>
-            <li><a href="../dashboardpengaturan/dashboard_pengaturan.php" class="nav-link active">Pengaturan</a></li>
+            <li><a href="/PJBL-main/dashboard/dashboardadmin/dashboard.php" class="nav-link">Dashboard</a></li>
+            <li><a href="/PJBL-main/dashboard/dashboardartikel/dashboard_artikel.php" class="nav-link">Artikel</a></li>
+            <li><a href="/PJBL-main/dashboard/dashboardpengaturan/dashboard_pengaturan.php" class="nav-link active">Pengaturan</a></li>
         </ul>
     </aside>
 

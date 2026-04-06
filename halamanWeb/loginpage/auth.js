@@ -16,7 +16,7 @@ function isAdminLoggedIn() {
 // Logout admin
 function logoutAdmin() {
   sessionStorage.removeItem('adminSession');
-  window.location.href = '../landingpage/landingpage.php';
+  window.location.href = '/PJBL-main/halamanWeb/landingpage/landingpage.php';
 }
 
 // Get info admin
@@ -29,7 +29,7 @@ function getAdminSession() {
 function protectAdminPage() {
   if (!isAdminLoggedIn()) {
     alert('Anda harus login sebagai admin untuk mengakses halaman ini.');
-    window.location.href = '../loginpage/signin.html';
+    window.location.href = '/PJBL-main/halamanWeb/loginpage/signin.html';
     return null;
   }
 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       setAdminSession(email);
-      window.location.href = '../../dashboard/dashboardadmin/dashboard.php';
+      window.location.href = '/PJBL-main/dashboard/dashboardadmin/dashboard.php';
     });
   }
 });

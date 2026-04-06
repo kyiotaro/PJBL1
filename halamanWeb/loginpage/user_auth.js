@@ -21,7 +21,7 @@ function isUserLoggedIn() {
 function logoutUser() {
   sessionStorage.removeItem('userSession');
   localStorage.removeItem('userSession');
-  window.location.href = '../landingpage/landingpage.php';
+  window.location.href = '/PJBL-main/halamanWeb/landingpage/landingpage.php';
 }
 
 // Get info user
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('email').value;
       const rememberMe = document.getElementById('rememberMe')?.checked || false;
       setUserSession(email, rememberMe);
-      window.location.href = '../landingpage/landingpage.php';
+      window.location.href = '/PJBL-main/halamanWeb/landingpage/landingpage.php';
     });
   }
 });

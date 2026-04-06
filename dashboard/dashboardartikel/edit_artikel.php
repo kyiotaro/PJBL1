@@ -111,18 +111,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="dashboard">
     <div class="sidebar">
         <div class="logo">
-            <img src="../../assets/Foto/brand/logo.png" alt="Logo">
+            <img src="/PJBL-main/assets/Foto/brand/logo.png" alt="Logo">
             <h1>Permata Biru Nusantara</h1>
         </div>
         <ul class="nav-menu">
-            <li><a class="nav-link" href="../dashboardadmin/dashboard.php">Dashboard</a></li>
-            <li><a class="nav-link active" href="../dashboardartikel/dashboard_artikel.php">Artikel</a></li>
-            <li><a class="nav-link" href="../dashboardpengaturan/dashboard_pengaturan.php">Pengaturan</a></li>
+            <li><a class="nav-link" href="/PJBL-main/dashboard/dashboardadmin/dashboard.php">Dashboard</a></li>
+            <li><a class="nav-link active" href="/PJBL-main/dashboard/dashboardartikel/dashboard_artikel.php">Artikel</a></li>
+            <li><a class="nav-link" href="/PJBL-main/dashboard/dashboardpengaturan/dashboard_pengaturan.php">Pengaturan</a></li>
         </ul>
     </div>
 
-    <div class="content">
-        <h1>Edit Artikel</h1>
+    <div class="content">        <h1>Edit Artikel</h1>
 
         <?php if ($error !== '') : ?>
             <p style="color: #dc2626; margin-bottom: 16px;"><?= htmlspecialchars($error); ?></p>
@@ -164,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<script src="../../halamanWeb/loginpage/auth.js"></script>
+<script src="/PJBL-main/halamanWeb/loginpage/auth.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     if (!protectAdminPage()) {

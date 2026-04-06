@@ -48,7 +48,7 @@ async function generateArtikel() {
         fd.append('kategori', kategori);
 
         // Path ke file generate.php yang baru saja dipindahkan
-        const res  = await fetch('../ai-article-generator/generate.php', { method: 'POST', body: fd });
+        const res  = await fetch('/PJBL-main/dashboard/ai-article-generator/generate.php', { method: 'POST', body: fd });
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 
@@ -94,7 +94,7 @@ async function cariGambar(keyword) {
         fd.append('keyword', keyword);
 
         // Pastikan path ke cari_gambar.php benar
-        const res  = await fetch('cari_gambar.php', { method: 'POST', body: fd });
+        const res  = await fetch('/PJBL-main/dashboard/ai-article-generator/cari_gambar.php', { method: 'POST', body: fd });
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 
