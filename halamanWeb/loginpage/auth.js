@@ -29,7 +29,7 @@ function getAdminSession() {
 function protectAdminPage() {
   if (!isAdminLoggedIn()) {
     alert('Anda harus login sebagai admin untuk mengakses halaman ini.');
-    window.location.href = '/PJBL-main/halamanWeb/loginpage/signin.html';
+    window.location.href = '/PJBL-main/halamanWeb/loginpage/signin.php';
     return null;
   }
 
