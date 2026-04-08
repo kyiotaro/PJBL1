@@ -144,21 +144,6 @@ if ($categoryBreakdownQuery) {
 </div>
 
 <script src="/PJBL-main/halamanWeb/loginpage/auth.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  if (!protectAdminPage()) {
-    return;
-  }
-
-  setupAdminUI();
-});
-</script>
-</body>
-</html>urn;
-  }
-
-  setupAdminUI();
-});
-</script>
+<script src="dashboard.js"></script>
 </body>
 </html>

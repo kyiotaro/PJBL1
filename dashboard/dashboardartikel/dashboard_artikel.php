@@ -112,15 +112,7 @@ if ($query) {
 </div>
 
 <script src="/PJBL-main/halamanWeb/loginpage/auth.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    if (!protectAdminPage()) {
-        return;
-    }
-
-    setupAdminUI();
-});
-</script>
+<script src="dashboard_artikel.js"></script>
 
 </body>
 </html>
