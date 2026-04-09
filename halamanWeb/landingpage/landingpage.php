@@ -30,17 +30,26 @@
   <main>
     <div class="kategori">
       <button class="filter-btn aktif" data-filter="all">Semua</button>
-      <button class="filter-btn" data-filter="biota">Biota</button>
-      <button class="filter-btn" data-filter="wisata">Wisata</button>
-      <button class="filter-btn" data-filter="konservasi">Konservasi</button>
-      <button class="filter-btn" data-filter="geologi">Geologi</button>
+      <?php
+      $qFilter = mysqli_query($koneksi, "SELECT nama, slug FROM kategori ORDER BY nama ASC");
+      while ($f = mysqli_fetch_assoc($qFilter)):
+      ?>
+        <button class="filter-btn" data-filter="<?= htmlspecialchars($f['slug']); ?>">
+          <?= htmlspecialchars($f['nama']); ?>
+        </button>
+      <?php endwhile; ?>
     </div>
 
     <section class="terpopuler" id="terpopuler">
       <h3>Terpopuler</h3>
       <div class="grid">
         <?php
-        $query = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 6");
+        $query = mysqli_query($koneksi, "
+          SELECT a.*, k.slug AS kategori 
+          FROM Artikel a 
+          LEFT JOIN kategori k ON k.id = a.kategori_id 
+          ORDER BY a.tanggal DESC LIMIT 6
+        ");
         while ($artikel = mysqli_fetch_assoc($query)) {
           include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }
@@ -53,7 +62,12 @@
       <h3>Artikel Terbaru</h3>
       <div class="grid">
         <?php
-        $query2 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 6 OFFSET 6");
+        $query2 = mysqli_query($koneksi, "
+          SELECT a.*, k.slug AS kategori 
+          FROM Artikel a 
+          LEFT JOIN kategori k ON k.id = a.kategori_id 
+          ORDER BY a.tanggal DESC LIMIT 6 OFFSET 6
+        ");
         while ($artikel = mysqli_fetch_assoc($query2)) {
           include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }
@@ -66,7 +80,12 @@
       <h3>Artikel Lainnya</h3>
       <div class="grid">
         <?php
-        $query3 = mysqli_query($koneksi, "SELECT * FROM Artikel ORDER BY tanggal DESC LIMIT 12 OFFSET 12");
+        $query3 = mysqli_query($koneksi, "
+          SELECT a.*, k.slug AS kategori 
+          FROM Artikel a 
+          LEFT JOIN kategori k ON k.id = a.kategori_id 
+          ORDER BY a.tanggal DESC LIMIT 12 OFFSET 12
+        ");
         while ($artikel = mysqli_fetch_assoc($query3)) {
           include '../../assets/templateHalaman/cardVariant/card1/card1.php';
         }

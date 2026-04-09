@@ -2,7 +2,12 @@
 include '../koneksi.php'; 
 
 // Mengambil beberapa artikel untuk pengetesan
-$query = mysqli_query($koneksi, "SELECT * FROM Artikel LIMIT 3");
+$query = mysqli_query($koneksi, "
+    SELECT a.*, k.nama AS kategori 
+    FROM Artikel a 
+    LEFT JOIN kategori k ON k.id = a.kategori_id 
+    LIMIT 3
+");
 $articles = [];
 while ($row = mysqli_fetch_assoc($query)) {
     $articles[] = $row;

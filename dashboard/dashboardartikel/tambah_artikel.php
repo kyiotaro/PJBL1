@@ -14,23 +14,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $slug = 'artikel-' . time();
     }
 
-    if ($judul === '' || $kategori === '' || $tanggal === '' || $isi === '') {
+    $slugKategori = trim($_POST['kategori'] ?? '');
+    $stmtKat = mysqli_prepare($koneksi, "SELECT id FROM kategori WHERE slug = ?");
+    mysqli_stmt_bind_param($stmtKat, 's', $slugKategori);
+    mysqli_stmt_execute($stmtKat);
+    $resKat = mysqli_stmt_get_result($stmtKat);
+    $rowKat = mysqli_fetch_assoc($resKat);
+    $kategoriId = $rowKat['id'] ?? null;
+    mysqli_stmt_close($stmtKat);
+
+    if ($judul === '' || $slugKategori === '' || $tanggal === '' || $isi === '') {
         $error = 'Semua field wajib diisi.';
-
-        // Ambil id kategori dari slug yang dipilih user
-        $slugKategori = trim($_POST['kategori'] ?? '');
-        $stmtKat = mysqli_prepare($koneksi, "SELECT id FROM kategori WHERE slug = ?");
-        mysqli_stmt_bind_param($stmtKat, 's', $slugKategori);
-        mysqli_stmt_execute($stmtKat);
-        $resKat = mysqli_stmt_get_result($stmtKat);
-        $rowKat = mysqli_fetch_assoc($resKat);
-        $kategoriId = $rowKat['id'] ?? null;
-        mysqli_stmt_close($stmtKat);
-
     } elseif (empty($_POST['gambar_url']) && (!isset($_FILES['gambar']) || $_FILES['gambar']['error'] !== UPLOAD_ERR_OK)) {
         $error = 'Pilih gambar dari Pexels atau upload gambar manual.';
-
     } else {
+        // ... (rest of the logic)
 
         // ── Gambar dari Pexels ──────────────────────────────────────
         if (!empty($_POST['gambar_url'])) {

@@ -13,7 +13,7 @@ if ($totalArtikelQuery && $row = mysqli_fetch_assoc($totalArtikelQuery)) {
     $totalArtikel = (int) $row['total'];
 }
 
-$totalKategoriQuery = mysqli_query($koneksi, "SELECT COUNT(DISTINCT kategori) AS total FROM Artikel");
+$totalKategoriQuery = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM kategori");
 if ($totalKategoriQuery && $row = mysqli_fetch_assoc($totalKategoriQuery)) {
     $totalKategori = (int) $row['total'];
 }
@@ -35,7 +35,12 @@ if ($updateTerakhirQuery) {
     }
 }
 
-$recentQuery = mysqli_query($koneksi, "SELECT judul, kategori, tanggal FROM Artikel ORDER BY tanggal DESC LIMIT 5");
+$recentQuery = mysqli_query($koneksi, "
+    SELECT a.judul, k.nama AS kategori, a.tanggal 
+    FROM Artikel a 
+    LEFT JOIN kategori k ON k.id = a.kategori_id 
+    ORDER BY a.tanggal DESC LIMIT 5
+");
 if ($recentQuery) {
     while ($row = mysqli_fetch_assoc($recentQuery)) {
         $recentArticles[] = $row;
@@ -44,7 +49,11 @@ if ($recentQuery) {
 
 $categoryBreakdownQuery = mysqli_query(
     $koneksi,
-    "SELECT kategori, COUNT(*) AS total FROM Artikel GROUP BY kategori ORDER BY total DESC, kategori ASC LIMIT 5"
+    "SELECT k.nama AS kategori, COUNT(a.id) AS total 
+     FROM kategori k 
+     LEFT JOIN Artikel a ON k.id = a.kategori_id 
+     GROUP BY k.id 
+     ORDER BY total DESC, kategori ASC LIMIT 5"
 );
 if ($categoryBreakdownQuery) {
     while ($row = mysqli_fetch_assoc($categoryBreakdownQuery)) {

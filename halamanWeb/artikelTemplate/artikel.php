@@ -15,7 +15,12 @@ $articleId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $article = null;
 
 if ($articleId > 0) {
-  $stmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori, tanggal, gambar, isi FROM Artikel WHERE id = ? LIMIT 1");
+  $stmt = mysqli_prepare($koneksi, "
+    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi 
+    FROM Artikel a
+    LEFT JOIN kategori k ON k.id = a.kategori_id
+    WHERE a.id = ? LIMIT 1
+  ");
   mysqli_stmt_bind_param($stmt, 'i', $articleId);
   mysqli_stmt_execute($stmt);
   $result = mysqli_stmt_get_result($stmt);
@@ -24,7 +29,12 @@ if ($articleId > 0) {
 }
 
 if (!$article) {
-  $latestQuery = mysqli_query($koneksi, "SELECT id, judul, kategori, tanggal, gambar, isi FROM Artikel ORDER BY tanggal DESC, id DESC LIMIT 1");
+  $latestQuery = mysqli_query($koneksi, "
+    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi 
+    FROM Artikel a
+    LEFT JOIN kategori k ON k.id = a.kategori_id
+    ORDER BY a.tanggal DESC, a.id DESC LIMIT 1
+  ");
   if ($latestQuery && mysqli_num_rows($latestQuery) > 0) {
     $article = mysqli_fetch_assoc($latestQuery);
   }
@@ -48,7 +58,13 @@ $relatedArticles = [];
 $currentArticleId = (int) ($article['id'] ?? 0);
 
 if ($currentArticleId > 0) {
-  $relatedStmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori, tanggal, gambar FROM Artikel WHERE id != ? ORDER BY tanggal DESC, id DESC LIMIT 3");
+  $relatedStmt = mysqli_prepare($koneksi, "
+    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar 
+    FROM Artikel a
+    LEFT JOIN kategori k ON k.id = a.kategori_id
+    WHERE a.id != ? 
+    ORDER BY a.tanggal DESC, a.id DESC LIMIT 3
+  ");
   mysqli_stmt_bind_param($relatedStmt, 'i', $currentArticleId);
   mysqli_stmt_execute($relatedStmt);
   $relatedResult = mysqli_stmt_get_result($relatedStmt);

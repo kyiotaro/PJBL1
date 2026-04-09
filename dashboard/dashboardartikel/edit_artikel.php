@@ -7,7 +7,7 @@ if ($id <= 0) {
     exit;
 }
 
-$stmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori, tanggal, gambar, isi FROM Artikel WHERE id = ?");
+$stmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori_id, tanggal, gambar, isi FROM Artikel WHERE id = ?");
 mysqli_stmt_bind_param($stmt, 'i', $id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -23,24 +23,33 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $judul = trim($_POST['judul'] ?? '');
-    $kategori = trim($_POST['kategori'] ?? '');
+    $slugKategori = trim($_POST['kategori'] ?? '');
     $tanggal = $_POST['tanggal'] ?? '';
     $isi = trim($_POST['isi'] ?? '');
     $slug = trim(strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', $judul)), '-');
     $gambar = $article['gambar'];
 
+    // Ambil ID Kategori berdasarkan slug
+    $stmtKat = mysqli_prepare($koneksi, "SELECT id FROM kategori WHERE slug = ?");
+    mysqli_stmt_bind_param($stmtKat, 's', $slugKategori);
+    mysqli_stmt_execute($stmtKat);
+    $resKat = mysqli_stmt_get_result($stmtKat);
+    $rowKat = mysqli_fetch_assoc($resKat);
+    $kategoriId = $rowKat['id'] ?? null;
+    mysqli_stmt_close($stmtKat);
+
     if ($slug === '') {
         $slug = 'artikel-' . $id;
     }
 
-    if ($judul === '' || $kategori === '' || $tanggal === '' || $isi === '') {
+    if ($judul === '' || !$kategoriId || $tanggal === '' || $isi === '') {
         $error = 'Semua field wajib diisi.';
     } else {
         if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] !== UPLOAD_ERR_NO_FILE) {
             if ($_FILES['gambar']['error'] !== UPLOAD_ERR_OK) {
                 $error = 'Upload gambar baru gagal.';
             } else {
-                $uploadDir = '../assets/Foto/artikel/' . $kategori . '/';
+                $uploadDir = '../../assets/Foto/artikel/' . $slugKategori . '/';
 
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
@@ -55,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $baseFileName = $slug !== '' ? $slug : 'artikel-' . $id;
                     $gambar = $baseFileName . '-' . date('YmdHis') . '.' . $extension;
-                    $gambar = 'artikel/' . $kategori . '/' . $gambar;
-                    $uploadPath = '../assets/Foto/' . $gambar;
+                    $gambar = 'artikel/' . $slugKategori . '/' . $gambar;
+                    $uploadPath = '../../assets/Foto/' . $gambar;
 
                     if (!move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadPath)) {
                         $error = 'Gagal menyimpan gambar baru.';
@@ -68,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($error === '') {
             $updateStmt = mysqli_prepare(
                 $koneksi,
-                "UPDATE Artikel SET judul = ?, kategori = ?, tanggal = ?, gambar = ?, isi = ?, slug = ? WHERE id = ?"
+                "UPDATE Artikel SET judul = ?, kategori_id = ?, tanggal = ?, gambar = ?, isi = ?, slug = ? WHERE id = ?"
             );
-            mysqli_stmt_bind_param($updateStmt, 'ssssssi', $judul, $kategori, $tanggal, $gambar, $isi, $slug, $id);
+            mysqli_stmt_bind_param($updateStmt, 'sissssi', $judul, $kategoriId, $tanggal, $gambar, $isi, $slug, $id);
 
             if (mysqli_stmt_execute($updateStmt)) {
                 mysqli_stmt_close($updateStmt);
@@ -84,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $article['judul'] = $judul;
-    $article['kategori'] = $kategori;
+    $article['kategori_id'] = $kategoriId;
     $article['tanggal'] = $tanggal;
     $article['isi'] = $isi;
     $article['gambar'] = $gambar;
@@ -134,10 +143,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="kategori">Kategori</label>
             <select id="kategori" name="kategori" required>
                 <option value="">Pilih kategori artikel</option>
-                <option value="biota" <?= ($article['kategori'] === 'biota') ? 'selected' : ''; ?>>Biota</option>
-                <option value="wisata" <?= ($article['kategori'] === 'wisata') ? 'selected' : ''; ?>>Wisata</option>
-                <option value="konservasi" <?= ($article['kategori'] === 'konservasi') ? 'selected' : ''; ?>>Konservasi</option>
-                <option value="geologi" <?= ($article['kategori'] === 'geologi') ? 'selected' : ''; ?>>Geologi</option>
+                <?php
+                $qKat = mysqli_query($koneksi, "SELECT id, nama, slug FROM kategori ORDER BY nama ASC");
+                while ($kat = mysqli_fetch_assoc($qKat)):
+                    $selected = ($article['kategori_id'] == $kat['id']) ? 'selected' : '';
+                    ?>
+                    <option value="<?= htmlspecialchars($kat['slug']); ?>" <?= $selected; ?>>
+                        <?= htmlspecialchars($kat['nama']); ?>
+                    </option>
+                <?php endwhile; ?>
             </select>
 
             <label for="tanggal">Tanggal</label>

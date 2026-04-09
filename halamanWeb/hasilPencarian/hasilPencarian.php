@@ -23,8 +23,13 @@ $search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GE
     <div class="card2-list">
       <?php
       if ($search_input !== '') {
-        $query = mysqli_query($koneksi, "SELECT * FROM Artikel WHERE judul LIKE '%$search_input%' OR isi LIKE '%$search_input%'");
-        if (mysqli_num_rows($query) > 0) {
+        $query = mysqli_query($koneksi, "
+          SELECT a.*, k.nama AS kategori 
+          FROM Artikel a 
+          LEFT JOIN kategori k ON k.id = a.kategori_id 
+          WHERE a.judul LIKE '%$search_input%' OR a.isi LIKE '%$search_input%'
+        ");
+        if ($query && mysqli_num_rows($query) > 0) {
           while ($artikel = mysqli_fetch_assoc($query)) {
             include '../../assets/templateHalaman/cardVariant/card2/card2.php';
           }
