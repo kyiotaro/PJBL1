@@ -137,8 +137,8 @@
     </main>
 </div>
 
-<script src="../../halamanWeb/loginpage/auth.js"></script>
-<script src="dashboard_pengaturan.js"></script>
+<script src="../../halamanWeb/loginpage/js/auth.js"></script>
+<script src="js/dashboard_pengaturan.js"></script>
 
 </body>
-</html>
+</html>l>

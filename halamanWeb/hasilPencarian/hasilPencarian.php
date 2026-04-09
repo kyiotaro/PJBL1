@@ -10,7 +10,7 @@ $search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GE
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hasil Pencarian: <?= htmlspecialchars($search_input) ?></title>
-  <link rel="stylesheet" href="hasilPencarian.css">
+  <link rel="stylesheet" href="css/hasilPencarian.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card2/card2.css">

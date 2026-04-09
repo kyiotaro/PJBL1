@@ -47,5 +47,6 @@
 
   </div>
 </body>
-<script src="user_auth.js"></script>
+<script src="js/user_auth.js"></script>
 </html>
+

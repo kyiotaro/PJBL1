@@ -25,10 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($judul === '' || $slugKategori === '' || $tanggal === '' || $isi === '') {
         $error = 'Semua field wajib diisi.';
+    } elseif (!$kategoriId) {
+        $error = 'Kategori tidak valid. Pilih kategori yang tersedia.';
     } elseif (empty($_POST['gambar_url']) && (!isset($_FILES['gambar']) || $_FILES['gambar']['error'] !== UPLOAD_ERR_OK)) {
         $error = 'Pilih gambar dari Pexels atau upload gambar manual.';
     } else {
-        // ... (rest of the logic)
 
         // ── Gambar dari Pexels ──────────────────────────────────────
         if (!empty($_POST['gambar_url'])) {
@@ -99,10 +100,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Artikel</title>
-    <link rel="stylesheet" href="../dashboardadmin/dashboard.css">
-    <link rel="stylesheet" href="tambah_artikel.css?v=2">
+    <link rel="stylesheet" href="../dashboardadmin/css/dashboard.css">
+    <link rel="stylesheet" href="css/tambah_artikel.css?v=2">
     <!-- Mengarah ke folder AI baru -->
-    <link rel="stylesheet" href="/PJBL-main/dashboard/ai-article-generator/style.css">
+    <link rel="stylesheet" href="/PJBL-main/dashboard/ai-article-generator/css/style.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
@@ -122,8 +123,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <ul class="nav-menu">
                 <li><a class="nav-link" href="/PJBL-main/dashboard/dashboardadmin/dashboard.php">Dashboard</a></li>
-                <li><a class="nav-link active" href="/PJBL-main/dashboard/dashboardartikel/dashboard_artikel.php">Artikel</a></li>
-                <li><a class="nav-link" href="/PJBL-main/dashboard/dashboardpengaturan/dashboard_pengaturan.php">Pengaturan</a></li>
+                <li><a class="nav-link active"
+                        href="/PJBL-main/dashboard/dashboardartikel/dashboard_artikel.php">Artikel</a></li>
+                <li><a class="nav-link"
+                        href="/PJBL-main/dashboard/dashboardpengaturan/dashboard_pengaturan.php">Pengaturan</a></li>
             </ul>
         </div>
 
@@ -179,8 +182,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <script src="/PJBL-main/halamanWeb/loginpage/auth.js"></script>
-    <script src="tambah_artikel.js"></script>
+    <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
+    <script src="js/tambah_artikel.js"></script>
 
 </body>
 

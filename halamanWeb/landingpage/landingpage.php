@@ -96,7 +96,7 @@
 
   <?php include '../../assets/templateHalaman/footer.php'; ?>
 
-  <script src="landingpage.js"></script>
+  <script src="js/landingpage.js"></script>
 </body>
 
-</html>
+</html>>

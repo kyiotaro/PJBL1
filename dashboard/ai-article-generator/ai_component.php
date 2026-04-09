@@ -24,4 +24,4 @@
     <p class="gambar-terpilih" id="labelGambarDipilih"></p>
 </div>
 
-<script src="/PJBL-main/dashboard/ai-article-generator/ai_component.js"></script>
+<script src="/PJBL-main/dashboard/ai-article-generator/js/ai_component.js"></script>

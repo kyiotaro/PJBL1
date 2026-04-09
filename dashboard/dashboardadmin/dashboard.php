@@ -68,8 +68,8 @@ if ($categoryBreakdownQuery) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Admin</title>
 
-<link rel="stylesheet" href="dashboard.css">
-<link rel="stylesheet" href="dashboard_admin.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/dashboard_admin.css">
 </head>
 <body>
 
@@ -152,7 +152,7 @@ if ($categoryBreakdownQuery) {
   </main>
 </div>
 
-<script src="/PJBL-main/halamanWeb/loginpage/auth.js"></script>
-<script src="dashboard.js"></script>
+<script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
+<script src="js/dashboard.js"></script>
 </body>
 </html>

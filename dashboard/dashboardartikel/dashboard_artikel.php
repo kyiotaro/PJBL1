@@ -111,8 +111,8 @@ if ($query) {
     </div>
 </div>
 
-<script src="/PJBL-main/halamanWeb/loginpage/auth.js"></script>
-<script src="dashboard_artikel.js"></script>
+<script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
+<script src="js/dashboard_artikel.js"></script>
 
 </body>
-</html>
+</html>l>

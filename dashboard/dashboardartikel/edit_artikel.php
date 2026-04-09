@@ -177,8 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<script src="/PJBL-main/halamanWeb/loginpage/auth.js"></script>
-<script src="edit_artikel.js"></script>
+<script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
+<script src="js/edit_artikel.js"></script>
 
 </body>
-</html>
+</html>l>
