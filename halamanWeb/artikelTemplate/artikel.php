@@ -84,7 +84,6 @@ if ($currentArticleId > 0) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= htmlspecialchars($article['judul']); ?> | Permata Biru Nusantara</title>
   <link rel="stylesheet" href="css/artikel.css?v=2">
-  <link rel="stylesheet" href="../../assets/variables.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card1/card1.css">
