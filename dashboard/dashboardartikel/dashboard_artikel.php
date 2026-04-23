@@ -45,8 +45,8 @@ if ($query) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Artikel</title>
-    <link rel="stylesheet" href="../dashboardadmin/dashboard.css">
-    <link rel="stylesheet" href="dashboard_artikel.css">
+    <link rel="stylesheet" href="../dashboardadmin/css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard_artikel.css">
 </head>
 <body>
 

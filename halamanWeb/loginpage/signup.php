@@ -19,7 +19,7 @@
       <h1>Admin Sign up</h1>
       <p class="subtitle">Daftarkan akun admin baru</p>
 
-      <form class="signup-form" action="signin.html" method="post">
+      <form class="signup-form" action="signin.php" method="post">
         <label for="email">Email</label>
         <input id="email" name="email" type="email" placeholder="admin@example.com" required>
 
@@ -36,7 +36,7 @@
       </div>
 
       <div class="signup-cta">
-        <p>Sudah punya akun? <a href="signin.html">Sign in di sini</a></p>
+        <p>Sudah punya akun? <a href="signin.php">Sign in di sini</a></p>
         <p style="margin-top:8px;"><a href="/PJBL-main/halamanWeb/landingpage/landingpage.php">← Kembali ke halaman utama</a></p>
       </div>
     </div>
@@ -49,4 +49,6 @@
 </body>
 <script src="js/user_auth.js"></script>
 </html>
+
+tml>
 

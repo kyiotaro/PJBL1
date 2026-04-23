@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan Sistem</title>
-    <link rel="stylesheet" href="../dashboardadmin/dashboard.css">
-    <link rel="stylesheet" href="dashboard_pengaturan.css">
+    <link rel="stylesheet" href="../dashboardadmin/css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard_pengaturan.css">
     <style>
         body.theme-dark {
             background: #0f172a;
