@@ -1,1 +1,3 @@
 config/api_config.php
+config/aiven-ca.pem
+test_koneksi.php
