@@ -1,19 +1,6 @@
 <?php
-// ── Konfigurasi Aiven (primary) ──
-define('DB_AIVEN_HOST', 'mysql-35eca9c7-permata-biru-nusantara.c.aivencloud.com');
-define('DB_AIVEN_PORT',  28919);
-define('DB_AIVEN_USER', 'avnadmin');
-define('DB_AIVEN_PASS', 'AVNS_eo0mnRPLbBMJk4EoM8S');
-define('DB_AIVEN_NAME', 'defaultdb');
-define('DB_AIVEN_CA',   __DIR__ . '/config/aiven-ca.pem');
+require_once __DIR__ . '/config/db_config.php';
 
-// ── Konfigurasi XAMPP lokal (fallback) ──
-define('DB_LOCAL_HOST', 'localhost');
-define('DB_LOCAL_USER', 'root');
-define('DB_LOCAL_PASS', '');
-define('DB_LOCAL_NAME', 'permatabirunusantara');
-
-// ── Coba konek ke Aiven dulu ──
 $koneksi = mysqli_init();
 mysqli_ssl_set($koneksi, null, null, DB_AIVEN_CA, null, null);
 
@@ -28,7 +15,6 @@ $connected = @mysqli_real_connect(
     MYSQLI_CLIENT_SSL
 );
 
-// ── Kalau Aiven gagal, fallback ke XAMPP ──
 if (!$connected) {
     $koneksi = mysqli_connect(
         DB_LOCAL_HOST,
