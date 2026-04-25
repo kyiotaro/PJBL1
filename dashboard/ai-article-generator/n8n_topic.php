@@ -1,10 +1,4 @@
 <?php
-/**
- * n8n_topic.php
- * Endpoint yang dipanggil n8n di awal workflow untuk mengambil 1 topik random
- * dari pool yang belum pernah di-generate.
- * Letakkan di: dashboard/ai-article-generator/n8n_topic.php
- */
 
 require_once '../../koneksi.php';
 require_once '../../config/api_config.php';
