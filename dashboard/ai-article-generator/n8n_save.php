@@ -8,8 +8,6 @@ require_once '../../config/api_config.php';
 
 header('Content-Type: application/json');
 
-$logFile = __DIR__ . '/debug_log.txt';
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     ob_clean();
@@ -45,8 +43,6 @@ $slug         = trim($data['slug']     ?? '');
 $tanggal      = trim($data['tanggal']  ?? date('Y-m-d'));
 $topik_id     = isset($data['topik_id']) ? (int)$data['topik_id'] : null;
 
-file_put_contents($logFile, "STEP 1 - Field check: judul=" . strlen($judul) . " isi=" . strlen($isi) . " kategori=$slugKategori\n", FILE_APPEND);
-
 if ($judul === '' || $slugKategori === '' || $isi === '') {
     http_response_code(422);
     ob_clean();
@@ -58,11 +54,8 @@ if ($slug === '') {
     $slug = trim(strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', $judul)), '-');
 }
 
-// Cek slug
-file_put_contents($logFile, "STEP 2 - Cek slug: $slug\n", FILE_APPEND);
 $cekSlug = mysqli_prepare($koneksi, "SELECT id FROM artikel WHERE slug = ? LIMIT 1");
 if (!$cekSlug) {
-    file_put_contents($logFile, "STEP 2 ERROR - prepare gagal: " . mysqli_error($koneksi) . "\n", FILE_APPEND);
     http_response_code(500);
     ob_clean();
     echo json_encode(['success' => false, 'error' => 'DB prepare error']);
@@ -76,11 +69,8 @@ if (mysqli_stmt_num_rows($cekSlug) > 0) {
 }
 mysqli_stmt_close($cekSlug);
 
-// Cari kategori_id
-file_put_contents($logFile, "STEP 3 - Cari kategori: $slugKategori\n", FILE_APPEND);
 $stmtKat = mysqli_prepare($koneksi, "SELECT id FROM kategori WHERE slug = ? LIMIT 1");
 if (!$stmtKat) {
-    file_put_contents($logFile, "STEP 3 ERROR - prepare gagal: " . mysqli_error($koneksi) . "\n", FILE_APPEND);
     http_response_code(500);
     ob_clean();
     echo json_encode(['success' => false, 'error' => 'DB prepare error kategori']);
@@ -93,8 +83,6 @@ $rowKat     = mysqli_fetch_assoc($resKat);
 $kategoriId = $rowKat['id'] ?? null;
 mysqli_stmt_close($stmtKat);
 
-file_put_contents($logFile, "STEP 3 - kategoriId: $kategoriId\n", FILE_APPEND);
-
 if (!$kategoriId) {
     http_response_code(422);
     ob_clean();
@@ -102,11 +90,8 @@ if (!$kategoriId) {
     exit;
 }
 
-// Insert
-file_put_contents($logFile, "STEP 4 - Insert artikel\n", FILE_APPEND);
 $stmt = mysqli_prepare($koneksi, "INSERT INTO artikel (judul, kategori_id, tanggal, gambar, isi, slug) VALUES (?, ?, ?, ?, ?, ?)");
 if (!$stmt) {
-    file_put_contents($logFile, "STEP 4 ERROR - prepare gagal: " . mysqli_error($koneksi) . "\n", FILE_APPEND);
     http_response_code(500);
     ob_clean();
     echo json_encode(['success' => false, 'error' => 'DB prepare insert error']);
@@ -116,7 +101,6 @@ mysqli_stmt_bind_param($stmt, 'sissss', $judul, $kategoriId, $tanggal, $gambar, 
 
 if (!mysqli_stmt_execute($stmt)) {
     $errMsg = mysqli_stmt_error($stmt);
-    file_put_contents($logFile, "STEP 4 ERROR - execute gagal: $errMsg\n", FILE_APPEND);
     mysqli_stmt_close($stmt);
     http_response_code(500);
     ob_clean();
@@ -126,7 +110,6 @@ if (!mysqli_stmt_execute($stmt)) {
 
 $newId = mysqli_insert_id($koneksi);
 mysqli_stmt_close($stmt);
-file_put_contents($logFile, "STEP 5 - Sukses! ID: $newId\n\n", FILE_APPEND);
 
 if ($topik_id !== null) {
     $stmtUsed = mysqli_prepare($koneksi, "UPDATE n8n_topic_pool SET used = 1, used_at = NOW() WHERE id = ?");
