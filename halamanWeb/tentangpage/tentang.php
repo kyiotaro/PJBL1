@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang Kami</title>
     <link rel="stylesheet" href="css/tentang.css">
-    <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
-    <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
+    <link rel="stylesheet" href="../../assets/templateHalaman/navbar/navbar.css">
+    <link rel="stylesheet" href="../../assets/templateHalaman/footer/footer.css">
 </head>
 
 <body>
     <!-- Include navbar -->
-    <?php include '../../assets/templateHalaman/navbar.php'; ?>
+    <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
     <section class="hero"
         style="background-image: url(../../assets/Foto/about/photographer-taking-photo-ice-iceland.jpg);">
@@ -109,7 +109,7 @@
     </section>
 
     <!-- Include footer -->
-    <?php include '../../assets/templateHalaman/footer.php'; ?>
+    <?php include '../../assets/templateHalaman/footer/footer.php'; ?>
 </body>
 
 </html>

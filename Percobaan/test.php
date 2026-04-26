@@ -20,8 +20,8 @@ while ($row = mysqli_fetch_assoc($query)) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Test Card Variant 2</title>
-  <link rel="stylesheet" href="../assets/templateHalaman/navbar.css">
-  <link rel="stylesheet" href="../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../assets/templateHalaman/navbar/navbar.css">
+  <link rel="stylesheet" href="../assets/templateHalaman/footer/footer.css">
   <link rel="stylesheet" href="../assets/templateHalaman/cardVariant/card2/card2.css">
   <style>
     .card2-list {
@@ -34,7 +34,7 @@ while ($row = mysqli_fetch_assoc($query)) {
 </head>
 
 <body>
-  <?php include '../assets/templateHalaman/navbar.php'; ?>
+  <?php include '../assets/templateHalaman/navbar/navbar.php'; ?>
 
   <div class="card2-list">
     <?php if (!empty($articles)): ?>
@@ -46,7 +46,7 @@ while ($row = mysqli_fetch_assoc($query)) {
     <?php endif; ?>
   </div>
 
-  <?php include '../assets/templateHalaman/footer.php'; ?>
+  <?php include '../assets/templateHalaman/footer/footer.php'; ?>
 </body>
 
 </html>

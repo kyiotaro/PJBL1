@@ -68,7 +68,7 @@ if ($categoryBreakdownQuery) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Admin</title>
 
-<link rel="stylesheet" href="PJBL-main/assets/templateHalaman/sidebar.css">
+<link rel="stylesheet" href="PJBL-main/assets/templateHalaman/sidebar/sidebar.css">
 <link rel="stylesheet" href="css/dashboard_admin.css">
 </head>
 <body>
@@ -81,7 +81,7 @@ if ($categoryBreakdownQuery) {
 <div class="dashboard">
   <?php
     $activePage = 'dashboard'; 
-    include 'PJBL-main/assets/templateHalaman/sidebar.php';
+    include 'PJBL-main/assets/templateHalaman/sidebar/sidebar.php';
   ?>
 
   <main class="main-content">
@@ -146,6 +146,6 @@ if ($categoryBreakdownQuery) {
 
 <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
 <script src="js/dashboard.js"></script>
-<script src="PJBL-main/assets/templateHalaman/sidebar.js"></script>
+<script src="PJBL-main/assets/templateHalaman/sidebar/sidebar.js"></script>
 </body>
 </html>

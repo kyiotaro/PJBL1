@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FAQ</title>
   <link rel="stylesheet" href="css/FAQpage.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/FAQcard.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/FAQcard/FAQcard.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/navbar/navbar.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/footer/footer.css">
 </head>
 <body>
-  <?php include '../../assets/templateHalaman/navbar.php'; ?>
+  <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
   <section class="hero">
     <img src="../../assets/Foto/FAQ/FAQ_hero.jpg" alt="FAQ Hero Image" class="hero-img">
@@ -56,7 +56,7 @@
         'a' => 'Anda dapat mengikuti akun media sosial resmi kami atau mengunjungi halaman utama platform secara berkala untuk melihat terbitan artikel terbaru kami.'
       ],
     ];
-    include '../../assets/templateHalaman/FAQcard.php';
+    include '../../assets/templateHalaman/FAQcard/FAQcard.php';
     ?>
   </div>
 
@@ -68,6 +68,6 @@
     </div>
   </section>
 
-  <?php include '../../assets/templateHalaman/footer.php'; ?>
+  <?php include '../../assets/templateHalaman/footer/footer.php'; ?>
 </body>
 </html>

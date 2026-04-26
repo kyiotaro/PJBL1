@@ -8,13 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Permata Biru Nusantara - Portal Laut Indonesia</title>
   <link rel="stylesheet" href="css/landingpage.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/navbar/navbar.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/footer/footer.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card1/card1.css">
 </head>
 
 <body>
-  <?php include '../../assets/templateHalaman/navbar.php'; ?>
+  <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
   <section class="hero" style="background-image: url('../../assets/Foto/ui/background.png')">
     <div class="overlay">
@@ -94,7 +94,7 @@
     </section>
   </main>
 
-  <?php include '../../assets/templateHalaman/footer.php'; ?>
+  <?php include '../../assets/templateHalaman/footer/footer.php'; ?>
 
   <script src="js/landingpage.js"></script>
 </body>

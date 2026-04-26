@@ -11,13 +11,13 @@ $search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GE
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hasil Pencarian: <?= htmlspecialchars($search_input) ?></title>
   <link rel="stylesheet" href="css/hasilPencarian.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/navbar.css">
-  <link rel="stylesheet" href="../../assets/templateHalaman/footer.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/navbar/navbar.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/footer/footer.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card2/card2.css">
 </head>
 
 <body>
-  <?php include '../../assets/templateHalaman/navbar.php'; ?>
+  <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
   <main>
     <div class="card2-list">
@@ -43,7 +43,7 @@ $search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GE
     </div>
   </main>
 
-  <?php include '../../assets/templateHalaman/footer.php'; ?>
+  <?php include '../../assets/templateHalaman/footer/footer.php'; ?>
 </body>
 
 </html>
