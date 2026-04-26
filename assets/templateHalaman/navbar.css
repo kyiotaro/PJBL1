@@ -50,59 +50,84 @@ header .logo h1 {
   font-size: 18px;
 }
 
-.search-bar {
+.pb-search-bar {
   display: flex;
   align-items: center;
-  background: var(--bg-default);
-  border: 1px solid var(--header-border);
-  border-radius: var(--card-radius);
-  padding: 0 var(--spacing-md);
   flex: 1;
   max-width: 400px;
   margin: 0 var(--spacing-lg);
-  transition: var(--transition-fast);
+  background: var(--bg-default);
+  padding: 0 1rem;
+  border-radius: 30px;
+  border: 1px solid var(--header-border);
+  height: 44px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(3, 105, 161, 0.06);
 }
 
-.search-bar:focus-within {
-  border-color: var(--link-hover);
-  box-shadow: var(--shadow-light);
+.pb-search-bar:focus-within {
+  border-color: #0369A1;
+  box-shadow: 0 4px 16px rgba(3, 105, 161, 0.18);
 }
 
-.search-bar input {
-  border: none;
-  background: transparent;
-  outline: none;
-  padding: var(--spacing-sm);
-  width: 100%;
-  font-family: var(--font-primary);
-  font-size: 14px;
-  color: var(--text-default);
+.pb-search-bar:hover {
+  border-color: #93c5fd;
 }
 
-.search-bar input::placeholder {
-  color: var(--text-muted);
-}
-
-.search-bar button {
-  background: none;
-  border: none;
-  cursor: pointer;
+.pb-input-container {
   display: flex;
   align-items: center;
-  padding: var(--spacing-xs);
+  flex-grow: 1;
+  gap: 0.6rem;
 }
 
-.search-bar button img {
-  width: 18px;
-  height: 18px;
-  opacity: 0.6;
-  transition: var(--transition-fast);
+.pb-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: none;
+  color: var(--text-default);
+  font-family: var(--font-primary);
 }
 
-.search-bar button:hover img {
-  opacity: 1;
-  transform: scale(1.1);
+.pb-input::placeholder { color: var(--text-muted); }
+
+.pb-search-icon {
+  fill: var(--text-muted);
+  transition: fill 0.2s;
+  flex-shrink: 0;
 }
+
+.pb-search-bar:focus-within .pb-search-icon { fill: #0369A1; }
+
+.pb-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--header-border);
+  margin: 0 0.5rem;
+  flex-shrink: 0;
+}
+
+.pb-mic-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.pb-mic-btn:hover { background: #e0f2fe; }
+.pb-mic-btn.listening { background: #fee2e2; }
+.pb-mic-icon { fill: var(--text-muted); transition: fill 0.2s; }
+.pb-mic-btn:hover .pb-mic-icon { fill: #0369A1; }
+.pb-mic-btn.listening .pb-mic-icon { fill: #dc2626; }
 
 nav a {
   margin-left: 25px;
