@@ -68,7 +68,7 @@ if ($categoryBreakdownQuery) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Admin</title>
 
-<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="PJBL-main/assets/templateHalaman/sidebar.css">
 <link rel="stylesheet" href="css/dashboard_admin.css">
 </head>
 <body>
@@ -79,18 +79,10 @@ if ($categoryBreakdownQuery) {
 </div>
 
 <div class="dashboard">
-  <aside class="sidebar">
-    <div class="logo">
-      <img src="/PJBL-main/assets/Foto/brand/logo.png" alt="Logo">
-      <h1>Permata Biru Nusantara</h1>
-    </div>
-
-    <ul class="nav-menu">
-      <li><a href="/PJBL-main/dashboard/dashboardadmin/dashboard.php" class="nav-link active">Dashboard</a></li>
-      <li><a href="/PJBL-main/dashboard/dashboardartikel/dashboard_artikel.php" class="nav-link">Artikel</a></li>
-      <li><a href="/PJBL-main/dashboard/dashboardpengaturan/dashboard_pengaturan.php" class="nav-link">Pengaturan</a></li>
-    </ul>
-  </aside>
+  <?php
+    $activePage = 'dashboard'; 
+    include 'PJBL-main/assets/templateHalaman/sidebar.php';
+  ?>
 
   <main class="main-content">
     <h1 class="page-title">Dashboard Admin</h1>
@@ -154,5 +146,6 @@ if ($categoryBreakdownQuery) {
 
 <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
 <script src="js/dashboard.js"></script>
+<script src="PJBL-main/assets/templateHalaman/sidebar.js"></script>
 </body>
 </html>
