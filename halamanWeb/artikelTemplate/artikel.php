@@ -17,7 +17,7 @@ $article = null;
 if ($articleId > 0) {
   $stmt = mysqli_prepare($koneksi, "
     SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi 
-    FROM Artikel a
+    FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
     WHERE a.id = ? LIMIT 1
   ");
@@ -31,7 +31,7 @@ if ($articleId > 0) {
 if (!$article) {
   $latestQuery = mysqli_query($koneksi, "
     SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi 
-    FROM Artikel a
+    FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
     ORDER BY a.tanggal DESC, a.id DESC LIMIT 1
   ");
@@ -60,7 +60,7 @@ $currentArticleId = (int) ($article['id'] ?? 0);
 if ($currentArticleId > 0) {
   $relatedStmt = mysqli_prepare($koneksi, "
     SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar 
-    FROM Artikel a
+    FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
     WHERE a.id != ? 
     ORDER BY a.tanggal DESC, a.id DESC LIMIT 3

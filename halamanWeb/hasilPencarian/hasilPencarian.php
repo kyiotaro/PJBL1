@@ -25,7 +25,7 @@ $search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GE
       if ($search_input !== '') {
         $query = mysqli_query($koneksi, "
           SELECT a.*, k.nama AS kategori 
-          FROM Artikel a 
+          FROM artikel a 
           LEFT JOIN kategori k ON k.id = a.kategori_id 
           WHERE a.judul LIKE '%$search_input%' OR a.isi LIKE '%$search_input%'
         ");

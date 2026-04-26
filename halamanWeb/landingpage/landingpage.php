@@ -46,7 +46,7 @@
         <?php
         $query = mysqli_query($koneksi, "
           SELECT a.*, k.slug AS kategori 
-          FROM Artikel a 
+          FROM artikel a 
           LEFT JOIN kategori k ON k.id = a.kategori_id 
           ORDER BY a.tanggal DESC LIMIT 6
         ");
@@ -64,7 +64,7 @@
         <?php
         $query2 = mysqli_query($koneksi, "
           SELECT a.*, k.slug AS kategori 
-          FROM Artikel a 
+          FROM artikel a 
           LEFT JOIN kategori k ON k.id = a.kategori_id 
           ORDER BY a.tanggal DESC LIMIT 6 OFFSET 6
         ");
@@ -82,7 +82,7 @@
         <?php
         $query3 = mysqli_query($koneksi, "
           SELECT a.*, k.slug AS kategori 
-          FROM Artikel a 
+          FROM artikel a 
           LEFT JOIN kategori k ON k.id = a.kategori_id 
           ORDER BY a.tanggal DESC LIMIT 12 OFFSET 12
         ");
