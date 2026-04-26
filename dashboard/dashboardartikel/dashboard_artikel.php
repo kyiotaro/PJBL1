@@ -45,30 +45,18 @@ if ($query) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Artikel</title>
+    <link rel="stylesheet" href="../../assets/templateHalaman/sidebar/sidebar.css">
     <link rel="stylesheet" href="../dashboardadmin/css/dashboard.css">
     <link rel="stylesheet" href="css/dashboard_artikel.css">
 </head>
 <body>
 
-<div class="user-info">
-    <span id="adminEmail"></span>
-    <button id="logoutBtn" class="logout-btn">Logout</button>
-</div>
+<?php
+    $activePage = 'artikel'; 
+    include '../../assets/templateHalaman/sidebar/sidebar.php';
+?>
 
-<div class="dashboard">
-    <div class="sidebar">
-        <div class="logo">
-            <img src="/PJBL-main/assets/Foto/brand/logo.png" alt="Logo">
-            <h1>Permata Biru Nusantara</h1>
-        </div>
-        <ul class="nav-menu">
-            <li><a class="nav-link" href="/PJBL-main/dashboard/dashboardadmin/dashboard.php">Dashboard</a></li>
-            <li><a class="nav-link active" href="/PJBL-main/dashboard/dashboardartikel/dashboard_artikel.php">Artikel</a></li>
-            <li><a class="nav-link" href="/PJBL-main/dashboard/dashboardpengaturan/dashboard_pengaturan.php">Pengaturan</a></li>
-        </ul>
-    </div>
-
-    <div class="content">
+<main class="pb-main-content">
         <h1>Manajemen Artikel</h1>
 
         <?php if ($statusMessage !== '') : ?>
@@ -108,11 +96,11 @@ if ($query) {
                 <?php endif; ?>
             </tbody>
         </table>
-    </div>
-</div>
+    </main>
 
 <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
 <script src="js/dashboard_artikel.js"></script>
+<script src="../../assets/templateHalaman/sidebar/sidebar.js"></script>
 
 </body>
 </html>l>
