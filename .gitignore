@@ -1,3 +1,5 @@
 config/api_config.php
 config/aiven-ca.pem
 config/db_config.php
+config/mail_config.php
+vendor/

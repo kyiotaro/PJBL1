@@ -1,3 +1,8 @@
+<?php
+require_once '../../config/auth_check.php';
+include '../../koneksi.php';
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
