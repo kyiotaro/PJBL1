@@ -5,7 +5,7 @@ if (isset($_GET['hapus'])) {
     $id = (int) ($_GET['hapus'] ?? 0);
 
     if ($id > 0) {
-        $stmt = mysqli_prepare($koneksi, "DELETE FROM Artikel WHERE id = ?");
+        $stmt = mysqli_prepare($koneksi, "DELETE FROM artikel WHERE id = ?");
         mysqli_stmt_bind_param($stmt, 'i', $id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);

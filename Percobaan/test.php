@@ -4,7 +4,7 @@ include '../koneksi.php';
 // Mengambil beberapa artikel untuk pengetesan
 $query = mysqli_query($koneksi, "
     SELECT a.*, k.nama AS kategori 
-    FROM Artikel a 
+    FROM artikel a 
     LEFT JOIN kategori k ON k.id = a.kategori_id 
     LIMIT 3
 ");

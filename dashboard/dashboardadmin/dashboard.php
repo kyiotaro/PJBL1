@@ -8,7 +8,7 @@ $updateTerakhir = '-';
 $recentArticles = [];
 $categoryBreakdown = [];
 
-$totalArtikelQuery = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM Artikel");
+$totalArtikelQuery = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM artikel");
 if ($totalArtikelQuery && $row = mysqli_fetch_assoc($totalArtikelQuery)) {
     $totalArtikel = (int) $row['total'];
 }
@@ -20,13 +20,13 @@ if ($totalKategoriQuery && $row = mysqli_fetch_assoc($totalKategoriQuery)) {
 
 $artikelBulanIniQuery = mysqli_query(
     $koneksi,
-    "SELECT COUNT(*) AS total FROM Artikel WHERE MONTH(tanggal) = MONTH(CURDATE()) AND YEAR(tanggal) = YEAR(CURDATE())"
+    "SELECT COUNT(*) AS total FROM artikel WHERE MONTH(tanggal) = MONTH(CURDATE()) AND YEAR(tanggal) = YEAR(CURDATE())"
 );
 if ($artikelBulanIniQuery && $row = mysqli_fetch_assoc($artikelBulanIniQuery)) {
     $artikelBulanIni = (int) $row['total'];
 }
 
-$updateTerakhirQuery = mysqli_query($koneksi, "SELECT MAX(tanggal) AS terakhir FROM Artikel");
+$updateTerakhirQuery = mysqli_query($koneksi, "SELECT MAX(tanggal) AS terakhir FROM artikel");
 if ($updateTerakhirQuery) {
     $row = mysqli_fetch_assoc($updateTerakhirQuery);
 
@@ -37,7 +37,7 @@ if ($updateTerakhirQuery) {
 
 $recentQuery = mysqli_query($koneksi, "
     SELECT a.judul, k.nama AS kategori, a.tanggal 
-    FROM Artikel a 
+    FROM artikel a 
     LEFT JOIN kategori k ON k.id = a.kategori_id 
     ORDER BY a.tanggal DESC LIMIT 5
 ");
@@ -51,7 +51,7 @@ $categoryBreakdownQuery = mysqli_query(
     $koneksi,
     "SELECT k.nama AS kategori, COUNT(a.id) AS total 
      FROM kategori k 
-     LEFT JOIN Artikel a ON k.id = a.kategori_id 
+     LEFT JOIN artikel a ON k.id = a.kategori_id 
      GROUP BY k.id 
      ORDER BY total DESC, kategori ASC LIMIT 5"
 );

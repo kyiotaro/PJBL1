@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadPath)) {
                 $stmt = mysqli_prepare(
                     $koneksi,
-                    "INSERT INTO Artikel (judul, kategori_id, tanggal, gambar, isi, slug) VALUES (?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO artikel (judul, kategori_id, tanggal, gambar, isi, slug) VALUES (?, ?, ?, ?, ?, ?)"
                 );
                 mysqli_stmt_bind_param($stmt, 'sissss', $judul, $kategoriId, $tanggal, $gambarPath, $isi, $slug);
 

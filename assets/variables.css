@@ -84,7 +84,7 @@
 
   /* -------------------- Sidebar -------------------- */
   --sb-width: 240px;
-  --sb-collapsed-width: 64px;
+  --sb-collapsed-width: 52px;
   --sb-bg: #0c2a40;
   --sb-accent: #0369A1;
   --sb-accent-glow: rgba(3, 105, 161, 0.45);

@@ -7,7 +7,7 @@ if ($id <= 0) {
     exit;
 }
 
-$stmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori_id, tanggal, gambar, isi FROM Artikel WHERE id = ?");
+$stmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori_id, tanggal, gambar, isi FROM artikel WHERE id = ?");
 mysqli_stmt_bind_param($stmt, 'i', $id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($error === '') {
             $updateStmt = mysqli_prepare(
                 $koneksi,
-                "UPDATE Artikel SET judul = ?, kategori_id = ?, tanggal = ?, gambar = ?, isi = ?, slug = ? WHERE id = ?"
+                "UPDATE artikel SET judul = ?, kategori_id = ?, tanggal = ?, gambar = ?, isi = ?, slug = ? WHERE id = ?"
             );
             mysqli_stmt_bind_param($updateStmt, 'sissssi', $judul, $kategoriId, $tanggal, $gambar, $isi, $slug, $id);
 
