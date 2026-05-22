@@ -2,12 +2,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-primary);
 }
 
 body {
-  color: #111;
-  background-color: #fff;
+  color: var(--text-default);
+  background-color: var(--bg-default);
   scroll-behavior: smooth;
 }
 
@@ -35,25 +35,26 @@ body {
 }
 
 .isi_visi h2 {
-    color: #0369A1;
+    color: var(--primary-color);
     font-size: 30px;
     margin-bottom: 15px;
 }
 
 .isi_visi h3 {
     font-size: 20px;
-    color: #0F172A;
+    color: var(--text-title);
     margin-bottom: 8px;
 }
 
 .isi_visi p {
-    color: #333333;
+    color: var(--text-body);
     margin-bottom: 10px;
 }
 
 .isi_visi ul {
     margin-top: 10px;
     padding-left: 20px;
+    color: var(--text-body);
 }
 
 .isi_visi li {
@@ -69,7 +70,7 @@ body {
 
 .nilai-container h2 {
     font-size: 35px;
-    color: #0369A1;
+    color: var(--primary-color);
     margin-bottom: 30px;
 }
 
@@ -81,11 +82,12 @@ body {
 }
 
 .kotak_nilai {
-  background: #f9f9f9;
+  background: var(--bg-subtle);
   width: calc(25% - 15px);
   padding: 20px 10px;
   border-radius: 15px;
   box-sizing: border-box;
+  border: 1px solid var(--border-color);
 }
 
 .judul {
@@ -102,13 +104,13 @@ body {
 }
 
 .judul h3 {
-    color: #0F172A;
+    color: var(--text-title);
     font-size: 32px;
     margin-bottom: 10px;
 }
 
 .kotak_nilai p {
-    color: #374151;
+    color: var(--text-body);
     font-size: 14px;
 }
 
@@ -122,7 +124,7 @@ body {
 .cerita h2 {
     font-size: 35px;
     text-align: center;
-    color: #0369A1;
+    color: var(--primary-color);
     margin-bottom: 30px;
 }
 
@@ -132,7 +134,7 @@ body {
 
 .garis {
     width: 10px;
-    background-color: #0369A1;
+    background-color: var(--primary-color);
     border-radius: 10px;
     margin-right: 30px;
     flex-shrink: 0;
@@ -140,7 +142,7 @@ body {
 
 .teks_cerita p {
     font-size: 15px;
-    color: #333333;
+    color: var(--text-body);
     text-align: justify;
     margin-bottom: 15px;
 }

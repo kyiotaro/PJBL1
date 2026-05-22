@@ -48,8 +48,8 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #e0f2fe;
-  color: #0369A1;
+  background: var(--primary-light);
+  color: var(--primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,8 +61,8 @@
 
 .faq-item.open .faq-icon {
   transform: rotate(45deg);
-  background: #0369A1;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-on-primary);
 }
 
 .faq-answer {

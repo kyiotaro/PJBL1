@@ -18,12 +18,16 @@
 <body>
   <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
-  <?php
-  $heroImage = '../../assets/Foto/ui/background.png';
-  $heroTitle = 'Permata Biru Nusantara';
-  $heroSubtitle = 'Menghadirkan pesona dan kekayaan laut Indonesia dari sabang sampai merauke. Semua tentang laut, dari biodata, budaya, hingga pelestarian, terangkum di sini.';
-  include '../../assets/templateHalaman/hero/hero.php';
-  ?>
+  <section class="hero" style="background-image: url('../../assets/Foto/ui/background.png')">
+    <div class="overlay">
+      <h2>Permata Biru Nusantara</h2>
+      <p>
+        Permata Biru Nusantara menghadirkan pesona dan kekayaan laut Indonesia dari
+        sabang sampai merauke.
+        Semua tentang laut, dari biodata, budaya, hingga pelestarian, terangkum di sini.
+      </p>
+    </div>
+  </section>
 
   <main>
     <div class="kategori">

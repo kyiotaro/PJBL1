@@ -26,7 +26,7 @@
   transition: margin-left var(--sb-transition);
   padding: 30px;
   min-height: 100vh;
-  background: #f5f7fa;
+  background: var(--bg-page);
 }
 
 .pb-sidebar.collapsed ~ .pb-main-content,

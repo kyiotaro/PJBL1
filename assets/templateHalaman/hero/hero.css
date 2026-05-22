@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: #0c2a40; /* Fallback */
+  background-color: var(--sb-bg); /* Fallback */
 }
 
 .pb-hero-img {
@@ -26,7 +26,7 @@
   width: 100%;
   height: 100%;
   min-height: inherit;
-  background: linear-gradient(180deg, rgba(2, 44, 84, 0.35), rgba(2, 44, 84, 0.82));
+  background: var(--hero-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +37,7 @@
 .pb-hero-content {
   max-width: 860px;
   text-align: center;
-  color: #fff;
+  color: var(--text-on-primary);
   animation: fadeInDown 0.8s ease-out;
 }
 

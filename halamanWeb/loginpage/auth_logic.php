@@ -23,6 +23,19 @@ if ($action === 'send_otp') {
         exit;
     }
 
+    // CEK APAKAH EMAIL TERDAFTAR DI TABEL ADMIN
+    $stmt = mysqli_prepare($koneksi, "SELECT id FROM admin WHERE email = ? LIMIT 1");
+    mysqli_stmt_bind_param($stmt, 's', $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (mysqli_num_rows($result) === 0) {
+        echo json_encode(['success' => false, 'message' => 'Email admin tidak terdaftar.']);
+        mysqli_stmt_close($stmt);
+        exit;
+    }
+    mysqli_stmt_close($stmt);
+
     // Sederhana: Generate 6 digit angka
     $otp = rand(100000, 999999);
     $_SESSION['temp_otp'] = $otp;

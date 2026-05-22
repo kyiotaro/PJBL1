@@ -14,6 +14,42 @@ body {
   background: var(--bg-default);
 }
 
+/* -------------------- bagian hero -------------------- */
+.hero {
+  background-size: cover;
+  background-position: center;
+  height: 550px;
+  position: relative;
+  min-height: 300px;
+}
+
+.hero .overlay {
+  background: var(--hero-overlay);
+  color: #ffffff;
+  padding: 14% var(--spacing-2xl);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero h2 {
+  font-size: 42px;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.hero p {
+  width: 65%;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.hero .highlight {
+  color: #ffe600; /* Warna kuning khas untuk highlight di hero */
+  font-weight: bold;
+}
+
 /* -------------------- Search Suggestions -------------------- */
 @keyframes slideDown {
   from {
@@ -31,24 +67,24 @@ body {
   cursor: pointer;
   font-size: 14px;
   color: var(--text-default);
-  border-bottom: 1px solid rgba(0,0,0,0.04);
+  border-bottom: 1px solid var(--border-subtle);
   transition: all var(--transition-fast) ease;
   font-weight: 500;
 }
 
 .suggestion-item:hover {
-  background: linear-gradient(90deg, rgba(13, 110, 253, 0.05) 0%, rgba(13, 110, 253, 0.02) 100%);
+  background: linear-gradient(90deg, var(--bg-subtle) 0%, var(--bg-page) 100%);
   padding-left: 20px;
 }
 
 .suggestion-item.active {
-  background: linear-gradient(90deg, rgba(13, 110, 253, 0.08) 0%, rgba(13, 110, 253, 0.04) 100%);
-  color: var(--link-hover);
+  background: linear-gradient(90deg, var(--primary-light) 0%, var(--bg-subtle) 100%);
+  color: var(--primary-color);
 }
 
 .suggestion-empty {
   padding: var(--spacing-md) var(--spacing-md);
-  color: #999;
+  color: var(--text-muted);
   text-align: center;
   font-size: 13px;
 }
@@ -60,27 +96,29 @@ body {
 
 .kategori button {
   border: none;
-  background: var(--header-border);
+  background: var(--border-color);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 20px;
   margin-right: 8px;
   cursor: pointer;
   transition: var(--transition-normal);
+  color: var(--text-body);
 }
 
 .kategori button:hover {
-  background: var(--link-hover);
-  color: var(--bg-default);
+  background: var(--primary-color);
+  color: var(--text-on-primary);
 }
 
 .kategori .aktif {
-  background: var(--link-color);
-  color: var(--bg-default);
+  background: var(--primary-color);
+  color: var(--text-on-primary);
 }
 
 main h3 {
   font-size: 24px;
   margin: var(--spacing-lg) var(--spacing-2xl);
+  color: var(--text-title);
 }
 
 .grid {

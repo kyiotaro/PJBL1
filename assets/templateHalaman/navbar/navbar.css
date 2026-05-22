@@ -59,19 +59,19 @@ header .logo h1 {
   background: var(--bg-default);
   padding: 0 1rem;
   border-radius: 30px;
-  border: 1px solid var(--header-border);
+  border: 1px solid var(--border-color);
   height: 44px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(3, 105, 161, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .pb-search-bar:focus-within {
-  border-color: #0369A1;
-  box-shadow: 0 4px 16px rgba(3, 105, 161, 0.18);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
 }
 
 .pb-search-bar:hover {
-  border-color: #93c5fd;
+  border-color: var(--primary-light);
 }
 
 .pb-input-container {
@@ -99,12 +99,12 @@ header .logo h1 {
   flex-shrink: 0;
 }
 
-.pb-search-bar:focus-within .pb-search-icon { fill: #0369A1; }
+.pb-search-bar:focus-within .pb-search-icon { fill: var(--primary-color); }
 
 .pb-divider {
   width: 1px;
   height: 22px;
-  background: var(--header-border);
+  background: var(--border-color);
   margin: 0 0.5rem;
   flex-shrink: 0;
 }
@@ -123,10 +123,10 @@ header .logo h1 {
   flex-shrink: 0;
 }
 
-.pb-mic-btn:hover { background: #e0f2fe; }
+.pb-mic-btn:hover { background: var(--primary-light); }
 .pb-mic-btn.listening { background: #fee2e2; }
 .pb-mic-icon { fill: var(--text-muted); transition: fill 0.2s; }
-.pb-mic-btn:hover .pb-mic-icon { fill: #0369A1; }
+.pb-mic-btn:hover .pb-mic-icon { fill: var(--primary-color); }
 .pb-mic-btn.listening .pb-mic-icon { fill: #dc2626; }
 
 nav a {
@@ -150,4 +150,22 @@ nav a::after {
 
 nav a:hover::after {
   width: 100%;
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: 15px;
+  color: var(--text-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--bg-subtle);
 }
