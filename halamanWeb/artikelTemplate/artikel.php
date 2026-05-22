@@ -87,19 +87,19 @@ if ($currentArticleId > 0) {
   <link rel="stylesheet" href="../../assets/templateHalaman/navbar/navbar.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/footer/footer.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card1/card1.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/hero/hero.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/sectionHeader/sectionHeader.css">
 </head>
 
 <body>
   <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
-  <section class="hero">
-    <img src="<?= htmlspecialchars($articleImagePath); ?>" alt="<?= htmlspecialchars($article['judul']); ?>"
-      class="hero-img">
-    <div class="hero-content">
-      <h1><?= htmlspecialchars($article['judul']); ?></h1>
-      <p>Jelajahi cerita, pengetahuan, dan pesona bahari Indonesia dalam satu halaman yang lebih nyaman dibaca.</p>
-    </div>
-  </section>
+  <?php
+  $heroImage = $articleImagePath;
+  $heroTitle = $article['judul'];
+  $heroSubtitle = 'Jelajahi cerita, pengetahuan, dan pesona bahari Indonesia dalam satu halaman yang lebih nyaman dibaca.';
+  include '../../assets/templateHalaman/hero/hero.php';
+  ?>
 
   <main class="content-wrapper">
     <article class="article-card-detail">
@@ -127,10 +127,11 @@ if ($currentArticleId > 0) {
   </main>
   
   <section class="others">
-    <div class="section-heading">
-      <h2>Artikel lainnya</h2>
-      <p>Temukan cerita laut Indonesia lainnya.</p>
-    </div>
+    <?php
+    $sectionTitle = 'Artikel lainnya';
+    $sectionSubtitle = 'Temukan cerita laut Indonesia lainnya.';
+    include '../../assets/templateHalaman/sectionHeader/sectionHeader.php';
+    ?>
 
     <div class="related-grid">
       <?php if (!empty($relatedArticles)): ?>

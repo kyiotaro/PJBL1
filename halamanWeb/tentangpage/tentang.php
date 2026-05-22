@@ -8,22 +8,19 @@
     <link rel="stylesheet" href="css/tentang.css">
     <link rel="stylesheet" href="../../assets/templateHalaman/navbar/navbar.css">
     <link rel="stylesheet" href="../../assets/templateHalaman/footer/footer.css">
+    <link rel="stylesheet" href="../../assets/templateHalaman/hero/hero.css">
 </head>
 
 <body>
     <!-- Include navbar -->
     <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
-    <section class="hero"
-        style="background-image: url(../../assets/Foto/about/photographer-taking-photo-ice-iceland.jpg);">
-        <div class="overlay">
-            <div class="isi_hero">
-                <h1>About Us</h1>
-                <p>Misi kami adalah melestarikan dan memperkenalkan kekayaan lautan Indonesia melalui artikel
-                    berkualitas tinggi dan penelitian mendalam.</p>
-            </div>
-        </div>
-    </section>
+    <?php
+    $heroImage = '../../assets/Foto/about/photographer-taking-photo-ice-iceland.jpg';
+    $heroTitle = 'About Us';
+    $heroSubtitle = 'Misi kami adalah melestarikan dan memperkenalkan kekayaan lautan Indonesia melalui artikel berkualitas tinggi dan penelitian mendalam.';
+    include '../../assets/templateHalaman/hero/hero.php';
+    ?>
 
     <section class="visi_misi">
         <div class="gambar_visi">

@@ -1,0 +1,48 @@
+@import url('../../variables.css');
+
+.pb-section-header {
+  margin-bottom: 30px;
+  padding: 0 var(--spacing-2xl);
+}
+
+.pb-section-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-default);
+  margin-bottom: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.pb-section-header h2::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--link-hover);
+  border-radius: 2px;
+}
+
+.pb-section-header p {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 700px;
+}
+
+@media (max-width: 768px) {
+  .pb-section-header {
+    padding: 0 var(--spacing-md);
+    margin-bottom: 20px;
+  }
+  
+  .pb-section-header h2 {
+    font-size: 1.6rem;
+  }
+  
+  .pb-section-header p {
+    font-size: 1rem;
+  }
+}

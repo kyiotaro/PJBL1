@@ -8,17 +8,17 @@
   <link rel="stylesheet" href="../../assets/templateHalaman/FAQcard/FAQcard.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/navbar/navbar.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/footer/footer.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/hero/hero.css">
 </head>
 <body>
   <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
-  <section class="hero">
-    <img src="../../assets/Foto/FAQ/FAQ_hero.jpg" alt="FAQ Hero Image" class="hero-img">
-    <div class="hero-content">
-      <h1>Frequently Asked Questions (FAQ)</h1>
-      <p>Temukan jawaban atas pertanyaan umum seputar layanan dan kebijakan kami.</p>
-    </div>
-  </section>
+  <?php
+  $heroImage = '../../assets/Foto/FAQ/FAQ_hero.jpg';
+  $heroTitle = 'Frequently Asked Questions (FAQ)';
+  $heroSubtitle = 'Temukan jawaban atas pertanyaan umum seputar layanan dan kebijakan kami.';
+  include '../../assets/templateHalaman/hero/hero.php';
+  ?>
 
   <div class="content-wrapper">
     <?php

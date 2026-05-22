@@ -11,21 +11,19 @@
   <link rel="stylesheet" href="../../assets/templateHalaman/navbar/navbar.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/footer/footer.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card1/card1.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/hero/hero.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/sectionHeader/sectionHeader.css">
 </head>
 
 <body>
   <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
 
-  <section class="hero" style="background-image: url('../../assets/Foto/ui/background.png')">
-    <div class="overlay">
-      <h2>Permata Biru Nusantara</h2>
-      <p>
-        <span class="highlight">Permata Biru Nusantara</span> menghadirkan pesona dan kekayaan laut Indonesia dari
-        sabang sampai merauke.
-        Semua tentang laut, dari biodata, budaya, hingga pelestarian, terangkum di sini.
-      </p>
-    </div>
-  </section>
+  <?php
+  $heroImage = '../../assets/Foto/ui/background.png';
+  $heroTitle = 'Permata Biru Nusantara';
+  $heroSubtitle = 'Menghadirkan pesona dan kekayaan laut Indonesia dari sabang sampai merauke. Semua tentang laut, dari biodata, budaya, hingga pelestarian, terangkum di sini.';
+  include '../../assets/templateHalaman/hero/hero.php';
+  ?>
 
   <main>
     <div class="kategori">
@@ -41,7 +39,10 @@
     </div>
 
     <section class="terpopuler" id="terpopuler">
-      <h3>Terpopuler</h3>
+      <?php 
+      $sectionTitle = 'Terpopuler';
+      include '../../assets/templateHalaman/sectionHeader/sectionHeader.php';
+      ?>
       <div class="grid">
         <?php
         $query = mysqli_query($koneksi, "
@@ -59,7 +60,10 @@
 
     <!-- ARTIKEL TERBARU -->
     <section class="artikel-terbaru">
-      <h3>Artikel Terbaru</h3>
+      <?php 
+      $sectionTitle = 'Artikel Terbaru';
+      include '../../assets/templateHalaman/sectionHeader/sectionHeader.php';
+      ?>
       <div class="grid">
         <?php
         $query2 = mysqli_query($koneksi, "
@@ -77,7 +81,10 @@
 
     <!-- ARTIKEL LAINNYA -->
     <section class="artikel-lainnya">
-      <h3>Artikel Lainnya</h3>
+      <?php 
+      $sectionTitle = 'Artikel Lainnya';
+      include '../../assets/templateHalaman/sectionHeader/sectionHeader.php';
+      ?>
       <div class="grid">
         <?php
         $query3 = mysqli_query($koneksi, "

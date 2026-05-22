@@ -14,39 +14,7 @@ body {
   background: var(--bg-default);
 }
 
-/* -------------------- bagian hero -------------------- */
-.hero {
-  background: url('https://via.placeholder.com/1200x500') center/cover no-repeat;
-  height: 550px;
-  position: relative;
-  min-height: 300px;
-}
-
-.hero .overlay {
-  background: var(--hero-overlay);
-  color: var(--bg-default);
-  padding: 14% var(--spacing-2xl);
-  height: 100%;
-}
-
-.hero h2 {
-  font-size: 36px;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  width: 60%;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.hero .highlight {
-  color: var(--link-hover);
-  font-weight: bold;
-}
-
-
-
+/* -------------------- Search Suggestions -------------------- */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -217,18 +185,6 @@ article a:hover {
     width: 100%;
   }
 
-  .hero {
-    height: 220px;
-  }
-
-  .hero .overlay {
-    padding: 20% 12px;
-  }
-
-  .hero h2 {
-    font-size: 16px;
-  }
-
   .grid {
     grid-template-columns: 1fr;
   }
@@ -238,4 +194,3 @@ article a:hover {
     padding: 5px 8px;
   }
 }
-
