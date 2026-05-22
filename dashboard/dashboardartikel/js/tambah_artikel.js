@@ -1,6 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-    if (!protectAdminPage()) return;
-    setupAdminUI();
+document.addEventListener('DOMContentLoaded', async () => {
+    await setupAdminUI();
 
     window.quillInstance = new Quill('#editor', {
         theme: 'snow',

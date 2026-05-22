@@ -25,36 +25,11 @@ include '../../koneksi.php';
         <p>Atur preferensi sistem sesuai kebutuhan Anda.</p>
 
         <section class="settings-section">
-            <h3>Backup & Restore</h3>
-            <p class="muted">Backup sekarang sudah bisa diekspor ke file JSON dan dipulihkan kembali.</p>
-
+            <h3>Backup Database</h3>            
             <div class="backup-container">
                 <div class="backup-actions">
-                    <button id="backupBtn" type="button" class="btn-primary">Backup Sekarang</button>
-
-                    <label class="btn-outline file-label">
-                        Restore dari File
-                        <input id="restoreInput" type="file" accept=".json" />
-                    </label>
+                    <a href="backup_logic.php" class="btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: fit-content; padding: 10px 30px;">BACKUP</a>
                 </div>
-
-                <h4>Riwayat Backup</h4>
-                <table class="backup-table">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Jenis</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td id="backupDate">Belum ada backup</td>
-                            <td>Pengaturan admin</td>
-                            <td><button type="button" class="btn-small" id="backupInfoBtn">Siap digunakan</button></td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </section>
 

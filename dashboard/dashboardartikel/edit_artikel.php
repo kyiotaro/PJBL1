@@ -11,8 +11,23 @@ if ($id <= 0) {
 $stmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori_id, tanggal, gambar, isi FROM artikel WHERE id = ?");
 mysqli_stmt_bind_param($stmt, 'i', $id);
 mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-$article = mysqli_fetch_assoc($result);
+
+if (function_exists('mysqli_stmt_get_result')) {
+    $result = mysqli_stmt_get_result($stmt);
+    $article = mysqli_fetch_assoc($result);
+} else {
+    mysqli_stmt_bind_result($stmt, $articleId, $articleJudul, $articleKategoriId, $articleTanggal, $articleGambar, $articleIsi);
+    mysqli_stmt_fetch($stmt);
+    $article = [
+        'id' => $articleId,
+        'judul' => $articleJudul,
+        'kategori_id' => $articleKategoriId,
+        'tanggal' => $articleTanggal,
+        'gambar' => $articleGambar,
+        'isi' => $articleIsi
+    ];
+}
+
 mysqli_stmt_close($stmt);
 
 if (!$article) {
@@ -34,9 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmtKat = mysqli_prepare($koneksi, "SELECT id FROM kategori WHERE slug = ?");
     mysqli_stmt_bind_param($stmtKat, 's', $slugKategori);
     mysqli_stmt_execute($stmtKat);
-    $resKat = mysqli_stmt_get_result($stmtKat);
-    $rowKat = mysqli_fetch_assoc($resKat);
-    $kategoriId = $rowKat['id'] ?? null;
+
+    if (function_exists('mysqli_stmt_get_result')) {
+        $resKat = mysqli_stmt_get_result($stmtKat);
+        $rowKat = mysqli_fetch_assoc($resKat);
+        $kategoriId = $rowKat['id'] ?? null;
+    } else {
+        mysqli_stmt_bind_result($stmtKat, $kategoriId);
+        mysqli_stmt_fetch($stmtKat);
+    }
+
     mysqli_stmt_close($stmtKat);
 
     if ($slug === '') {
@@ -171,4 +193,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="../../assets/templateHalaman/sidebar/sidebar.js"></script>
 
 </body>
-</html>l>
+</html>

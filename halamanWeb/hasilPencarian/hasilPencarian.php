@@ -18,7 +18,7 @@ $search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GE
 
 <body>
   <?php include '../../assets/templateHalaman/navbar/navbar.php'; ?>
-
+  
   <main>
     <div class="card2-list">
       <?php

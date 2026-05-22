@@ -19,9 +19,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmtKat = mysqli_prepare($koneksi, "SELECT id FROM kategori WHERE slug = ?");
     mysqli_stmt_bind_param($stmtKat, 's', $slugKategori);
     mysqli_stmt_execute($stmtKat);
-    $resKat = mysqli_stmt_get_result($stmtKat);
-    $rowKat = mysqli_fetch_assoc($resKat);
-    $kategoriId = $rowKat['id'] ?? null;
+
+    if (function_exists('mysqli_stmt_get_result')) {
+        $resKat = mysqli_stmt_get_result($stmtKat);
+        $rowKat = mysqli_fetch_assoc($resKat);
+        $kategoriId = $rowKat['id'] ?? null;
+    } else {
+        mysqli_stmt_bind_result($stmtKat, $kategoriId);
+        mysqli_stmt_fetch($stmtKat);
+    }
+
     mysqli_stmt_close($stmtKat);
 
     if ($judul === '' || $slugKategori === '' || $tanggal === '' || $isi === '') {

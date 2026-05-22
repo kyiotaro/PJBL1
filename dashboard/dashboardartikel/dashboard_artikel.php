@@ -28,16 +28,69 @@ if ($status === 'created') {
 }
 
 $articles = [];
-$query = mysqli_query($koneksi, "
+$categories = [];
+$search = trim($_GET['search'] ?? '');
+$categoryId = (int) ($_GET['kategori'] ?? 0);
+$tanggal = trim($_GET['tanggal'] ?? '');
+
+$categoryQuery = mysqli_query($koneksi, "SELECT id, nama FROM kategori ORDER BY nama ASC");
+if ($categoryQuery) {
+    while ($row = mysqli_fetch_assoc($categoryQuery)) {
+        $categories[] = $row;
+    }
+}
+
+$whereClauses = [];
+$params = [];
+$types = '';
+
+if ($search !== '') {
+    $whereClauses[] = "(a.judul LIKE ? OR k.nama LIKE ?)";
+    $searchParam = '%' . $search . '%';
+    $params[] = $searchParam;
+    $params[] = $searchParam;
+    $types .= 'ss';
+}
+
+if ($categoryId > 0) {
+    $whereClauses[] = 'a.kategori_id = ?';
+    $params[] = $categoryId;
+    $types .= 'i';
+}
+
+if ($tanggal !== '') {
+    $whereClauses[] = 'a.tanggal = ?';
+    $params[] = $tanggal;
+    $types .= 's';
+}
+
+$sql = "
     SELECT a.id, a.judul, a.tanggal, k.nama AS kategori
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
-    ORDER BY a.tanggal DESC, a.id DESC
-");
-if ($query) {
-    while ($row = mysqli_fetch_assoc($query)) {
+";
+if (!empty($whereClauses)) {
+    $sql .= '    WHERE ' . implode(' AND ', $whereClauses) . "\n";
+}
+$sql .= "    ORDER BY a.tanggal DESC, a.id DESC\n";
+
+$stmt = mysqli_prepare($koneksi, $sql);
+if ($stmt) {
+    if ($types !== '') {
+        $bindParams = [];
+        $bindParams[] = &$types;
+        foreach ($params as $key => $value) {
+            $bindParams[] = &$params[$key];
+        }
+        call_user_func_array('mysqli_stmt_bind_param', array_merge([$stmt], $bindParams));
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_assoc($result)) {
         $articles[] = $row;
     }
+    mysqli_stmt_close($stmt);
 }
 ?>
 <!DOCTYPE html>
@@ -65,6 +118,17 @@ if ($query) {
         <?php endif; ?>
 
         <a href="tambah_artikel.php" class="add-btn">+ Tambah Artikel</a>
+        <form action="dashboard_artikel.php" method="GET" class="search-form">
+            <input type="text" name="search" placeholder="Cari artikel..." value="<?= htmlspecialchars($search); ?>">
+            <select name="kategori">
+                <option value="">Semua Kategori</option>
+                <?php foreach ($categories as $cat) : ?>
+                    <option value="<?= (int) $cat['id']; ?>" <?= $categoryId === (int) $cat['id'] ? 'selected' : ''; ?>><?= htmlspecialchars($cat['nama']); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="date" name="tanggal" value="<?= htmlspecialchars($tanggal); ?>">
+            <button type="submit">Filter</button>
+        </form>
 
         <table>
             <thead>
@@ -104,4 +168,4 @@ if ($query) {
 <script src="../../assets/templateHalaman/sidebar/sidebar.js"></script>
 
 </body>
-</html>l>
+</html>
