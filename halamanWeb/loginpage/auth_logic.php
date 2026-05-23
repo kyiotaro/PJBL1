@@ -42,23 +42,25 @@ if ($action === 'send_otp') {
     $_SESSION['temp_email'] = $email;
     $_SESSION['otp_expiry'] = time() + (5 * 60); // Berlaku 5 menit
 
+    // Ambil Konfigurasi SMTP dari Database
+    $qSmtp = mysqli_query($koneksi, "SELECT kunci, nilai FROM pengaturan WHERE kunci LIKE 'smtp_%'");
+    $smtp = [];
+    while ($row = mysqli_fetch_assoc($qSmtp)) {
+        $smtp[$row['kunci']] = $row['nilai'];
+    }
+
     // Konfigurasi Email
     $mail = new PHPMailer(true);
 
     try {
         // Pengaturan Server
-        $mail->SMTPDebug = 2; // Aktifkan debug (0 = off, 1 = client, 2 = client & server)
-        $mail->Debugoutput = function($str, $level) {
-            file_put_contents('mail_log.log', date('Y-m-d H:i:s').' ['.$level.'] '.$str.PHP_EOL, FILE_APPEND);
-        };
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com'; // Ganti dengan SMTP provider
+        $mail->Host       = $smtp['smtp_host'] ?? 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'kyiotaro7@gmail.com'; // Ganti dengan email pengirim
-        $mail->Password   = 'kgsy cyqq dhnx ndmv'; // Ganti dengan App Password Gmail
+        $mail->Username   = $smtp['smtp_user'] ?? '';
+        $mail->Password   = $smtp['smtp_pass'] ?? '';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-
+        $mail->Port       = $smtp['smtp_port'] ?? 587;
         // Bypass SSL Verification (Penting untuk XAMPP)
         $mail->SMTPOptions = array(
             'ssl' => array(

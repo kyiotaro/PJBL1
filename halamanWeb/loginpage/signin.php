@@ -15,36 +15,36 @@
 <body>
   <div class="container">
     <div class="kiri">
-      <div class="logo">
-        <img src="/PJBL-main/assets/Foto/brand/logo.png" alt="Logo">
-      </div>
+      <div class="auth-card">
+        <div class="logo">
+          <img src="/PJBL-main/assets/Foto/brand/logo.png" alt="Logo">
+        </div>
 
-      <div class="step active" id="step1">
-        <h1>Admin Sign in</h1>
-        <p class="subtitle" id="formSubtitle">Masukkan email admin untuk masuk</p>
+        <div class="step active" id="step1">
+          <h1>Admin Sign in</h1>
+          <p class="subtitle" id="formSubtitle">Masukkan email admin untuk masuk</p>
 
-        <div class="button-group">
           <form class="login-form" id="loginForm">
-            <div id="emailSection">
+            <div id="emailSection" class="form-group">
               <label for="email">Email Admin</label>
               <input id="email" name="email" type="email" placeholder="admin@example.com" required>
               <button class="primary-button" type="submit" id="btnSendOtp">Kirim OTP</button>
             </div>
 
-            <div id="otpSection" style="display: none; margin-top: 20px;">
+            <div id="otpSection" class="form-group" style="display: none;">
               <label for="otp">Kode OTP</label>
               <input id="otp" name="otp" type="text" placeholder="6 Digit Kode" maxlength="6">
               <button class="primary-button" type="button" id="btnVerifyOtp">Verifikasi & Masuk</button>
-              <p style="margin-top: 10px; font-size: 0.9em;">
+              <p class="resend-text">
                 <a href="#" id="btnResendOtp">Kirim ulang email?</a>
               </p>
             </div>
           </form>
         </div>
-      </div>
 
-      <div class="signup-cta">
-        <p><a href="/PJBL-main/halamanWeb/landingpage/landingpage.php">← Kembali ke halaman utama</a></p>
+        <div class="signup-cta">
+          <p><a href="/PJBL-main/halamanWeb/landingpage/landingpage.php">← Kembali ke halaman utama</a></p>
+        </div>
       </div>
     </div>
 

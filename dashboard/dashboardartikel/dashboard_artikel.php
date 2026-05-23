@@ -117,18 +117,20 @@ if ($stmt) {
             <p style="margin-bottom: 16px; color: #0369A1; font-weight: 600;"><?= htmlspecialchars($statusMessage); ?></p>
         <?php endif; ?>
 
-        <a href="tambah_artikel.php" class="add-btn">+ Tambah Artikel</a>
-        <form action="dashboard_artikel.php" method="GET" class="search-form">
-            <input type="text" name="search" placeholder="Cari artikel..." value="<?= htmlspecialchars($search); ?>">
-            <select name="kategori">
-                <option value="">Semua Kategori</option>
-                <?php foreach ($categories as $cat) : ?>
-                    <option value="<?= (int) $cat['id']; ?>" <?= $categoryId === (int) $cat['id'] ? 'selected' : ''; ?>><?= htmlspecialchars($cat['nama']); ?></option>
-                <?php endforeach; ?>
-            </select>
-            <input type="date" name="tanggal" value="<?= htmlspecialchars($tanggal); ?>">
-            <button type="submit">Filter</button>
-        </form>
+        <div class="dashboard-actions">
+            <a href="tambah_artikel.php" class="add-btn">+ Tambah Artikel</a>
+            <form action="dashboard_artikel.php" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="Cari artikel..." value="<?= htmlspecialchars($search); ?>">
+                <select name="kategori">
+                    <option value="">Semua Kategori</option>
+                    <?php foreach ($categories as $cat) : ?>
+                        <option value="<?= (int) $cat['id']; ?>" <?= $categoryId === (int) $cat['id'] ? 'selected' : ''; ?>><?= htmlspecialchars($cat['nama']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="date" name="tanggal" value="<?= htmlspecialchars($tanggal); ?>">
+                <button type="submit">Filter</button>
+            </form>
+        </div>
 
         <table>
             <thead>
