@@ -137,6 +137,12 @@ nav a {
   position: relative;
 }
 
+nav.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 nav a::after {
   content: "";
   position: absolute;

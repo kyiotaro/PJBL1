@@ -45,19 +45,29 @@ async function loadBackupHistory() {
     tbody.innerHTML = '';
     
     if (data && data.success) {
-        data.backups.forEach(b => {
+        if (data.backups && data.backups.length > 0) {
+            data.backups.forEach(b => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${b.name}</strong></td>
+                    <td>${b.size}</td>
+                    <td>${b.date}</td>
+                    <td class="backup-actions">
+                        <a href="../../backups/${b.name}" class="btn-small" download title="Unduh backup">Unduh</a>
+                        <button class="btn-danger" onclick="deleteBackup('${b.name}')" title="Hapus backup">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${b.name}</td>
-                <td>${b.size}</td>
-                <td>${b.date}</td>
-                <td class="cat-actions">
-                    <a href="../../backups/${b.name}" class="btn-small" download>Unduh</a>
-                    <button class="btn-danger" onclick="deleteBackup('${b.name}')">Hapus</button>
-                </td>
-            `;
+            tr.innerHTML = '<td colspan="4" style="text-align: center; color: #64748b; padding: 20px;">Belum ada backup. Buat backup pertama Anda sekarang.</td>';
             tbody.appendChild(tr);
-        });
+        }
+    } else {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="4" style="text-align: center; color: #dc2626; padding: 20px;">Gagal memuat backup: ${data?.message || 'Error tidak diketahui'}</td>`;
+        tbody.appendChild(tr);
     }
 }
 

@@ -16,7 +16,7 @@ $article = null;
 
 if ($articleId > 0) {
   $stmt = mysqli_prepare($koneksi, "
-    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi 
+    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi, k.id AS kategori_id 
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
     WHERE a.id = ? LIMIT 1
@@ -30,7 +30,7 @@ if ($articleId > 0) {
 
 if (!$article) {
   $latestQuery = mysqli_query($koneksi, "
-    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi 
+    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi, k.id AS kategori_id 
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
     ORDER BY a.tanggal DESC, a.id DESC LIMIT 1
@@ -56,16 +56,17 @@ if ($articleContent === '') {
 
 $relatedArticles = [];
 $currentArticleId = (int) ($article['id'] ?? 0);
+$currentCategoryId = (int) ($article['kategori_id'] ?? 0);
 
-if ($currentArticleId > 0) {
+if ($currentArticleId > 0 && $currentCategoryId > 0) {
   $relatedStmt = mysqli_prepare($koneksi, "
     SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar 
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
-    WHERE a.id != ? 
-    ORDER BY a.tanggal DESC, a.id DESC LIMIT 3
+    WHERE a.id != ? AND a.kategori_id = ?
+    ORDER BY a.tanggal DESC, a.id DESC LIMIT 9
   ");
-  mysqli_stmt_bind_param($relatedStmt, 'i', $currentArticleId);
+  mysqli_stmt_bind_param($relatedStmt, 'ii', $currentArticleId, $currentCategoryId);
   mysqli_stmt_execute($relatedStmt);
   $relatedResult = mysqli_stmt_get_result($relatedStmt);
 
@@ -74,6 +75,25 @@ if ($currentArticleId > 0) {
   }
 
   mysqli_stmt_close($relatedStmt);
+}
+
+if ($currentArticleId > 0 && count($relatedArticles) < 9) {
+  $existingIds = array_merge([$currentArticleId], array_column($relatedArticles, 'id'));
+  $excludeIn = implode(',', array_map('intval', $existingIds));
+  $remainingLimit = 9 - count($relatedArticles);
+
+  $fallbackQuery = "
+    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar 
+    FROM artikel a
+    LEFT JOIN kategori k ON k.id = a.kategori_id
+    WHERE a.id NOT IN ($excludeIn)
+    ORDER BY a.tanggal DESC, a.id DESC LIMIT $remainingLimit
+  ";
+  $fallbackResult = mysqli_query($koneksi, $fallbackQuery);
+
+  while ($fallbackRow = mysqli_fetch_assoc($fallbackResult)) {
+    $relatedArticles[] = $fallbackRow;
+  }
 }
 ?>
 <!DOCTYPE html>

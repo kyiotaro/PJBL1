@@ -64,6 +64,60 @@ if ($tanggal !== '') {
     $types .= 's';
 }
 
+// Sorting Logic
+$allowedSortColumns = [
+    'id' => 'a.id',
+    'judul' => 'a.judul',
+    'kategori' => 'k.nama',
+    'tanggal' => 'a.tanggal'
+];
+
+$sort = $_GET['sort'] ?? 'tanggal';
+$order = strtoupper($_GET['order'] ?? 'DESC');
+
+if (!array_key_exists($sort, $allowedSortColumns)) {
+    $sort = 'tanggal';
+}
+if ($order !== 'ASC' && $order !== 'DESC') {
+    $order = 'DESC';
+}
+
+$orderBy = $allowedSortColumns[$sort];
+
+// Pagination Logic
+$limit = 20;
+$page = (int) ($_GET['page'] ?? 1);
+if ($page < 1) $page = 1;
+
+// Count total items for pagination
+$countSql = "SELECT COUNT(*) as total FROM artikel a LEFT JOIN kategori k ON k.id = a.kategori_id";
+if (!empty($whereClauses)) {
+    $countSql .= ' WHERE ' . implode(' AND ', $whereClauses);
+}
+
+$stmtCount = mysqli_prepare($koneksi, $countSql);
+if ($stmtCount) {
+    if ($types !== '') {
+        $bindParams = [];
+        $bindParams[] = &$types;
+        foreach ($params as $key => $value) {
+            $bindParams[] = &$params[$key];
+        }
+        call_user_func_array('mysqli_stmt_bind_param', array_merge([$stmtCount], $bindParams));
+    }
+    mysqli_stmt_execute($stmtCount);
+    $resCount = mysqli_stmt_get_result($stmtCount);
+    $rowCount = mysqli_fetch_assoc($resCount);
+    $totalItems = $rowCount['total'] ?? 0;
+    mysqli_stmt_close($stmtCount);
+} else {
+    $totalItems = 0;
+}
+
+$totalPages = ceil($totalItems / $limit);
+if ($page > $totalPages && $totalPages > 0) $page = $totalPages;
+$offset = ($page - 1) * $limit;
+
 $sql = "
     SELECT a.id, a.judul, a.tanggal, k.nama AS kategori
     FROM artikel a
@@ -72,18 +126,29 @@ $sql = "
 if (!empty($whereClauses)) {
     $sql .= '    WHERE ' . implode(' AND ', $whereClauses) . "\n";
 }
-$sql .= "    ORDER BY a.tanggal DESC, a.id DESC\n";
+
+// Special case for ID sorting to keep it consistent
+if ($sort === 'id') {
+    $sql .= "    ORDER BY $orderBy $order\n";
+} else {
+    $sql .= "    ORDER BY $orderBy $order, a.id DESC\n";
+}
+
+$sql .= "    LIMIT ? OFFSET ?\n";
 
 $stmt = mysqli_prepare($koneksi, $sql);
 if ($stmt) {
-    if ($types !== '') {
-        $bindParams = [];
-        $bindParams[] = &$types;
-        foreach ($params as $key => $value) {
-            $bindParams[] = &$params[$key];
-        }
-        call_user_func_array('mysqli_stmt_bind_param', array_merge([$stmt], $bindParams));
+    $newTypes = $types . 'ii';
+    $newParams = $params;
+    $newParams[] = $limit;
+    $newParams[] = $offset;
+
+    $bindParams = [];
+    $bindParams[] = &$newTypes;
+    foreach ($newParams as $key => $value) {
+        $bindParams[] = &$newParams[$key];
     }
+    call_user_func_array('mysqli_stmt_bind_param', array_merge([$stmt], $bindParams));
 
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -91,6 +156,25 @@ if ($stmt) {
         $articles[] = $row;
     }
     mysqli_stmt_close($stmt);
+}
+
+// Base parameters for pagination and sorting links
+$baseParams = [
+    'search' => $search,
+    'kategori' => $categoryId > 0 ? $categoryId : '',
+    'tanggal' => $tanggal,
+    'sort' => $sort,
+    'order' => $order
+];
+
+function getSortUrl($column, $currentSort, $currentOrder, $params) {
+    $newOrder = ($column === $currentSort && $currentOrder === 'DESC') ? 'ASC' : 'DESC';
+    return '?' . http_build_query(array_merge($params, ['sort' => $column, 'order' => $newOrder, 'page' => 1]));
+}
+
+function getSortIcon($column, $currentSort, $currentOrder) {
+    if ($column !== $currentSort) return '';
+    return $currentOrder === 'ASC' ? ' <span class="sort-icon">▲</span>' : ' <span class="sort-icon">▼</span>';
 }
 ?>
 <!DOCTYPE html>
@@ -135,11 +219,11 @@ if ($stmt) {
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Judul Artikel</th>
-                    <th>Kategori</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
+                    <th><a href="<?= getSortUrl('id', $sort, $order, $baseParams); ?>">ID<?= getSortIcon('id', $sort, $order); ?></a></th>
+                    <th><a href="<?= getSortUrl('judul', $sort, $order, $baseParams); ?>">Judul Artikel<?= getSortIcon('judul', $sort, $order); ?></a></th>
+                    <th><a href="<?= getSortUrl('kategori', $sort, $order, $baseParams); ?>">Kategori<?= getSortIcon('kategori', $sort, $order); ?></a></th>
+                    <th><a href="<?= getSortUrl('tanggal', $sort, $order, $baseParams); ?>">Tanggal<?= getSortIcon('tanggal', $sort, $order); ?></a></th>
+                    <th><span class="no-sort">Aksi</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -163,6 +247,38 @@ if ($stmt) {
                 <?php endif; ?>
             </tbody>
         </table>
+
+        <?php if ($totalPages > 1) : ?>
+            <div class="pagination">
+                <?php if ($page > 1) : ?>
+                    <a href="?<?= http_build_query(array_merge($baseParams, ['page' => $page - 1])); ?>" class="prev">&laquo; Prev</a>
+                <?php endif; ?>
+
+                <?php
+                $start = max(1, $page - 2);
+                $end = min($totalPages, $page + 2);
+
+                if ($start > 1) {
+                    echo '<a href="?' . http_build_query(array_merge($baseParams, ['page' => 1])) . '">1</a>';
+                    if ($start > 2) echo '<span class="pagination-dots">...</span>';
+                }
+
+                for ($i = $start; $i <= $end; $i++) : ?>
+                    <a href="?<?= http_build_query(array_merge($baseParams, ['page' => $i])); ?>" class="<?= $i === $page ? 'active' : ''; ?>"><?= $i; ?></a>
+                <?php endfor; ?>
+
+                <?php
+                if ($end < $totalPages) {
+                    if ($end < $totalPages - 1) echo '<span class="pagination-dots">...</span>';
+                    echo '<a href="?' . http_build_query(array_merge($baseParams, ['page' => $totalPages])) . '">' . $totalPages . '</a>';
+                }
+                ?>
+
+                <?php if ($page < $totalPages) : ?>
+                    <a href="?<?= http_build_query(array_merge($baseParams, ['page' => $page + 1])); ?>" class="next">Next &raquo;</a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </main>
 
 <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>

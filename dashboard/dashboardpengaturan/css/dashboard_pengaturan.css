@@ -137,9 +137,15 @@
     background: #dc2626;
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 8px 14px;
     border-radius: 6px;
     cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
 }
 
 .file-label {
@@ -173,6 +179,12 @@
     font-weight: 600;
 }
 
+.backup-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .settings-form label {
     font-weight: 600;
     color: #334155;
@@ -188,10 +200,17 @@
     cursor: pointer;
     font-weight: 500;
     transition: 0.2s;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-small:hover {
     background: #cbd5e1;
+}
+
+.btn-small a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .settings-form input,
@@ -295,5 +314,25 @@
     .main-content {
         margin-left: 0 !important;
         padding: 16px;
+    }
+    
+    .backup-table {
+        font-size: 13px;
+    }
+    
+    .backup-table th, .backup-table td {
+        padding: 8px;
+    }
+    
+    .backup-actions {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .backup-actions a,
+    .backup-actions button {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 12px;
     }
 }
