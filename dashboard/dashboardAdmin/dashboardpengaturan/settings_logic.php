@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../koneksi.php';
+require_once '../../../koneksi.php';
 
 header('Content-Type: application/json');
 
@@ -89,7 +89,7 @@ elseif ($action === 'get_settings') {
 }
 
 elseif ($action === 'list_backups') {
-    $backupDir = '../../backups/';
+    $backupDir = '../../../backups/';
     $backups = [];
     if (is_dir($backupDir)) {
         $files = scandir($backupDir, SCANDIR_SORT_DESCENDING);
@@ -108,7 +108,7 @@ elseif ($action === 'list_backups') {
 
 elseif ($action === 'delete_backup') {
     $fileName = $_POST['fileName'] ?? '';
-    $filePath = '../../backups/' . basename($fileName);
+    $filePath = '../../../backups/' . basename($fileName);
 
     if (file_exists($filePath)) {
         unlink($filePath);

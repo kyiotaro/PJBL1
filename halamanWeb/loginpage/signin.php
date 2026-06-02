@@ -25,12 +25,29 @@
           <p class="subtitle" id="formSubtitle">Masukkan email Anda untuk masuk</p>
 
           <form class="login-form" id="loginForm">
+            <!-- Section Email (Awal) -->
             <div id="emailSection" class="form-group">
               <label for="email">Email</label>
               <input id="email" name="email" type="email" placeholder="Masukkan email Anda" required>
-              <button class="primary-button" type="submit" id="btnSendOtp">Kirim OTP</button>
+              <div class="button-group">
+                <button class="primary-button" type="submit" id="btnSendOtp">Kirim OTP</button>
+                <button class="social-button" type="button" id="btnShowPasswordLogin" style="background: #f8f9fa; border: 1px solid #dee2e6; color: #444; margin-top: 10px;">
+                  Masuk dengan Password
+                </button>
+              </div>
             </div>
 
+            <!-- Section Password (Baru) -->
+            <div id="passwordSection" class="form-group" style="display: none;">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" placeholder="Masukkan password Anda">
+              <button class="primary-button" type="button" id="btnLoginPassword">Masuk</button>
+              <p class="resend-text">
+                <a href="#" id="btnBackToOtp">Gunakan Kode OTP?</a>
+              </p>
+            </div>
+
+            <!-- Section OTP -->
             <div id="otpSection" class="form-group" style="display: none;">
               <label for="otp">Kode OTP</label>
               <input id="otp" name="otp" type="text" placeholder="6 Digit Kode" maxlength="6">
@@ -47,10 +64,6 @@
           <p><a href="/PJBL-main/halamanWeb/landingpage/landingpage.php">← Kembali ke halaman utama</a></p>
         </div>
       </div>
-    </div>
-
-    <div class="kanan">
-      <img src="/PJBL-main/assets/Foto/ui/background.png" alt="Background Image">
     </div>
   </div>
 

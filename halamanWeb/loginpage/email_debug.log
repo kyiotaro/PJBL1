@@ -1,0 +1,23 @@
+2026-06-02T12:24:07+02:00 DB PREPARE ERROR (admin): Table 'defaultdb.admin' doesn't exist
+2026-06-02T12:24:12+02:00 DB PREPARE ERROR (admin): Table 'defaultdb.admin' doesn't exist
+2026-06-02T12:24:42+02:00 DB PREPARE ERROR (admin): Table 'defaultdb.admin' doesn't exist
+2026-06-02T12:33:34+02:00 DB QUERY ERROR (pengaturan): Table 'permatabirunusantara.pengaturan' doesn't exist
+2026-06-02T12:34:21+02:00 DB QUERY ERROR (pengaturan): Table 'permatabirunusantara.pengaturan' doesn't exist
+2026-06-02T14:13:24+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
+2026-06-02T14:14:54+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
+2026-06-02T14:14:54+02:00 TRACE: about to query pengaturan
+2026-06-02T14:14:54+02:00 TRACE: before mail->send()
+2026-06-02T15:03:02+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
+2026-06-02T15:03:02+02:00 TRACE: about to query pengaturan
+2026-06-02T15:03:02+02:00 TRACE: before mail->send()
+2026-06-02T15:08:02+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
+2026-06-02T15:08:02+02:00 TRACE: about to query pengaturan
+2026-06-02T15:08:02+02:00 TRACE: before mail->send()
+2026-06-02T15:13:10+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
+2026-06-02T15:13:10+02:00 TRACE: about to query pengaturan
+2026-06-02T15:13:10+02:00 TRACE: before mail->send() to kyiotaro7@gmail.com via SMTP (smtp.gmail.com:465)
+2026-06-02T15:13:30+02:00 ERROR: {"exception":"SMTP Error: Could not connect to SMTP host. Failed to connect to server","mailer":"SMTP Error: Could not connect to SMTP host. Failed to connect to server SMTP server error: Failed to connect to server","debug":["15:13:10 [3] Connection: opening to ssl:\/\/smtp.gmail.com:465, timeout=20, options=array (\n  'ssl' => \n  array (\n    'verify_peer' => false,\n    'verify_peer_name' => false,\n    'allow_self_signed' => true,\n  ),\n)","15:13:30 [3] Connection failed. Error #2: stream_socket_client(): SSL: Handshake timed out [C:\\xampp\\htdocs\\PJBL-main\\vendor\\phpmailer\\phpmailer\\src\\SMTP.php line 424]","15:13:30 [3] Connection failed. Error #2: stream_socket_client(): Failed to enable crypto [C:\\xampp\\htdocs\\PJBL-main\\vendor\\phpmailer\\phpmailer\\src\\SMTP.php line 424]","15:13:30 [3] Connection failed. Error #2: stream_socket_client(): Unable to connect to ssl:\/\/smtp.gmail.com:465 (Unknown error) [C:\\xampp\\htdocs\\PJBL-main\\vendor\\phpmailer\\phpmailer\\src\\SMTP.php line 424]","15:13:30 [1] SMTP ERROR: Failed to connect to server:  (0)","15:13:30 [3] SMTP Error: Could not connect to SMTP host. Failed to connect to server"]}
+2026-06-02T15:38:10+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
+2026-06-02T15:38:10+02:00 TRACE: before mail->send() to kyiotaro7@gmail.com via SMTP (74.125.200.109:587)
+2026-06-02T15:50:42+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
+2026-06-02T15:50:42+02:00 TRACE: before mail->send() to kyiotaro7@gmail.com via SMTP (172.217.194.108:587)

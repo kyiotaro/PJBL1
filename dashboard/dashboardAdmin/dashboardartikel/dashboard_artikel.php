@@ -1,12 +1,34 @@
 <?php
-require_once '../../config/auth_check.php';
-include '../../koneksi.php';
+require_once '../../../config/auth_check.php';
+include '../../../koneksi.php';
+
+// Handle Actions
+if (isset($_GET['approve'])) {
+    $id = (int) $_GET['approve'];
+    mysqli_query($koneksi, "UPDATE artikel SET status = 'published' WHERE id = $id AND author_type = 'admin'");
+    header('Location: dashboard_artikel.php?status=approved');
+    exit;
+}
+
+if (isset($_GET['reject'])) {
+    $id = (int) $_GET['reject'];
+    mysqli_query($koneksi, "UPDATE artikel SET status = 'rejected' WHERE id = $id AND author_type = 'admin'");
+    header('Location: dashboard_artikel.php?status=rejected');
+    exit;
+}
+
+if (isset($_GET['allow_edit'])) {
+    $id = (int) $_GET['allow_edit'];
+    mysqli_query($koneksi, "UPDATE artikel SET status = 'pending' WHERE id = $id AND author_type = 'admin'");
+    header('Location: dashboard_artikel.php?status=edit_allowed');
+    exit;
+}
 
 if (isset($_GET['hapus'])) {
     $id = (int) ($_GET['hapus'] ?? 0);
 
     if ($id > 0) {
-        $stmt = mysqli_prepare($koneksi, "DELETE FROM artikel WHERE id = ?");
+        $stmt = mysqli_prepare($koneksi, "DELETE FROM artikel WHERE id = ? AND author_type = 'admin'");
         mysqli_stmt_bind_param($stmt, 'i', $id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
@@ -25,6 +47,12 @@ if ($status === 'created') {
     $statusMessage = 'Artikel berhasil diperbarui.';
 } elseif ($status === 'deleted') {
     $statusMessage = 'Artikel berhasil dihapus.';
+} elseif ($status === 'approved') {
+    $statusMessage = 'Artikel telah disetujui.';
+} elseif ($status === 'rejected') {
+    $statusMessage = 'Artikel telah ditolak.';
+} elseif ($status === 'edit_allowed') {
+    $statusMessage = 'Izin edit diberikan kepada penulis.';
 }
 
 $articles = [];
@@ -32,6 +60,7 @@ $categories = [];
 $search = trim($_GET['search'] ?? '');
 $categoryId = (int) ($_GET['kategori'] ?? 0);
 $tanggal = trim($_GET['tanggal'] ?? '');
+$filterStatus = $_GET['filter_status'] ?? '';
 
 $categoryQuery = mysqli_query($koneksi, "SELECT id, nama FROM kategori ORDER BY nama ASC");
 if ($categoryQuery) {
@@ -40,16 +69,17 @@ if ($categoryQuery) {
     }
 }
 
-$whereClauses = [];
+$whereClauses = ["a.author_type = 'admin'"];
 $params = [];
 $types = '';
 
 if ($search !== '') {
-    $whereClauses[] = "(a.judul LIKE ? OR k.nama LIKE ?)";
+    $whereClauses[] = "(a.judul LIKE ? OR k.nama LIKE ? OR a.Penulis LIKE ?)";
     $searchParam = '%' . $search . '%';
     $params[] = $searchParam;
     $params[] = $searchParam;
-    $types .= 'ss';
+    $params[] = $searchParam;
+    $types .= 'sss';
 }
 
 if ($categoryId > 0) {
@@ -64,12 +94,20 @@ if ($tanggal !== '') {
     $types .= 's';
 }
 
+if ($filterStatus !== '') {
+    $whereClauses[] = 'a.status = ?';
+    $params[] = $filterStatus;
+    $types .= 's';
+}
+
 // Sorting Logic
 $allowedSortColumns = [
     'id' => 'a.id',
     'judul' => 'a.judul',
     'kategori' => 'k.nama',
-    'tanggal' => 'a.tanggal'
+    'tanggal' => 'a.tanggal',
+    'status' => 'a.status',
+    'penulis' => 'a.Penulis'
 ];
 
 $sort = $_GET['sort'] ?? 'tanggal';
@@ -89,7 +127,6 @@ $limit = 20;
 $page = (int) ($_GET['page'] ?? 1);
 if ($page < 1) $page = 1;
 
-// Count total items for pagination
 $countSql = "SELECT COUNT(*) as total FROM artikel a LEFT JOIN kategori k ON k.id = a.kategori_id";
 if (!empty($whereClauses)) {
     $countSql .= ' WHERE ' . implode(' AND ', $whereClauses);
@@ -119,7 +156,7 @@ if ($page > $totalPages && $totalPages > 0) $page = $totalPages;
 $offset = ($page - 1) * $limit;
 
 $sql = "
-    SELECT a.id, a.judul, a.tanggal, k.nama AS kategori
+    SELECT a.id, a.judul, a.tanggal, a.status, a.Penulis, a.author_type, k.nama AS kategori
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
 ";
@@ -127,13 +164,7 @@ if (!empty($whereClauses)) {
     $sql .= '    WHERE ' . implode(' AND ', $whereClauses) . "\n";
 }
 
-// Special case for ID sorting to keep it consistent
-if ($sort === 'id') {
-    $sql .= "    ORDER BY $orderBy $order\n";
-} else {
-    $sql .= "    ORDER BY $orderBy $order, a.id DESC\n";
-}
-
+$sql .= "    ORDER BY $orderBy $order, a.id DESC\n";
 $sql .= "    LIMIT ? OFFSET ?\n";
 
 $stmt = mysqli_prepare($koneksi, $sql);
@@ -158,11 +189,11 @@ if ($stmt) {
     mysqli_stmt_close($stmt);
 }
 
-// Base parameters for pagination and sorting links
 $baseParams = [
     'search' => $search,
     'kategori' => $categoryId > 0 ? $categoryId : '',
     'tanggal' => $tanggal,
+    'filter_status' => $filterStatus,
     'sort' => $sort,
     'order' => $order
 ];
@@ -176,6 +207,16 @@ function getSortIcon($column, $currentSort, $currentOrder) {
     if ($column !== $currentSort) return '';
     return $currentOrder === 'ASC' ? ' <span class="sort-icon">▲</span>' : ' <span class="sort-icon">▼</span>';
 }
+
+function getStatusBadgeClass($status) {
+    switch ($status) {
+        case 'published': return 'badge-success';
+        case 'pending': return 'badge-warning';
+        case 'rejected': return 'badge-danger';
+        case 'requested_edit': return 'badge-info';
+        default: return 'badge-secondary';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -183,15 +224,29 @@ function getSortIcon($column, $currentSort, $currentOrder) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Artikel</title>
-    <link rel="stylesheet" href="../../assets/templateHalaman/sidebar/sidebar.css">
-    <link rel="stylesheet" href="../dashboardadmin/css/dashboard.css">
+    <link rel="stylesheet" href="/PJBL-main/assets/templateHalaman/sidebar/sidebar.css">
+    <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardmain/css/dashboard.css">
     <link rel="stylesheet" href="css/dashboard_artikel.css">
+    <style>
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: white; display: inline-block; }
+        .badge-success { background: #10B981; }
+        .badge-warning { background: #F59E0B; }
+        .badge-danger { background: #EF4444; }
+        .badge-info { background: #3B82F6; }
+        .badge-secondary { background: #6B7280; }
+        
+        .action-btn.approve { background: #10B981; }
+        .action-btn.reject { background: #F59E0B; }
+        .action-btn.allow { background: #6366F1; }
+        
+        .search-form { grid-template-columns: 1fr 150px 150px 150px auto !important; }
+    </style>
 </head>
 <body>
 
 <?php
     $activePage = 'artikel'; 
-    include '../../assets/templateHalaman/sidebar/sidebar.php';
+    include '../../../assets/templateHalaman/sidebar/sidebar.php';
 ?>
 
 <main class="pb-main-content">
@@ -204,12 +259,19 @@ function getSortIcon($column, $currentSort, $currentOrder) {
         <div class="dashboard-actions">
             <a href="tambah_artikel.php" class="add-btn">+ Tambah Artikel</a>
             <form action="dashboard_artikel.php" method="GET" class="search-form">
-                <input type="text" name="search" placeholder="Cari artikel..." value="<?= htmlspecialchars($search); ?>">
+                <input type="text" name="search" placeholder="Cari judul, kategori, atau penulis..." value="<?= htmlspecialchars($search); ?>">
                 <select name="kategori">
                     <option value="">Semua Kategori</option>
                     <?php foreach ($categories as $cat) : ?>
                         <option value="<?= (int) $cat['id']; ?>" <?= $categoryId === (int) $cat['id'] ? 'selected' : ''; ?>><?= htmlspecialchars($cat['nama']); ?></option>
                     <?php endforeach; ?>
+                </select>
+                <select name="filter_status">
+                    <option value="">Semua Status</option>
+                    <option value="pending" <?= $filterStatus === 'pending' ? 'selected' : ''; ?>>Menunggu</option>
+                    <option value="published" <?= $filterStatus === 'published' ? 'selected' : ''; ?>>Disetujui</option>
+                    <option value="rejected" <?= $filterStatus === 'rejected' ? 'selected' : ''; ?>>Ditolak</option>
+                    <option value="requested_edit" <?= $filterStatus === 'requested_edit' ? 'selected' : ''; ?>>Minta Edit</option>
                 </select>
                 <input type="date" name="tanggal" value="<?= htmlspecialchars($tanggal); ?>">
                 <button type="submit">Filter</button>
@@ -221,8 +283,10 @@ function getSortIcon($column, $currentSort, $currentOrder) {
                 <tr>
                     <th><a href="<?= getSortUrl('id', $sort, $order, $baseParams); ?>">ID<?= getSortIcon('id', $sort, $order); ?></a></th>
                     <th><a href="<?= getSortUrl('judul', $sort, $order, $baseParams); ?>">Judul Artikel<?= getSortIcon('judul', $sort, $order); ?></a></th>
+                    <th><a href="<?= getSortUrl('penulis', $sort, $order, $baseParams); ?>">Penulis<?= getSortIcon('penulis', $sort, $order); ?></a></th>
                     <th><a href="<?= getSortUrl('kategori', $sort, $order, $baseParams); ?>">Kategori<?= getSortIcon('kategori', $sort, $order); ?></a></th>
                     <th><a href="<?= getSortUrl('tanggal', $sort, $order, $baseParams); ?>">Tanggal<?= getSortIcon('tanggal', $sort, $order); ?></a></th>
+                    <th><a href="<?= getSortUrl('status', $sort, $order, $baseParams); ?>">Status<?= getSortIcon('status', $sort, $order); ?></a></th>
                     <th><span class="no-sort">Aksi</span></th>
                 </tr>
             </thead>
@@ -232,9 +296,18 @@ function getSortIcon($column, $currentSort, $currentOrder) {
                         <tr>
                             <td><?= (int) $row['id']; ?></td>
                             <td><?= htmlspecialchars($row['judul']); ?></td>
+                            <td><?= htmlspecialchars($row['Penulis']); ?> (<?= ucfirst($row['author_type']); ?>)</td>
                             <td><?= htmlspecialchars(ucfirst($row['kategori'])); ?></td>
                             <td><?= htmlspecialchars($row['tanggal']); ?></td>
+                            <td><span class="badge <?= getStatusBadgeClass($row['status']); ?>"><?= ucfirst(str_replace('_', ' ', $row['status'])); ?></span></td>
                             <td>
+                                <?php if ($row['status'] === 'pending') : ?>
+                                    <a href="?approve=<?= $row['id'] ?>" class="action-btn approve" onclick="return confirm('Setujui artikel ini?')">Setujui</a>
+                                    <a href="?reject=<?= $row['id'] ?>" class="action-btn reject" onclick="return confirm('Tolak artikel ini?')">Tolak</a>
+                                <?php elseif ($row['status'] === 'requested_edit') : ?>
+                                    <a href="?allow_edit=<?= $row['id'] ?>" class="action-btn allow" onclick="return confirm('Izinkan penulis mengedit artikel ini?')">Izinkan Edit</a>
+                                <?php endif; ?>
+                                
                                 <a href="edit_artikel.php?id=<?= (int) $row['id']; ?>" class="action-btn edit">Edit</a>
                                 <a href="?hapus=<?= (int) $row['id']; ?>" class="action-btn delete" onclick="return confirm('Yakin hapus artikel ini?')">Hapus</a>
                             </td>
@@ -242,7 +315,7 @@ function getSortIcon($column, $currentSort, $currentOrder) {
                     <?php endforeach; ?>
                 <?php else : ?>
                     <tr>
-                        <td colspan="5">Belum ada artikel yang tersimpan.</td>
+                        <td colspan="7">Belum ada artikel yang tersimpan.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -253,27 +326,9 @@ function getSortIcon($column, $currentSort, $currentOrder) {
                 <?php if ($page > 1) : ?>
                     <a href="?<?= http_build_query(array_merge($baseParams, ['page' => $page - 1])); ?>" class="prev">&laquo; Prev</a>
                 <?php endif; ?>
-
-                <?php
-                $start = max(1, $page - 2);
-                $end = min($totalPages, $page + 2);
-
-                if ($start > 1) {
-                    echo '<a href="?' . http_build_query(array_merge($baseParams, ['page' => 1])) . '">1</a>';
-                    if ($start > 2) echo '<span class="pagination-dots">...</span>';
-                }
-
-                for ($i = $start; $i <= $end; $i++) : ?>
+                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
                     <a href="?<?= http_build_query(array_merge($baseParams, ['page' => $i])); ?>" class="<?= $i === $page ? 'active' : ''; ?>"><?= $i; ?></a>
                 <?php endfor; ?>
-
-                <?php
-                if ($end < $totalPages) {
-                    if ($end < $totalPages - 1) echo '<span class="pagination-dots">...</span>';
-                    echo '<a href="?' . http_build_query(array_merge($baseParams, ['page' => $totalPages])) . '">' . $totalPages . '</a>';
-                }
-                ?>
-
                 <?php if ($page < $totalPages) : ?>
                     <a href="?<?= http_build_query(array_merge($baseParams, ['page' => $page + 1])); ?>" class="next">Next &raquo;</a>
                 <?php endif; ?>
@@ -282,8 +337,7 @@ function getSortIcon($column, $currentSort, $currentOrder) {
     </main>
 
 <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
-<script src="js/dashboard_artikel.js"></script>
-<script src="../../assets/templateHalaman/sidebar/sidebar.js"></script>
+<script src="/PJBL-main/assets/templateHalaman/sidebar/sidebar.js"></script>
 
 </body>
 </html>

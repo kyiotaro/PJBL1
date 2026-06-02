@@ -1,6 +1,6 @@
 <?php
-require_once '../../config/auth_check.php';
-include '../../koneksi.php';
+require_once '../../../config/auth_check.php';
+include '../../../koneksi.php';
 
 $error = '';
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!isset($_FILES['gambar']) || $_FILES['gambar']['error'] !== UPLOAD_ERR_OK) {
         $error = 'Silakan upload gambar artikel.';
     } else {
-        $uploadDir = '../../assets/Foto/artikel/' . $kategori . '/';
+        $uploadDir = '../../../assets/Foto/artikel/' . $slugKategori . '/';
 
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
@@ -53,15 +53,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $baseFileName = $slug !== '' ? $slug : 'artikel-' . time();
             $gambar = $baseFileName . '-' . date('YmdHis') . '.' . $extension;
-            $gambarPath = 'artikel/' . $kategori . '/' . $gambar;
+            $gambarPath = 'artikel/' . $slugKategori . '/' . $gambar;
             $uploadPath = $uploadDir . $gambar;
 
             if (move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadPath)) {
                 $stmt = mysqli_prepare(
                     $koneksi,
-                    "INSERT INTO artikel (judul, kategori_id, tanggal, gambar, isi, slug) VALUES (?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO artikel (judul, kategori_id, tanggal, gambar, isi, slug, status, author_id, author_type, Penulis) VALUES (?, ?, ?, ?, ?, ?, 'published', ?, 'admin', ?)"
                 );
-                mysqli_stmt_bind_param($stmt, 'sissss', $judul, $kategoriId, $tanggal, $gambarPath, $isi, $slug);
+                $adminId = $_SESSION['admin_id'] ?? 1;
+                $penulis = $_SESSION['admin_nama'] ?? 'Administrator';
+                mysqli_stmt_bind_param($stmt, 'sissssis', $judul, $kategoriId, $tanggal, $gambarPath, $isi, $slug, $adminId, $penulis);
 
                 if (mysqli_stmt_execute($stmt)) {
                     mysqli_stmt_close($stmt);
@@ -85,8 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Artikel</title>
-    <link rel="stylesheet" href="../../assets/templateHalaman/sidebar/sidebar.css">
-    <link rel="stylesheet" href="../dashboardadmin/css/dashboard.css">
+    <link rel="stylesheet" href="/PJBL-main/assets/templateHalaman/sidebar/sidebar.css">
+    <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardmain/css/dashboard.css">
     <link rel="stylesheet" href="css/tambah_artikel.css?v=2">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
@@ -96,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php
         $activePage = 'artikel'; 
-        include '../../assets/templateHalaman/sidebar/sidebar.php';
+        include '../../../assets/templateHalaman/sidebar/sidebar.php';
     ?>
 
     <main class="pb-main-content">
@@ -146,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
     <script src="js/tambah_artikel.js"></script>
-    <script src="../../assets/templateHalaman/sidebar/sidebar.js"></script>
+    <script src="/PJBL-main/assets/templateHalaman/sidebar/sidebar.js"></script>
 
 </body>
 

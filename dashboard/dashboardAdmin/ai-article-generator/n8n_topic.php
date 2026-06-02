@@ -1,7 +1,7 @@
 <?php
 
-require_once '../../koneksi.php';
-require_once '../../config/api_config.php';
+require_once '../../../koneksi.php';
+require_once '../../../config/api_config.php';
 
 header('Content-Type: application/json');
 

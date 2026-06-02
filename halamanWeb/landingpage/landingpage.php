@@ -1,4 +1,19 @@
 <?php include '../../koneksi.php'; ?>
+<?php
+$artikelHasStatus = false;
+$artikelHasTanggal = false;
+$statusCheck = mysqli_query($koneksi, "SHOW COLUMNS FROM artikel LIKE 'status'");
+if ($statusCheck && mysqli_num_rows($statusCheck) > 0) {
+  $artikelHasStatus = true;
+}
+$tanggalCheck = mysqli_query($koneksi, "SHOW COLUMNS FROM artikel LIKE 'tanggal'");
+if ($tanggalCheck && mysqli_num_rows($tanggalCheck) > 0) {
+  $artikelHasTanggal = true;
+}
+
+$publishedFilter = $artikelHasStatus ? "WHERE a.status = 'published'" : "";
+$orderBy = $artikelHasTanggal ? "ORDER BY a.tanggal DESC, a.id DESC" : "ORDER BY a.id DESC";
+?>
 
 <!DOCTYPE html>
 <html lang="id">
@@ -53,10 +68,13 @@
           SELECT a.*, k.slug AS kategori 
           FROM artikel a 
           LEFT JOIN kategori k ON k.id = a.kategori_id 
-          ORDER BY a.tanggal DESC LIMIT 6
+          $publishedFilter
+          $orderBy LIMIT 6
         ");
-        while ($artikel = mysqli_fetch_assoc($query)) {
-          include '../../assets/templateHalaman/cardVariant/card1/card1.php';
+        if ($query) {
+          while ($artikel = mysqli_fetch_assoc($query)) {
+            include '../../assets/templateHalaman/cardVariant/card1/card1.php';
+          }
         }
         ?>
       </div>
@@ -74,10 +92,13 @@
           SELECT a.*, k.slug AS kategori 
           FROM artikel a 
           LEFT JOIN kategori k ON k.id = a.kategori_id 
-          ORDER BY a.tanggal DESC LIMIT 6 OFFSET 6
+          $publishedFilter
+          $orderBy LIMIT 6 OFFSET 6
         ");
-        while ($artikel = mysqli_fetch_assoc($query2)) {
-          include '../../assets/templateHalaman/cardVariant/card1/card1.php';
+        if ($query2) {
+          while ($artikel = mysqli_fetch_assoc($query2)) {
+            include '../../assets/templateHalaman/cardVariant/card1/card1.php';
+          }
         }
         ?>
       </div>
@@ -95,10 +116,13 @@
           SELECT a.*, k.slug AS kategori 
           FROM artikel a 
           LEFT JOIN kategori k ON k.id = a.kategori_id 
-          ORDER BY a.tanggal DESC LIMIT 12 OFFSET 12
+          $publishedFilter
+          $orderBy LIMIT 12 OFFSET 12
         ");
-        while ($artikel = mysqli_fetch_assoc($query3)) {
-          include '../../assets/templateHalaman/cardVariant/card1/card1.php';
+        if ($query3) {
+          while ($artikel = mysqli_fetch_assoc($query3)) {
+            include '../../assets/templateHalaman/cardVariant/card1/card1.php';
+          }
         }
         ?>
       </div>

@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../../koneksi.php';
-require_once '../../config/db_config.php';
+require_once '../../../koneksi.php';
+require_once '../../../config/db_config.php';
 
 // Pastikan hanya admin yang bisa akses
 if (empty($_SESSION['admin_logged_in'])) {
@@ -79,10 +79,10 @@ if ($backupData === false) {
 
 // Simpan ke file lokal agar bisa didownload
 $fileName = 'backup_aiven_' . date('Y-m-d_H-i-s') . '.sql';
-$filePath = '../../backups/' . $fileName;
+$filePath = '../../../backups/' . $fileName;
 
-if (!is_dir('../../backups')) {
-    mkdir('../../backups', 0777, true);
+if (!is_dir('../../../backups')) {
+    mkdir('../../../backups', 0777, true);
 }
 
 file_put_contents($filePath, $backupData);

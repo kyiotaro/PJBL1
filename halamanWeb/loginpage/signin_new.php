@@ -48,10 +48,6 @@
         </div>
       </div>
     </div>
-
-    <div class="kanan">
-      <img src="/PJBL-main/assets/Foto/ui/background.png" alt="Background Image">
-    </div>
   </div>
 
   <script src="js/auth.js"></script>

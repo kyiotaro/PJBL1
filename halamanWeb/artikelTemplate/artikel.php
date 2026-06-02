@@ -1,4 +1,7 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include '../../koneksi.php';
 require_once '../../assets/helpers/foto_helper.php';
 
@@ -6,6 +9,7 @@ $defaultArticle = [
   'id' => 0,
   'judul' => 'Eksplorasi Teluk Tomoni: Keindahan yang Tersembunyi',
   'kategori' => 'wisata',
+  'status' => 'published',
   'tanggal' => date('Y-m-d'),
   'gambar' => 'kima.png',
   'isi' => '<p>Di balik birunya laut tropis Indonesia, ada satu biota yang sering bikin penyelam terpesona: kima raksasa (Tridacna gigas). Hewan ini bukan sekadar kerang biasa. Ia adalah salah satu moluska terbesar di dunia, dengan ukuran bisa mencapai lebih dari satu meter dan berat ratusan kilogram.</p><p>Kima raksasa punya keistimewaan unik. Warna tubuhnya sering terlihat berkilau kehijauan, kebiruan, atau bahkan keemasan. Hubungan simbiosis dengan alga mikroskopis membuatnya mampu memanfaatkan cahaya matahari untuk bertahan hidup dalam waktu yang sangat lama.</p><p>Keberadaan kima raksasa di perairan Indonesia punya fungsi penting bagi ekosistem terumbu karang. Menjaganya berarti menjaga kesehatan laut sekaligus merawat warisan alam Indonesia untuk generasi mendatang.</p>'
@@ -14,25 +18,61 @@ $defaultArticle = [
 $articleId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $article = null;
 
+$isAdmin = !empty($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+$currentUserId = $_SESSION['user_id'] ?? 0;
+
 if ($articleId > 0) {
-  $stmt = mysqli_prepare($koneksi, "
-    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi, k.id AS kategori_id 
+  // Allow admin to see anything, allow user to see published or their own pending/rejected.
+  // Some environments may not have author/status columns yet, so we keep a safe fallback query.
+  $query = "
+    SELECT a.*, k.nama AS kategori, k.id AS kategori_id
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
-    WHERE a.id = ? LIMIT 1
-  ");
-  mysqli_stmt_bind_param($stmt, 'i', $articleId);
-  mysqli_stmt_execute($stmt);
-  $result = mysqli_stmt_get_result($stmt);
-  $article = mysqli_fetch_assoc($result);
-  mysqli_stmt_close($stmt);
+    WHERE a.id = ?
+  ";
+
+  if (!$isAdmin) {
+      $query .= " AND (a.status = 'published' OR (a.author_id = ? AND a.author_type = 'user'))";
+  }
+
+  $stmt = mysqli_prepare($koneksi, $query);
+
+  if ($stmt) {
+    if ($isAdmin) {
+      mysqli_stmt_bind_param($stmt, 'i', $articleId);
+    } else {
+      mysqli_stmt_bind_param($stmt, 'ii', $articleId, $currentUserId);
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $article = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+  } else {
+    // Fallback for older schema: load by id only for admins, or only published for non-admins.
+    $fallbackQuery = "
+      SELECT a.*, k.nama AS kategori, k.id AS kategori_id
+      FROM artikel a
+      LEFT JOIN kategori k ON k.id = a.kategori_id
+      WHERE a.id = " . (int) $articleId;
+
+    if (!$isAdmin) {
+      $fallbackQuery .= " AND a.status = 'published'";
+    }
+
+    $fallbackResult = mysqli_query($koneksi, $fallbackQuery);
+    if ($fallbackResult) {
+      $article = mysqli_fetch_assoc($fallbackResult);
+    }
+  }
 }
 
 if (!$article) {
   $latestQuery = mysqli_query($koneksi, "
-    SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar, a.isi, k.id AS kategori_id 
+    SELECT a.*, k.nama AS kategori, k.id AS kategori_id 
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
+    WHERE a.status = 'published'
     ORDER BY a.tanggal DESC, a.id DESC LIMIT 1
   ");
   if ($latestQuery && mysqli_num_rows($latestQuery) > 0) {
@@ -45,6 +85,7 @@ if (!$article) {
 }
 
 $article['gambar'] = !empty($article['gambar']) ? $article['gambar'] : $defaultArticle['gambar'];
+$article['status'] = $article['status'] ?? 'published';
 $articleImagePath = resolveFotoWebPath($article['gambar']);
 $articleContent = trim($article['isi'] ?? '');
 
@@ -63,18 +104,20 @@ if ($currentArticleId > 0 && $currentCategoryId > 0) {
     SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar 
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
-    WHERE a.id != ? AND a.kategori_id = ?
+    WHERE a.id != ? AND a.kategori_id = ? AND a.status = 'published'
     ORDER BY a.tanggal DESC, a.id DESC LIMIT 9
   ");
-  mysqli_stmt_bind_param($relatedStmt, 'ii', $currentArticleId, $currentCategoryId);
-  mysqli_stmt_execute($relatedStmt);
-  $relatedResult = mysqli_stmt_get_result($relatedStmt);
+  if ($relatedStmt) {
+    mysqli_stmt_bind_param($relatedStmt, 'ii', $currentArticleId, $currentCategoryId);
+    mysqli_stmt_execute($relatedStmt);
+    $relatedResult = mysqli_stmt_get_result($relatedStmt);
 
-  while ($relatedRow = mysqli_fetch_assoc($relatedResult)) {
-    $relatedArticles[] = $relatedRow;
+    while ($relatedRow = mysqli_fetch_assoc($relatedResult)) {
+      $relatedArticles[] = $relatedRow;
+    }
+
+    mysqli_stmt_close($relatedStmt);
   }
-
-  mysqli_stmt_close($relatedStmt);
 }
 
 if ($currentArticleId > 0 && count($relatedArticles) < 9) {
@@ -86,7 +129,7 @@ if ($currentArticleId > 0 && count($relatedArticles) < 9) {
     SELECT a.id, a.judul, k.nama AS kategori, a.tanggal, a.gambar 
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
-    WHERE a.id NOT IN ($excludeIn)
+    WHERE a.id NOT IN ($excludeIn) AND a.status = 'published'
     ORDER BY a.tanggal DESC, a.id DESC LIMIT $remainingLimit
   ";
   $fallbackResult = mysqli_query($koneksi, $fallbackQuery);
@@ -126,6 +169,11 @@ if ($currentArticleId > 0 && count($relatedArticles) < 9) {
       <div class="article-head">
         <h2>Tentang Artikel Ini</h2>
         <p>Informasi dirangkum untuk memperluas wawasan tentang kekayaan laut Indonesia.</p>
+        <?php if (($article['status'] ?? 'published') !== 'published') : ?>
+            <div style="background: #FEF3C7; color: #92400E; padding: 12px; border-radius: 8px; margin-top: 10px; font-weight: 600;">
+                ⚠️ Artikel ini berstatus: <strong><?= htmlspecialchars($article['status'] ?? 'draft'); ?></strong>. Hanya Anda dan Admin yang bisa melihat pratinjau ini.
+            </div>
+        <?php endif; ?>
       </div>
 
       <div class="article article-body">
@@ -140,6 +188,7 @@ if ($currentArticleId > 0 && count($relatedArticles) < 9) {
           <h3><?= htmlspecialchars($article['judul']); ?></h3>
           <p>Kategori: <strong><?= htmlspecialchars(ucfirst($article['kategori'])); ?></strong></p>
           <p>Diterbitkan: <strong><?= date('d M Y', strtotime($article['tanggal'])); ?></strong></p>
+          <p>Penulis: <strong><?= htmlspecialchars($article['Penulis'] ?? 'Admin'); ?></strong></p>
         </div>
       </div>
     </aside>

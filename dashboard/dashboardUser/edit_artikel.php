@@ -1,36 +1,30 @@
 <?php
-require_once '../../config/auth_check.php';
+session_start();
+require_once '../../config/auth_check_user.php';
 include '../../koneksi.php';
 
 $id = (int) ($_GET['id'] ?? 0);
+$userId = $_SESSION['user_id'];
+
 if ($id <= 0) {
     header('Location: dashboard_artikel.php');
     exit;
 }
 
-$stmt = mysqli_prepare($koneksi, "SELECT id, judul, kategori_id, tanggal, gambar, isi FROM artikel WHERE id = ?");
-mysqli_stmt_bind_param($stmt, 'i', $id);
+$stmt = mysqli_prepare($koneksi, "SELECT * FROM artikel WHERE id = ? AND author_id = ? AND author_type = 'user'");
+mysqli_stmt_bind_param($stmt, 'ii', $id, $userId);
 mysqli_stmt_execute($stmt);
-
-if (function_exists('mysqli_stmt_get_result')) {
-    $result = mysqli_stmt_get_result($stmt);
-    $article = mysqli_fetch_assoc($result);
-} else {
-    mysqli_stmt_bind_result($stmt, $articleId, $articleJudul, $articleKategoriId, $articleTanggal, $articleGambar, $articleIsi);
-    mysqli_stmt_fetch($stmt);
-    $article = [
-        'id' => $articleId,
-        'judul' => $articleJudul,
-        'kategori_id' => $articleKategoriId,
-        'tanggal' => $articleTanggal,
-        'gambar' => $articleGambar,
-        'isi' => $articleIsi
-    ];
-}
-
+$result = mysqli_stmt_get_result($stmt);
+$article = mysqli_fetch_assoc($result);
 mysqli_stmt_close($stmt);
 
 if (!$article) {
+    header('Location: dashboard_artikel.php');
+    exit;
+}
+
+// Restricted Edit: Only if pending or rejected
+if ($article['status'] !== 'pending' && $article['status'] !== 'rejected') {
     header('Location: dashboard_artikel.php');
     exit;
 }
@@ -45,25 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $slug = trim(strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', $judul)), '-');
     $gambar = $article['gambar'];
 
-    // Ambil ID Kategori berdasarkan slug
     $stmtKat = mysqli_prepare($koneksi, "SELECT id FROM kategori WHERE slug = ?");
     mysqli_stmt_bind_param($stmtKat, 's', $slugKategori);
     mysqli_stmt_execute($stmtKat);
-
-    if (function_exists('mysqli_stmt_get_result')) {
-        $resKat = mysqli_stmt_get_result($stmtKat);
-        $rowKat = mysqli_fetch_assoc($resKat);
-        $kategoriId = $rowKat['id'] ?? null;
-    } else {
-        mysqli_stmt_bind_result($stmtKat, $kategoriId);
-        mysqli_stmt_fetch($stmtKat);
-    }
-
+    $resKat = mysqli_stmt_get_result($stmtKat);
+    $rowKat = mysqli_fetch_assoc($resKat);
+    $kategoriId = $rowKat['id'] ?? null;
     mysqli_stmt_close($stmtKat);
-
-    if ($slug === '') {
-        $slug = 'artikel-' . $id;
-    }
 
     if ($judul === '' || !$kategoriId || $tanggal === '' || $isi === '') {
         $error = 'Semua field wajib diisi.';
@@ -73,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Upload gambar baru gagal.';
             } else {
                 $uploadDir = '../../assets/Foto/artikel/' . $slugKategori . '/';
-
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
@@ -100,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($error === '') {
             $updateStmt = mysqli_prepare(
                 $koneksi,
-                "UPDATE artikel SET judul = ?, kategori_id = ?, tanggal = ?, gambar = ?, isi = ?, slug = ? WHERE id = ?"
+                "UPDATE artikel SET judul = ?, kategori_id = ?, tanggal = ?, gambar = ?, isi = ?, slug = ?, status = 'pending' WHERE id = ?"
             );
             mysqli_stmt_bind_param($updateStmt, 'sissssi', $judul, $kategoriId, $tanggal, $gambar, $isi, $slug, $id);
 
@@ -109,17 +90,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: dashboard_artikel.php?status=updated');
                 exit;
             }
-
             mysqli_stmt_close($updateStmt);
             $error = 'Artikel gagal diperbarui.';
         }
     }
-
-    $article['judul'] = $judul;
-    $article['kategori_id'] = $kategoriId;
-    $article['tanggal'] = $tanggal;
-    $article['isi'] = $isi;
-    $article['gambar'] = $gambar;
 }
 ?>
 <!DOCTYPE html>
@@ -128,13 +102,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Artikel</title>
-    <link rel="stylesheet" href="../../assets/templateHalaman/sidebar/sidebar.css">
-    <link rel="stylesheet" href="../dashboardadmin/css/dashboard.css">
-    <link rel="stylesheet" href="css/edit_artikel.css">
+    <link rel="stylesheet" href="/PJBL-main/assets/templateHalaman/sidebar/sidebar.css">
+    <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardmain/css/dashboard.css">
+    <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardartikel/css/edit_artikel.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
-<body class="page-edit-artikel">
+<body>
 
 <?php
     $activePage = 'artikel'; 
@@ -176,21 +150,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="file" id="gambar" name="gambar" accept="image/*">
             </div>
 
-            <?php if (!empty($article['gambar'])) : ?>
-                <p style="margin-bottom: 12px; color: #475569;">Gambar saat ini: <?= htmlspecialchars($article['gambar']); ?></p>
-            <?php endif; ?>
-
             <label>Isi Artikel</label>
             <div id="editor" style="height: 300px; margin-bottom: 16px; border-radius: 8px;"></div>
             <input type="hidden" name="isi" id="isi" value="<?= htmlspecialchars($article['isi']); ?>">
 
-            <button type="submit" class="submit-btn">Update Artikel</button>
+            <button type="submit" class="submit-btn">Simpan Perubahan</button>
         </form>
     </main>
 
 <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
-<script src="js/edit_artikel.js"></script>
-<script src="../../assets/templateHalaman/sidebar/sidebar.js"></script>
+<script src="/PJBL-main/assets/templateHalaman/sidebar/sidebar.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Perbarui isi artikel di sini...'
+        });
+
+        var isiInput = document.getElementById('isi');
+        var fileInput = document.getElementById('gambar');
+        var fileName = document.getElementById('fileName');
+
+        quill.root.innerHTML = isiInput.value || '';
+
+        fileInput.addEventListener('change', function() {
+            fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'Gunakan gambar lama jika tidak diganti';
+        });
+
+        document.getElementById('articleForm').addEventListener('submit', function(event) {
+            var plainText = quill.getText().trim();
+            if (!plainText) {
+                event.preventDefault();
+                alert('Isi artikel tidak boleh kosong.');
+                return;
+            }
+            isiInput.value = quill.root.innerHTML;
+        });
+    });
+</script>
 
 </body>
 </html>

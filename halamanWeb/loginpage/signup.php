@@ -38,12 +38,7 @@
 
             <div class="form-group">
               <label for="password">Password</label>
-              <input id="password" name="password" type="password" placeholder="Minimal 6 karakter" required>
-            </div>
-
-            <div class="form-group">
-              <label for="password_confirm">Konfirmasi Password</label>
-              <input id="password_confirm" name="password_confirm" type="password" placeholder="Ulangi password" required>
+              <input id="password" name="password" type="password" placeholder="Buat password baru" required>
             </div>
 
             <button class="primary-button" type="submit" id="btnRegister">Daftar</button>
@@ -56,13 +51,9 @@
         </div>
       </div>
     </div>
-
-    <div class="kanan">
-      <img src="/PJBL-main/assets/Foto/ui/background.png" alt="Background Image">
-    </div>
   </div>
 
-  <script src="js/user_auth.js"></script>
+  <script src="js/user_register.js"></script>
 </body>
 
 </html>

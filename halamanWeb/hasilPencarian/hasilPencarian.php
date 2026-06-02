@@ -1,6 +1,12 @@
-<?php 
+<?php
 include '../../koneksi.php';
-$search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GET['query']) : ''; 
+$search_input = isset($_GET['query']) ? trim($_GET['query']) : '';
+
+$artikelHasStatus = false;
+$statusCheck = mysqli_query($koneksi, "SHOW COLUMNS FROM artikel LIKE 'status'");
+if ($statusCheck && mysqli_num_rows($statusCheck) > 0) {
+  $artikelHasStatus = true;
+}
 ?>
 
 <!DOCTYPE html>
@@ -23,18 +29,53 @@ $search_input = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GE
     <div class="card2-list">
       <?php
       if ($search_input !== '') {
-        $query = mysqli_query($koneksi, "
-          SELECT a.*, k.nama AS kategori 
-          FROM artikel a 
-          LEFT JOIN kategori k ON k.id = a.kategori_id 
-          WHERE a.judul LIKE '%$search_input%' OR a.isi LIKE '%$search_input%'
-        ");
-        if ($query && mysqli_num_rows($query) > 0) {
-          while ($artikel = mysqli_fetch_assoc($query)) {
-            include '../../assets/templateHalaman/cardVariant/card2/card2.php';
+        $sql = "
+          SELECT a.*, k.nama AS kategori
+          FROM artikel a
+          LEFT JOIN kategori k ON k.id = a.kategori_id
+          WHERE (a.judul LIKE ? OR a.isi LIKE ?)
+        ";
+
+        if ($artikelHasStatus) {
+          $sql .= " AND a.status = 'published'";
+        }
+
+        $sql .= " ORDER BY a.id DESC";
+
+        $stmt = mysqli_prepare($koneksi, $sql);
+        if ($stmt) {
+          $searchLike = '%' . $search_input . '%';
+          mysqli_stmt_bind_param($stmt, 'ss', $searchLike, $searchLike);
+          mysqli_stmt_execute($stmt);
+
+          if (function_exists('mysqli_stmt_get_result')) {
+            $query = mysqli_stmt_get_result($stmt);
+          } else {
+            $escaped = mysqli_real_escape_string($koneksi, $search_input);
+            $fallbackSql = "
+              SELECT a.*, k.nama AS kategori
+              FROM artikel a
+              LEFT JOIN kategori k ON k.id = a.kategori_id
+              WHERE (a.judul LIKE '%$escaped%' OR a.isi LIKE '%$escaped%')
+            ";
+            if ($artikelHasStatus) {
+              $fallbackSql .= " AND a.status = 'published'";
+            }
+            $fallbackSql .= " ORDER BY a.id DESC";
+            $query = mysqli_query($koneksi, $fallbackSql);
           }
+
+          if ($query && mysqli_num_rows($query) > 0) {
+            while ($artikel = mysqli_fetch_assoc($query)) {
+              include '../../assets/templateHalaman/cardVariant/card2/card2.php';
+            }
+          } else {
+            echo "<p>Tidak ada hasil yang ditemukan untuk \"" . htmlspecialchars($search_input) . "\".</p>";
+          }
+
+          mysqli_stmt_close($stmt);
         } else {
-          echo "<p>Tidak ada hasil yang ditemukan untuk \"$search_input\".</p>";
+          echo "<p>Pencarian gagal dijalankan. Coba lagi sebentar.</p>";
         }
       } else {
         echo "<p>Masukkan kata kunci untuk mencari artikel.</p>";

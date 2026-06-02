@@ -9,21 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const nama = document.getElementById('nama').value.trim();
       const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const password_confirm = document.getElementById('password_confirm').value;
+      const password = document.getElementById('password').value.trim();
 
-      if (!nama || !email || !password || !password_confirm) {
+      if (!nama || !email || !password) {
         alert('Semua field wajib diisi.');
         return;
       }
 
       if (password.length < 6) {
         alert('Password minimal 6 karakter.');
-        return;
-      }
-
-      if (password !== password_confirm) {
-        alert('Password tidak cocok.');
         return;
       }
 
@@ -36,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('nama', nama);
         formData.append('email', email);
         formData.append('password', password);
-        formData.append('password_confirm', password_confirm);
 
         const response = await fetch('register_logic.php', {
           method: 'POST',

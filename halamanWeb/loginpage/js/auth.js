@@ -127,6 +127,35 @@ function logoutUser() {
   window.location.href = '/PJBL-main/halamanWeb/loginpage/logout.php';
 }
 
+async function safeParseJson(response) {
+  const rawText = await response.text();
+
+  if (!rawText) {
+    throw new Error('Respons kosong dari server.');
+  }
+
+  try {
+    return JSON.parse(rawText);
+  } catch (error) {
+    console.error('Invalid JSON response:', rawText);
+    throw new Error('Respons server tidak valid. Cek error PHP di backend.');
+  }
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = 12000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 // Handle form login - AUTO DETECT USER TYPE
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('loginForm');
@@ -137,7 +166,90 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnResendOtp = document.getElementById('btnResendOtp');
   const formSubtitle = document.getElementById('formSubtitle');
 
+  // Password Elements
+  const passwordSection = document.getElementById('passwordSection');
+  const btnShowPasswordLogin = document.getElementById('btnShowPasswordLogin');
+  const btnBackToOtp = document.getElementById('btnBackToOtp');
+  const btnLoginPassword = document.getElementById('btnLoginPassword');
+
   if (form) {
+    // Toggle ke Login Password
+    if (btnShowPasswordLogin) {
+      btnShowPasswordLogin.addEventListener('click', () => {
+        const email = document.getElementById('email').value.trim();
+        if (!email) {
+          alert('Email wajib diisi untuk masuk dengan password.');
+          return;
+        }
+        emailSection.style.display = 'none';
+        passwordSection.style.display = 'block';
+        formSubtitle.textContent = 'Masukkan password untuk akun ' + email;
+      });
+    }
+
+    // Kembali ke OTP
+    if (btnBackToOtp) {
+      btnBackToOtp.addEventListener('click', (e) => {
+        e.preventDefault();
+        passwordSection.style.display = 'none';
+        emailSection.style.display = 'block';
+        formSubtitle.textContent = 'Masukkan email Anda untuk masuk';
+      });
+    }
+
+    // Login Password Action
+    if (btnLoginPassword) {
+      btnLoginPassword.addEventListener('click', async () => {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!password) {
+          alert('Masukkan password.');
+          return;
+        }
+
+        btnLoginPassword.disabled = true;
+        btnLoginPassword.textContent = 'Masuk...';
+
+        try {
+          const formData = new FormData();
+          formData.append('action', 'login_password');
+          formData.append('email', email);
+          formData.append('password', password);
+
+          const response = await fetchWithTimeout('auth_logic_new.php', {
+            method: 'POST',
+            body: formData
+          }, 20000); // 20 second timeout for password check
+
+          const data = await safeParseJson(response);
+
+          if (data.success) {
+            // Success logic sama dengan OTP
+            if (data.user_type === 'admin') {
+              setAdminSession(email);
+              window.location.href = '/PJBL-main/dashboard/dashboardadmin/dashboard.php';
+            } else {
+              setUserSession(email, data.user_level);
+              if (data.user_level === 'admin') {
+                window.location.href = '/PJBL-main/dashboard/dashboardadmin/dashboard.php';
+              } else {
+                window.location.href = '/PJBL-main/dashboard/dashboarduser/dashboard.php';
+              }
+            }
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {
+          console.error('Error Password Login:', error);
+          alert('Terjadi kesalahan saat masuk.');
+        } finally {
+          btnLoginPassword.disabled = false;
+          btnLoginPassword.textContent = 'Masuk';
+        }
+      });
+    }
+
     // Step 1: Kirim OTP
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -156,12 +268,12 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('action', 'send_otp');
         formData.append('email', email);
 
-        const response = await fetch('auth_logic_new.php', {
+        const response = await fetchWithTimeout('auth_logic_new.php', {
           method: 'POST',
           body: formData
-        });
+        }, 60000); // 60 second timeout
 
-        const data = await response.json();
+        const data = await safeParseJson(response);
 
         if (data.success) {
           alert(data.message);
@@ -169,11 +281,19 @@ document.addEventListener('DOMContentLoaded', () => {
           otpSection.style.display = 'block';
           formSubtitle.textContent = 'Masukkan kode yang dikirim ke ' + email;
         } else {
-          alert(data.message);
+          let errorMsg = data.message;
+          if (data.error_detail) {
+            errorMsg += "\nDetail: " + data.error_detail;
+          }
+          alert(errorMsg);
         }
       } catch (error) {
         console.error('Error:', error);
-        alert('Terjadi kesalahan saat mengirim OTP.');
+        if (error.name === 'AbortError') {
+          alert('Permintaan waktu habis (timeout). Silakan coba lagi.');
+        } else {
+          alert('Terjadi kesalahan saat mengirim OTP: ' + error.message);
+        }
       } finally {
         btnSendOtp.disabled = false;
         btnSendOtp.textContent = 'Kirim OTP';
@@ -198,12 +318,12 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('action', 'verify_otp');
         formData.append('otp', otp);
 
-        const response = await fetch('auth_logic_new.php', {
+        const response = await fetchWithTimeout('auth_logic_new.php', {
           method: 'POST',
           body: formData
-        });
+        }, 20000);
 
-        const data = await response.json();
+        const data = await safeParseJson(response);
 
         if (data.success) {
           // Auto detect dan redirect berdasarkan user_type
@@ -228,7 +348,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (error) {
         console.error('Error:', error);
-        alert('Terjadi kesalahan saat verifikasi.');
+        if (error.name === 'AbortError') {
+          alert('Verifikasi terlalu lama. Silakan coba lagi.');
+        } else {
+          alert(error.message || 'Terjadi kesalahan saat verifikasi.');
+        }
       } finally {
         btnVerifyOtp.disabled = false;
         btnVerifyOtp.textContent = 'Verifikasi & Masuk';
