@@ -33,9 +33,8 @@
   </form>
 
   <nav class="nav-links">
-    <a href="/PJBL-main/halamanWeb/landingpage/landingpage.php#terpopuler">Artikel</a>
-    <a href="/PJBL-main/halamanWeb/landingpage/landingpage.php#terpopuler">Terpopuler</a>
     <a href="/PJBL-main/halamanWeb/tentangpage/tentang.php">Tentang</a>
+    <a href="/PJBL-main/halamanWeb/loginpage/signin.php" class="login-btn">Login</a>
     <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
       <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="5"></circle>

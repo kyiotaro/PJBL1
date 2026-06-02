@@ -10,7 +10,6 @@
       <hr>
       <div class="links">
         <a href="../tentangpage/tentang.php">About</a> |
-        <a href="../loginpage/signin.php">Sign in</a> |
         <a href="#">FAQ</a> |
         <a href="#">Support</a>
       </div>
