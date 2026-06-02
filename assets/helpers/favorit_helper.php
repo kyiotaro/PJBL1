@@ -23,6 +23,16 @@ function favoritEnsureTable(mysqli $koneksi): bool
     ";
 
     if (!mysqli_query($koneksi, $sql)) {
+        // #region agent log
+        file_put_contents(dirname(__DIR__, 2) . '/debug-34f9b0.log', json_encode([
+            'sessionId' => '34f9b0',
+            'hypothesisId' => 'D',
+            'location' => 'favorit_helper.php:ensureTable',
+            'message' => 'CREATE TABLE failed',
+            'data' => ['mysqliErr' => mysqli_error($koneksi)],
+            'timestamp' => (int) round(microtime(true) * 1000),
+        ], JSON_UNESCAPED_UNICODE) . "\n", FILE_APPEND | LOCK_EX);
+        // #endregion
         return false;
     }
 

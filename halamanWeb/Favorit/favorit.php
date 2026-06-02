@@ -9,6 +9,21 @@ require_once '../../assets/helpers/favorit_helper.php';
 $actor = favoritGetActor();
 $isLoggedIn = $actor !== null;
 $favoriteArticles = $isLoggedIn ? favoritGetArticles($koneksi, $actor) : [];
+// #region agent log
+file_put_contents(dirname(__DIR__, 2) . '/debug-34f9b0.log', json_encode([
+    'sessionId' => '34f9b0',
+    'hypothesisId' => 'B,G',
+    'location' => 'favorit.php:load',
+    'message' => 'favorit page load',
+    'data' => [
+        'isLoggedIn' => $isLoggedIn,
+        'actorType' => $actor['type'] ?? null,
+        'actorId' => $actor['id'] ?? null,
+        'favoriteCount' => count($favoriteArticles),
+    ],
+    'timestamp' => (int) round(microtime(true) * 1000),
+], JSON_UNESCAPED_UNICODE) . "\n", FILE_APPEND | LOCK_EX);
+// #endregion
 $loginUrl = '/PJBL-main/halamanWeb/loginpage/signin.php';
 ?>
 <!DOCTYPE html>

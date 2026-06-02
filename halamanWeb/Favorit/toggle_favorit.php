@@ -9,6 +9,29 @@ require_once __DIR__ . '/../../koneksi.php';
 require_once __DIR__ . '/../../assets/helpers/favorit_helper.php';
 
 $actor = favoritGetActor();
+// #region agent log
+$__dbgLog = dirname(__DIR__, 2) . '/debug-34f9b0.log';
+$__dbgWrite = static function (string $hypothesisId, string $location, string $message, array $data = []) use ($__dbgLog): void {
+    file_put_contents($__dbgLog, json_encode([
+        'sessionId' => '34f9b0',
+        'hypothesisId' => $hypothesisId,
+        'location' => $location,
+        'message' => $message,
+        'data' => $data,
+        'timestamp' => (int) round(microtime(true) * 1000),
+    ], JSON_UNESCAPED_UNICODE) . "\n", FILE_APPEND | LOCK_EX);
+};
+$__dbgWrite('B', 'toggle_favorit.php:entry', 'toggle request', [
+    'hasActor' => $actor !== null,
+    'actorType' => $actor['type'] ?? null,
+    'actorId' => $actor['id'] ?? null,
+    'sessionFlags' => [
+        'user_logged_in' => !empty($_SESSION['user_logged_in']),
+        'admin_logged_in' => !empty($_SESSION['admin_logged_in']),
+    ],
+    'artikelId' => (int) ($_POST['artikel_id'] ?? $_GET['artikel_id'] ?? 0),
+]);
+// #endregion
 if ($actor === null) {
     http_response_code(401);
     echo json_encode([
@@ -62,6 +85,17 @@ if ($checkStmt) {
 }
 
 $result = favoritToggle($koneksi, $artikelId, $actor);
+
+// #region agent log
+$__toggleFailed = preg_match('/^(Gagal|Sistem favorit)/u', $result['message'] ?? '');
+$__dbgWrite('A', 'toggle_favorit.php:result', 'toggle result', [
+    'liked' => $result['liked'] ?? null,
+    'message' => $result['message'] ?? null,
+    'responseSuccessAlwaysTrue' => true,
+    'internalFailure' => $__toggleFailed,
+    'mysqliErr' => mysqli_error($koneksi) ?: null,
+]);
+// #endregion
 
 echo json_encode([
     'success' => true,
