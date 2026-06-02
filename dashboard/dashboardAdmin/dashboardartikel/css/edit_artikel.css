@@ -1,3 +1,5 @@
+@import url('../../../assets/variables.css');
+
 /* =========================
    KHUSUS HALAMAN EDIT ARTIKEL
    ========================= */
@@ -8,19 +10,19 @@
 }
 
 .form-box {
-  background: white;
+  background: var(--bg-default);
   padding: 25px;
   border-radius: 12px;
   max-width: 600px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  border-top: 4px solid #0ea5e9;
+  box-shadow: var(--shadow-sm);
+  border-top: 4px solid var(--primary-color);
 }
 
 label {
   display: block;
   margin-bottom: 6px;
   font-weight: bold;
-  color: #0f172a;
+  color: var(--text-title);
 }
 
 input,
@@ -30,9 +32,9 @@ select {
   padding: 12px 14px;
   margin-bottom: 16px;
   border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  background: #f8fafc;
-  color: #0f172a;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-default);
+  color: var(--text-body);
   font-size: 14px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
@@ -41,9 +43,9 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
-  background: #fff;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.12);
+  background: var(--bg-default);
 }
 
 select {
@@ -51,7 +53,7 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
-  background-image: linear-gradient(45deg, transparent 50%, #0ea5e9 50%), linear-gradient(135deg, #0ea5e9 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--primary-color) 50%), linear-gradient(135deg, var(--primary-color) 50%, transparent 50%);
   background-position: calc(100% - 18px) calc(50% - 3px), calc(100% - 12px) calc(50% - 3px);
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
@@ -65,9 +67,9 @@ select {
   flex-wrap: wrap;
   margin-bottom: 16px;
   padding: 12px;
-  border: 1px dashed #7dd3fc;
+  border: 1px dashed var(--primary-color);
   border-radius: 10px;
-  background: linear-gradient(135deg, #f4fbff 0%, #eefaff 100%);
+  background: var(--bg-subtle);
 }
 
 .file-upload-field input[type="file"] {
@@ -80,34 +82,34 @@ select {
   justify-content: center;
   padding: 10px 16px;
   border-radius: 8px;
-  background: #0ea5e9;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-on-primary);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .file-upload-label:hover {
-  background: #0284c7;
+  background: var(--primary-dark);
   transform: translateY(-1px);
 }
 
 .file-upload-name {
-  color: #475569;
+  color: var(--text-muted);
   font-size: 14px;
 }
 
 .submit-btn {
-  background: #0ea5e9;
+  background: var(--primary-color);
   padding: 12px 18px;
-  color: white;
+  color: var(--text-on-primary);
   border-radius: 8px;
   cursor: pointer;
   border: none;
 }
 
 .submit-btn:hover {
-  background: #0284c7;
+  background: var(--primary-dark);
 }
 
 @media (max-width: 768px) {

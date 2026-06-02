@@ -1,3 +1,5 @@
+@import url('../../../assets/variables.css');
+
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +8,8 @@
 }
 
 body {
-    background: #f5f7fa;
-    color: #0F172A;
+    background: var(--bg-page);
+    color: var(--text-default);
     min-height: 100vh;
 }
 
@@ -17,7 +19,7 @@ body {
 
 .page-title {
     font-size: 28px;
-    color: #0F172A;
+    color: var(--text-title);
     margin-bottom: 25px;
     font-weight: bold;
 }

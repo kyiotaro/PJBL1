@@ -140,6 +140,14 @@ function formatStatusUser($status)
     </div>
 </main>
 
+<script>
+  (function() {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
 <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
 <script src="/PJBL-main/assets/templateHalaman/sidebar/sidebar.js"></script>
 </body>

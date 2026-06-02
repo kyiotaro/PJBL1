@@ -1,3 +1,18 @@
+@import url('../../../assets/variables.css');
+
+body {
+    background: var(--bg-page);
+    color: var(--text-default);
+    min-height: 100vh;
+}
+
+.page-title {
+    font-size: 28px;
+    color: var(--text-title);
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

@@ -158,6 +158,13 @@ async function deleteCategory(id) {
 
 function applyTheme(theme) {
     document.body.classList.toggle('theme-dark', theme === 'Gelap');
+    if (theme === 'Gelap') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+    }
     localStorage.setItem('adminTheme', theme);
 }
 

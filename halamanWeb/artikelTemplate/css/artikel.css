@@ -151,8 +151,12 @@ body {
 }
 
 .related-grid::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+}
+
+[data-theme="dark"] .related-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .related-grid article {

@@ -116,6 +116,14 @@ include '../../../koneksi.php';
     </div>
 </div>
 
+<script>
+  (function() {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
 <script src="/PJBL-main/halamanWeb/loginpage/js/auth.js"></script>
 <script src="js/dashboard_pengaturan.js?v=<?= time() ?>"></script>
 <script src="/PJBL-main/assets/templateHalaman/sidebar/sidebar.js"></script>

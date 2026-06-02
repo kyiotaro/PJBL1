@@ -35,3 +35,5 @@
 2026-06-02T22:38:46+02:00 TRACE: before mail->send() to kyiotaro7@gmail.com via SMTP (74.125.200.109:587)
 2026-06-02T22:50:05+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
 2026-06-02T22:50:05+02:00 TRACE: before mail->send() to kyiotaro7@gmail.com via SMTP (74.125.200.109:587)
+2026-06-02T23:23:51+02:00 TRACE: send_otp request received for kyiotaro7@gmail.com
+2026-06-02T23:23:52+02:00 TRACE: before mail->send() to kyiotaro7@gmail.com via SMTP (74.125.200.108:587)
