@@ -92,8 +92,8 @@ if ($action === 'send_otp') {
     $result = mysqli_stmt_get_result($stmt);
 
     if ($row = mysqli_fetch_assoc($result)) {
-        $user_type = 'user';
         $user_level = $row['level'];
+        $user_type = (strtolower((string)$user_level) === 'admin') ? 'admin' : 'user';
         $user_id = $row['id'];
     }
     mysqli_stmt_close($stmt);
@@ -252,10 +252,12 @@ elseif ($action === 'verify_otp') {
         $user_level = $_SESSION['temp_user_level'];
 
         if ($user_type === 'admin') {
+            unset($_SESSION['user_logged_in'], $_SESSION['user_email'], $_SESSION['user_id'], $_SESSION['user_level']);
             $_SESSION['admin_logged_in'] = true;
             $_SESSION['admin_email'] = $email;
             $_SESSION['admin_id'] = $user_id;
         } else {
+            unset($_SESSION['admin_logged_in'], $_SESSION['admin_email'], $_SESSION['admin_id']);
             $_SESSION['user_logged_in'] = true;
             $_SESSION['user_email'] = $email;
             $_SESSION['user_id'] = $user_id;
@@ -296,8 +298,8 @@ elseif ($action === 'login_password') {
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         if ($row = mysqli_fetch_assoc($result)) {
-            $user_type = 'user';
             $user_level = $row['level'];
+            $user_type = (strtolower((string)$user_level) === 'admin') ? 'admin' : 'user';
             $user_id = $row['id'];
             $hashed_password = $row['password'] ?? '';
         }
@@ -336,10 +338,12 @@ elseif ($action === 'login_password') {
     if (password_verify($password, $hashed_password)) {
         // Login Sukses
         if ($user_type === 'admin') {
+            unset($_SESSION['user_logged_in'], $_SESSION['user_email'], $_SESSION['user_id'], $_SESSION['user_level']);
             $_SESSION['admin_logged_in'] = true;
             $_SESSION['admin_email'] = $email;
             $_SESSION['admin_id'] = $user_id;
         } else {
+            unset($_SESSION['admin_logged_in'], $_SESSION['admin_email'], $_SESSION['admin_id']);
             $_SESSION['user_logged_in'] = true;
             $_SESSION['user_email'] = $email;
             $_SESSION['user_id'] = $user_id;

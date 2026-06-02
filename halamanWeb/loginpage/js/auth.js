@@ -1,6 +1,7 @@
 // ===== LOGIN (Frontend Only) - Auto Detect User Type =====
 const ADMIN_SESSION_KEY = 'adminSession';
 const USER_SESSION_KEY = 'userSession';
+const LANDING_PAGE_URL = '/PJBL-main/halamanWeb/landingpage/landingpage.php';
 
 function setAdminSession(email) {
   const session = { isAdmin: true, email };
@@ -228,14 +229,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Success logic sama dengan OTP
             if (data.user_type === 'admin') {
               setAdminSession(email);
-              window.location.href = '/PJBL-main/dashboard/dashboardadmin/dashboard.php';
+              window.location.href = LANDING_PAGE_URL;
             } else {
               setUserSession(email, data.user_level);
-              if (data.user_level === 'admin') {
-                window.location.href = '/PJBL-main/dashboard/dashboardadmin/dashboard.php';
-              } else {
-                window.location.href = '/PJBL-main/dashboard/dashboarduser/dashboard.php';
-              }
+              window.location.href = LANDING_PAGE_URL;
             }
           } else {
             alert(data.message);
@@ -329,19 +326,11 @@ document.addEventListener('DOMContentLoaded', () => {
           // Auto detect dan redirect berdasarkan user_type
           if (data.user_type === 'admin') {
             setAdminSession(email);
-            window.location.href = '/PJBL-main/dashboard/dashboardadmin/dashboard.php';
+            window.location.href = LANDING_PAGE_URL;
           } else {
             // User type = 'user'
             setUserSession(email, data.user_level);
-            
-            // Redirect berdasarkan level
-            if (data.user_level === 'admin') {
-              // User dengan level admin
-              window.location.href = '/PJBL-main/dashboard/dashboardadmin/dashboard.php';
-            } else {
-              // User biasa
-              window.location.href = '/PJBL-main/dashboard/dashboarduser/dashboard.php';
-            }
+            window.location.href = LANDING_PAGE_URL;
           }
         } else {
           alert(data.message);

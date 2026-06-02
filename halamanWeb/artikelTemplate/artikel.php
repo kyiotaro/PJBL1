@@ -4,6 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 include '../../koneksi.php';
 require_once '../../assets/helpers/foto_helper.php';
+require_once '../../assets/helpers/favorit_helper.php';
 
 $defaultArticle = [
   'id' => 0,
@@ -98,6 +99,10 @@ if ($articleContent === '') {
 $relatedArticles = [];
 $currentArticleId = (int) ($article['id'] ?? 0);
 $currentCategoryId = (int) ($article['kategori_id'] ?? 0);
+$favoritActor = favoritGetActor();
+$articleIsLiked = $favoritActor && $currentArticleId > 0
+  ? favoritIsLiked($koneksi, $currentArticleId, $favoritActor)
+  : false;
 
 if ($currentArticleId > 0 && $currentCategoryId > 0) {
   $relatedStmt = mysqli_prepare($koneksi, "
@@ -152,6 +157,7 @@ if ($currentArticleId > 0 && count($relatedArticles) < 9) {
   <link rel="stylesheet" href="../../assets/templateHalaman/cardVariant/card1/card1.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/hero/hero.css">
   <link rel="stylesheet" href="../../assets/templateHalaman/sectionHeader/sectionHeader.css">
+  <link rel="stylesheet" href="../../assets/templateHalaman/likeBtn/likeBtn.css">
 </head>
 
 <body>
@@ -189,6 +195,30 @@ if ($currentArticleId > 0 && count($relatedArticles) < 9) {
           <p>Kategori: <strong><?= htmlspecialchars(ucfirst($article['kategori'])); ?></strong></p>
           <p>Diterbitkan: <strong><?= date('d M Y', strtotime($article['tanggal'])); ?></strong></p>
           <p>Penulis: <strong><?= htmlspecialchars($article['Penulis'] ?? 'Admin'); ?></strong></p>
+          <?php if ($currentArticleId > 0): ?>
+            <div class="article-like-row">
+              <button
+                type="button"
+                class="like-btn like-btn--inline<?= $articleIsLiked ? ' is-liked' : '' ?>"
+                data-artikel-id="<?= (int) $currentArticleId ?>"
+                data-toggle-url="/PJBL-main/halamanWeb/Favorit/toggle_favorit.php"
+                aria-pressed="<?= $articleIsLiked ? 'true' : 'false' ?>"
+                aria-label="<?= $articleIsLiked ? 'Hapus dari favorit' : 'Tambah ke favorit' ?>"
+                title="<?= $articleIsLiked ? 'Hapus dari favorit' : 'Tambah ke favorit' ?>">
+                <svg class="like-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span class="like-label"><?= $articleIsLiked ? 'Disukai' : 'Suka' ?></span>
+              </button>
+              <span class="article-like-hint">
+                <?php if ($favoritActor): ?>
+                  Artikel disukai akan muncul di <a href="/PJBL-main/halamanWeb/Favorit/favorit.php">halaman Favorit</a>.
+                <?php else: ?>
+                  <a href="/PJBL-main/halamanWeb/loginpage/signin.php">Login</a> untuk menyimpan artikel ke favorit.
+                <?php endif; ?>
+              </span>
+            </div>
+          <?php endif; ?>
         </div>
       </div>
     </aside>
@@ -217,6 +247,18 @@ if ($currentArticleId > 0 && count($relatedArticles) < 9) {
 
 
   <?php include '../../assets/templateHalaman/footer/footer.php'; ?>
+
+  <?php if ($currentArticleId > 0): ?>
+    <script src="../Favorit/js/like.js"></script>
+    <script>
+      document.querySelector('.article-like-row .like-btn')?.addEventListener('like:toggled', function (e) {
+        var label = this.querySelector('.like-label');
+        if (label) {
+          label.textContent = e.detail.liked ? 'Disukai' : 'Suka';
+        }
+      });
+    </script>
+  <?php endif; ?>
 </body>
 
 </html>

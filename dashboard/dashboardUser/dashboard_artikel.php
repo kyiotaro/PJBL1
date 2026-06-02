@@ -22,6 +22,8 @@ $articles = [];
 $categories = [];
 $search = trim($_GET['search'] ?? '');
 $categoryId = (int) ($_GET['kategori'] ?? 0);
+$tanggal = trim($_GET['tanggal'] ?? '');
+$filterStatus = $_GET['filter_status'] ?? '';
 
 $categoryQuery = mysqli_query($koneksi, "SELECT id, nama FROM kategori ORDER BY nama ASC");
 if ($categoryQuery) {
@@ -47,8 +49,20 @@ if ($categoryId > 0) {
     $types .= 'i';
 }
 
+if ($filterStatus !== '') {
+    $whereClauses[] = 'a.status = ?';
+    $params[] = $filterStatus;
+    $types .= 's';
+}
+
+if ($tanggal !== '') {
+    $whereClauses[] = 'a.tanggal = ?';
+    $params[] = $tanggal;
+    $types .= 's';
+}
+
 $sql = "
-    SELECT a.id, a.judul, a.tanggal, a.status, k.nama AS kategori
+    SELECT a.id, a.judul, a.tanggal, a.status, a.Penulis, a.author_type, k.nama AS kategori
     FROM artikel a
     LEFT JOIN kategori k ON k.id = a.kategori_id
     WHERE " . implode(' AND ', $whereClauses) . "
@@ -100,27 +114,9 @@ function getStatusLabel($status) {
     <title>Artikel Saya</title>
     <link rel="stylesheet" href="/PJBL-main/assets/templateHalaman/sidebar/sidebar.css">
     <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardmain/css/dashboard.css">
-    <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardartikel/css/dashboard_artikel.css">
+    <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardartikel/css/dashboard_artikel.css?v=2">
     <style>
-        .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            color: white;
-        }
-        .badge-success { background: #10B981; }
-        .badge-warning { background: #F59E0B; }
-        .badge-danger { background: #EF4444; }
-        .badge-info { background: #3B82F6; }
-        .badge-secondary { background: #6B7280; }
-        
-        .action-btn.disabled {
-            background: #94A3B8;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-        .request-edit { background: #6366F1; }
+        .search-form { grid-template-columns: 1fr 220px 180px 180px auto !important; }
     </style>
 </head>
 <body>
@@ -147,19 +143,28 @@ function getStatusLabel($status) {
                         <option value="<?= (int) $cat['id']; ?>" <?= $categoryId === (int) $cat['id'] ? 'selected' : ''; ?>><?= htmlspecialchars($cat['nama']); ?></option>
                     <?php endforeach; ?>
                 </select>
+                <select name="filter_status">
+                    <option value="">Semua Status</option>
+                    <option value="pending" <?= $filterStatus === 'pending' ? 'selected' : ''; ?>>Menunggu</option>
+                    <option value="published" <?= $filterStatus === 'published' ? 'selected' : ''; ?>>Disetujui</option>
+                    <option value="rejected" <?= $filterStatus === 'rejected' ? 'selected' : ''; ?>>Ditolak</option>
+                    <option value="requested_edit" <?= $filterStatus === 'requested_edit' ? 'selected' : ''; ?>>Minta Edit</option>
+                </select>
+                <input type="date" name="tanggal" value="<?= htmlspecialchars($tanggal); ?>">
                 <button type="submit">Filter</button>
             </form>
         </div>
 
-        <table>
+        <table class="article-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Judul Artikel</th>
-                    <th>Kategori</th>
-                    <th>Tanggal</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
+                    <th><span class="no-sort">ID</span></th>
+                    <th><span class="no-sort">Judul Artikel</span></th>
+                    <th><span class="no-sort">Penulis</span></th>
+                    <th><span class="no-sort">Kategori</span></th>
+                    <th><span class="no-sort">Tanggal</span></th>
+                    <th><span class="no-sort">Status</span></th>
+                    <th><span class="no-sort">Aksi</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -168,6 +173,7 @@ function getStatusLabel($status) {
                         <tr>
                             <td><?= (int) $row['id']; ?></td>
                             <td><?= htmlspecialchars($row['judul']); ?></td>
+                            <td><?= htmlspecialchars($row['Penulis']); ?> (<?= ucfirst($row['author_type']); ?>)</td>
                             <td><?= htmlspecialchars(ucfirst($row['kategori'])); ?></td>
                             <td><?= htmlspecialchars($row['tanggal']); ?></td>
                             <td>
@@ -175,12 +181,12 @@ function getStatusLabel($status) {
                                     <?= getStatusLabel($row['status']); ?>
                                 </span>
                             </td>
-                            <td>
+                            <td class="table-actions">
                                 <?php if ($row['status'] === 'pending' || $row['status'] === 'rejected') : ?>
                                     <a href="edit_artikel.php?id=<?= (int) $row['id']; ?>" class="action-btn edit">Edit</a>
                                     <a href="hapus_artikel.php?id=<?= (int) $row['id']; ?>" class="action-btn delete" onclick="return confirm('Yakin hapus artikel ini?')">Hapus</a>
                                 <?php elseif ($row['status'] === 'published') : ?>
-                                    <a href="request_edit.php?id=<?= (int) $row['id']; ?>" class="action-btn request-edit" onclick="return confirm('Minta izin ke admin untuk mengedit artikel ini?')">Minta Edit</a>
+                                    <a href="request_edit.php?id=<?= (int) $row['id']; ?>" class="action-btn allow" onclick="return confirm('Minta izin ke admin untuk mengedit artikel ini?')">Minta Edit</a>
                                 <?php elseif ($row['status'] === 'requested_edit') : ?>
                                     <span class="action-btn disabled">Menunggu Izin</span>
                                 <?php endif; ?>
@@ -189,7 +195,7 @@ function getStatusLabel($status) {
                     <?php endforeach; ?>
                 <?php else : ?>
                     <tr>
-                        <td colspan="6">Anda belum menulis artikel.</td>
+                        <td colspan="7">Anda belum menulis artikel.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

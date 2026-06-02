@@ -188,6 +188,39 @@ nav a:hover::after {
   color: var(--link-hover);
 }
 
+.avatar-btn {
+  margin-left: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.avatar-btn:hover {
+  transform: none;
+  background: var(--primary-color);
+}
+
+.logout-link {
+  margin-left: 12px;
+  text-decoration: none;
+  color: var(--link-color);
+  font-weight: 500;
+  position: relative;
+}
+
+.logout-link:hover {
+  color: var(--link-hover);
+}
+
 .signup-btn {
   border-color: var(--primary-light);
   color: var(--primary-light);

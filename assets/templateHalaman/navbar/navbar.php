@@ -1,4 +1,17 @@
 <!-- navbar.php -->
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+$isAdmin = !empty($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+$isUser = !empty($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true;
+$isLoggedIn = $isAdmin || $isUser;
+$userEmail = $isAdmin ? ($_SESSION['admin_email'] ?? '') : ($_SESSION['user_email'] ?? '');
+$userInitial = $isLoggedIn && $userEmail !== '' ? strtoupper(substr($userEmail, 0, 1)) : '';
+$avatarHref = $isAdmin
+  ? '/PJBL-main/dashboard/dashboardAdmin/dashboardmain/dashboard.php'
+  : '/PJBL-main/dashboard/dashboardUser/dashboard.php';
+?>
 <script>
   (function() {
     const currentTheme = localStorage.getItem('theme') || 'light';
@@ -33,8 +46,14 @@
   </form>
 
   <nav class="nav-links">
+    <a href="/PJBL-main/halamanWeb/Favorit/favorit.php">Favorit</a>
     <a href="/PJBL-main/halamanWeb/tentangpage/tentang.php">Tentang</a>
-    <a href="/PJBL-main/halamanWeb/loginpage/signin.php" class="login-btn">Login</a>
+    <?php if ($isLoggedIn): ?>
+      <a href="<?= htmlspecialchars($avatarHref) ?>" class="avatar-btn" title="Masuk sebagai <?= htmlspecialchars($userEmail) ?>"><?= htmlspecialchars($userInitial) ?></a>
+      <a href="/PJBL-main/halamanWeb/loginpage/logout.php" class="logout-link">Logout</a>
+    <?php else: ?>
+      <a href="/PJBL-main/halamanWeb/loginpage/signin.php" class="login-btn">Login</a>
+    <?php endif; ?>
     <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
       <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="5"></circle>

@@ -226,19 +226,8 @@ function getStatusBadgeClass($status) {
     <title>Manajemen Artikel</title>
     <link rel="stylesheet" href="/PJBL-main/assets/templateHalaman/sidebar/sidebar.css">
     <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardmain/css/dashboard.css">
-    <link rel="stylesheet" href="css/dashboard_artikel.css">
+    <link rel="stylesheet" href="css/dashboard_artikel.css?v=2">
     <style>
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: white; display: inline-block; }
-        .badge-success { background: #10B981; }
-        .badge-warning { background: #F59E0B; }
-        .badge-danger { background: #EF4444; }
-        .badge-info { background: #3B82F6; }
-        .badge-secondary { background: #6B7280; }
-        
-        .action-btn.approve { background: #10B981; }
-        .action-btn.reject { background: #F59E0B; }
-        .action-btn.allow { background: #6366F1; }
-        
         .search-form { grid-template-columns: 1fr 150px 150px 150px auto !important; }
     </style>
 </head>
@@ -278,7 +267,7 @@ function getStatusBadgeClass($status) {
             </form>
         </div>
 
-        <table>
+        <table class="article-table">
             <thead>
                 <tr>
                     <th><a href="<?= getSortUrl('id', $sort, $order, $baseParams); ?>">ID<?= getSortIcon('id', $sort, $order); ?></a></th>
@@ -300,7 +289,7 @@ function getStatusBadgeClass($status) {
                             <td><?= htmlspecialchars(ucfirst($row['kategori'])); ?></td>
                             <td><?= htmlspecialchars($row['tanggal']); ?></td>
                             <td><span class="badge <?= getStatusBadgeClass($row['status']); ?>"><?= ucfirst(str_replace('_', ' ', $row['status'])); ?></span></td>
-                            <td>
+                            <td class="table-actions">
                                 <?php if ($row['status'] === 'pending') : ?>
                                     <a href="?approve=<?= $row['id'] ?>" class="action-btn approve" onclick="return confirm('Setujui artikel ini?')">Setujui</a>
                                     <a href="?reject=<?= $row['id'] ?>" class="action-btn reject" onclick="return confirm('Tolak artikel ini?')">Tolak</a>

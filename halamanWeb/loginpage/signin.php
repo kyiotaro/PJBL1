@@ -1,4 +1,13 @@
-<?php session_start(); ?>
+<?php
+session_start();
+if (
+  (!empty($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) ||
+  (!empty($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true)
+) {
+  header('Location: /PJBL-main/halamanWeb/landingpage/landingpage.php');
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 

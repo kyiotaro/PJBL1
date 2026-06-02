@@ -22,6 +22,11 @@ if ($isAdmin) {
             'href'  => '/PJBL-main/dashboard/dashboardAdmin/dashboardartikel/dashboard_artikel.php',
             'icon'  => '<path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>',
         ],
+        'inbox' => [
+            'label' => 'Inbox',
+            'href'  => '/PJBL-main/dashboard/dashboardAdmin/dashboardinbox/dashboard_inbox.php',
+            'icon'  => '<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>',
+        ],
         'pengaturan' => [
             'label' => 'Pengaturan',
             'href'  => '/PJBL-main/dashboard/dashboardAdmin/dashboardpengaturan/dashboard_pengaturan.php',

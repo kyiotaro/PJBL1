@@ -17,13 +17,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $slug = 'artikel-' . time();
     }
 
+    $cekSlug = mysqli_prepare($koneksi, "SELECT id FROM artikel WHERE slug = ? LIMIT 1");
+    if ($cekSlug) {
+        mysqli_stmt_bind_param($cekSlug, 's', $slug);
+        mysqli_stmt_execute($cekSlug);
+        mysqli_stmt_store_result($cekSlug);
+        if (mysqli_stmt_num_rows($cekSlug) > 0) {
+            $slug .= '-' . time();
+        }
+        mysqli_stmt_close($cekSlug);
+    }
+
     $slugKategori = trim($_POST['kategori'] ?? '');
     $stmtKat = mysqli_prepare($koneksi, "SELECT id FROM kategori WHERE slug = ?");
     mysqli_stmt_bind_param($stmtKat, 's', $slugKategori);
     mysqli_stmt_execute($stmtKat);
-    $resKat = mysqli_stmt_get_result($stmtKat);
-    $rowKat = mysqli_fetch_assoc($resKat);
-    $kategoriId = $rowKat['id'] ?? null;
+
+    if (function_exists('mysqli_stmt_get_result')) {
+        $resKat = mysqli_stmt_get_result($stmtKat);
+        $rowKat = mysqli_fetch_assoc($resKat);
+        $kategoriId = $rowKat['id'] ?? null;
+    } else {
+        mysqli_stmt_bind_result($stmtKat, $kategoriId);
+        mysqli_stmt_fetch($stmtKat);
+    }
+
     mysqli_stmt_close($stmtKat);
 
     if ($judul === '' || $slugKategori === '' || $tanggal === '' || $isi === '') {
@@ -71,7 +89,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit;
                 }
                 mysqli_stmt_close($stmt);
-                $error = 'Gagal menyimpan artikel.';
+                if (mysqli_errno($koneksi) === 1062) {
+                    $error = 'Judul artikel sudah dipakai di sistem. Gunakan judul yang sedikit berbeda.';
+                } else {
+                    $error = 'Gagal menyimpan artikel. Coba lagi atau hubungi admin.';
+                }
             } else {
                 $error = 'Gagal upload gambar.';
             }
