@@ -34,6 +34,11 @@ body {
     border-color: var(--primary-color);
 }
 
+[data-theme="dark"] .article-item:hover {
+    background: rgba(3, 105, 161, 0.25);
+    border-color: var(--primary-color);
+}
+
 .article-info h4 {
     margin-bottom: 5px;
     color: var(--text-title);

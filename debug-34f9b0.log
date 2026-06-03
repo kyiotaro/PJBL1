@@ -1,6 +1,0 @@
-{"sessionId":"34f9b0","hypothesisId":"B,G","location":"favorit.php:load","message":"favorit page load","data":{"isLoggedIn":false,"actorType":null,"actorId":null,"favoriteCount":0},"timestamp":1780435419781}
-{"sessionId":"34f9b0","hypothesisId":"B,G","location":"favorit.php:load","message":"favorit page load","data":{"isLoggedIn":true,"actorType":"user","actorId":5,"favoriteCount":3},"timestamp":1780435659087}
-{"sessionId":"34f9b0","hypothesisId":"B,G","location":"favorit.php:load","message":"favorit page load","data":{"isLoggedIn":true,"actorType":"admin","actorId":1,"favoriteCount":0},"timestamp":1780435675013}
-{"sessionId":"34f9b0","hypothesisId":"B","location":"toggle_favorit.php:entry","message":"toggle request","data":{"hasActor":true,"actorType":"admin","actorId":1,"sessionFlags":{"user_logged_in":false,"admin_logged_in":true},"artikelId":140},"timestamp":1780435686725}
-{"sessionId":"34f9b0","hypothesisId":"A","location":"toggle_favorit.php:result","message":"toggle result","data":{"liked":true,"message":"Artikel ditambahkan ke favorit.","responseSuccessAlwaysTrue":true,"internalFailure":0,"mysqliErr":null},"timestamp":1780435686731}
-{"sessionId":"34f9b0","hypothesisId":"B,G","location":"favorit.php:load","message":"favorit page load","data":{"isLoggedIn":true,"actorType":"admin","actorId":1,"favoriteCount":1},"timestamp":1780435689531}

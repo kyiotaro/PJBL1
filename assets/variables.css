@@ -27,6 +27,7 @@
 
   --border-color: #e2e8f0;
   --border-subtle: #f1f5f9;
+  --btn-text-hover: rgba(255, 255, 255, 0.1);
 
   /* -------------------- Spacing & Layout -------------------- */
   --header-height: 70px;
@@ -104,6 +105,7 @@
   --btn-border: #38bdf8;
   --btn-text: #38bdf8;
   --btn-bg-hover: #38bdf8;
+  --btn-text-hover: #1e293b;
 }
 
 

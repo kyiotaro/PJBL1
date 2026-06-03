@@ -23,16 +23,6 @@ function favoritEnsureTable(mysqli $koneksi): bool
     ";
 
     if (!mysqli_query($koneksi, $sql)) {
-        // #region agent log
-        file_put_contents(dirname(__DIR__, 2) . '/debug-34f9b0.log', json_encode([
-            'sessionId' => '34f9b0',
-            'hypothesisId' => 'D',
-            'location' => 'favorit_helper.php:ensureTable',
-            'message' => 'CREATE TABLE failed',
-            'data' => ['mysqliErr' => mysqli_error($koneksi)],
-            'timestamp' => (int) round(microtime(true) * 1000),
-        ], JSON_UNESCAPED_UNICODE) . "\n", FILE_APPEND | LOCK_EX);
-        // #endregion
         return false;
     }
 
@@ -86,16 +76,16 @@ function favoritIsLiked(mysqli $koneksi, int $artikelId, array $actor): bool
 }
 
 /**
- * @return array{liked: bool, message: string}
+ * @return array{success: bool, liked: bool, message: string}
  */
 function favoritToggle(mysqli $koneksi, int $artikelId, array $actor): array
 {
     if ($artikelId <= 0) {
-        return ['liked' => false, 'message' => 'Artikel tidak valid.'];
+        return ['success' => false, 'liked' => false, 'message' => 'Artikel tidak valid.'];
     }
 
     if (!favoritEnsureTable($koneksi)) {
-        return ['liked' => false, 'message' => 'Sistem favorit belum siap.'];
+        return ['success' => false, 'liked' => false, 'message' => 'Sistem favorit belum siap.'];
     }
 
     if (favoritIsLiked($koneksi, $artikelId, $actor)) {
@@ -104,13 +94,17 @@ function favoritToggle(mysqli $koneksi, int $artikelId, array $actor): array
             'DELETE FROM artikel_favorit WHERE artikel_id = ? AND actor_type = ? AND actor_id = ?'
         );
         if (!$stmt) {
-            return ['liked' => true, 'message' => 'Gagal menghapus favorit.'];
+            return ['success' => false, 'liked' => true, 'message' => 'Gagal menghapus favorit.'];
         }
         mysqli_stmt_bind_param($stmt, 'isi', $artikelId, $actor['type'], $actor['id']);
-        mysqli_stmt_execute($stmt);
+        $ok = mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        return ['liked' => false, 'message' => 'Artikel dihapus dari favorit.'];
+        if (!$ok) {
+            return ['success' => false, 'liked' => true, 'message' => 'Gagal menghapus favorit.'];
+        }
+
+        return ['success' => true, 'liked' => false, 'message' => 'Artikel dihapus dari favorit.'];
     }
 
     $stmt = mysqli_prepare(
@@ -118,17 +112,17 @@ function favoritToggle(mysqli $koneksi, int $artikelId, array $actor): array
         'INSERT INTO artikel_favorit (artikel_id, actor_type, actor_id) VALUES (?, ?, ?)'
     );
     if (!$stmt) {
-        return ['liked' => false, 'message' => 'Gagal menambahkan favorit.'];
+        return ['success' => false, 'liked' => false, 'message' => 'Gagal menambahkan favorit.'];
     }
     mysqli_stmt_bind_param($stmt, 'isi', $artikelId, $actor['type'], $actor['id']);
     $ok = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
     if (!$ok) {
-        return ['liked' => false, 'message' => 'Gagal menyimpan favorit.'];
+        return ['success' => false, 'liked' => false, 'message' => 'Gagal menyimpan favorit.'];
     }
 
-    return ['liked' => true, 'message' => 'Artikel ditambahkan ke favorit.'];
+    return ['success' => true, 'liked' => true, 'message' => 'Artikel ditambahkan ke favorit.'];
 }
 
 /**

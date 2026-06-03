@@ -19,6 +19,9 @@ th, td {
   text-align: left;
   color: var(--text-body);
 }
+td :hover{
+  background-color: var(--bg-subtle);
+}
 
 th {
   background: var(--primary-color);
@@ -48,6 +51,10 @@ th a:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
+[data-theme="dark"] th a:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 .sort-icon {
   font-size: 10px;
   margin-left: 4px;
@@ -57,6 +64,10 @@ th a:hover {
 
 tbody tr:hover {
   background: var(--primary-light);
+}
+
+[data-theme="dark"] tbody tr:hover {
+  background: rgba(3, 105, 161, 0.25);
 }
 
 .action-btn {
@@ -309,6 +320,10 @@ tbody tr:hover {
   background: var(--primary-light);
   border-color: var(--primary-color);
   color: var(--primary-color);
+}
+
+[data-theme="dark"] .pagination a:hover {
+  background: rgba(3, 105, 161, 0.25);
 }
 
 .pagination a.active {

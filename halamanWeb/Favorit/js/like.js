@@ -38,9 +38,6 @@
           })
           .then(function (result) {
             var data = result.data || {};
-            // #region agent log
-            fetch('http://127.0.0.1:7764/ingest/5a25e54b-1ee8-4cbd-ac50-229138485cf5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'34f9b0'},body:JSON.stringify({sessionId:'34f9b0',hypothesisId:'A,E',location:'like.js:response',message:'like fetch result',data:{status:result.status,ok:result.ok,success:data.success,liked:data.liked,msg:data.message,artikelId:artikelId},timestamp:Date.now()})}).catch(function(){});
-            // #endregion
 
             if (result.status === 401 || data.require_login) {
               var goLogin = confirm((data.message || 'Silakan login terlebih dahulu.') + '\n\nBuka halaman login?');
@@ -67,10 +64,7 @@
               })
             );
           })
-          .catch(function (err) {
-            // #region agent log
-            fetch('http://127.0.0.1:7764/ingest/5a25e54b-1ee8-4cbd-ac50-229138485cf5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'34f9b0'},body:JSON.stringify({sessionId:'34f9b0',hypothesisId:'E',location:'like.js:catch',message:'like fetch failed',data:{artikelId:artikelId,err:String(err&&err.message||err)},timestamp:Date.now()})}).catch(function(){});
-            // #endregion
+          .catch(function () {
             alert('Koneksi gagal. Coba lagi.');
           })
           .finally(function () {
