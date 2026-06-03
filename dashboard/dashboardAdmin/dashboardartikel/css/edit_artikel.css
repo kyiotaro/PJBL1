@@ -112,6 +112,15 @@ select {
   background: var(--primary-dark);
 }
 
+/* Fix Quill editor text color for dark mode */
+#editor .ql-editor {
+  color: #1a1a1a !important;
+}
+
+#editor .ql-editor.ql-blank::before {
+  color: #999 !important;
+}
+
 @media (max-width: 768px) {
   .content {
     margin-left: 0;

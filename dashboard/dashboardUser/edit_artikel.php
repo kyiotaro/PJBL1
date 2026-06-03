@@ -104,9 +104,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Edit Artikel</title>
     <link rel="stylesheet" href="/PJBL-main/assets/templateHalaman/sidebar/sidebar.css">
     <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardmain/css/dashboard.css">
-    <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardartikel/css/edit_artikel.css">
+    <link rel="stylesheet" href="/PJBL-main/dashboard/dashboardAdmin/dashboardartikel/css/edit_artikel.css?v=3">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <style>
+        #editor .ql-editor {
+            color: #1a1a1a !important;
+        }
+        #editor .ql-editor.ql-blank::before {
+            color: #999 !important;
+        }
+        #editor .ql-toolbar {
+            background: #fff !important;
+            border-color: var(--border-subtle) !important;
+        }
+        #editor {
+            background: #fff !important;
+            border-color: var(--border-subtle) !important;
+        }
+    </style>
 </head>
 <body>
 
